@@ -1,5 +1,5 @@
 var sidebar = L.control.sidebar("sidebar", {
-    position: "left",
+    position: "right",
     closeButton: false,
     autoPan: true
 })

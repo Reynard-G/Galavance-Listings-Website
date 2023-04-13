@@ -5,34 +5,49 @@ function createMarker(listing) {
   return marker;
 }
 
+function handleCardClick(listing) {
+  // Update the sidebar content with the information of the clicked listing
+  let sidebarContent = '';
+  sidebarContent += '<div class="row">';
+  const card = createCard(listing);
+  sidebarContent += '<div class="col-md-12">' + card.outerHTML + '</div>';
+  sidebarContent += '</div>';
+  sidebar.setContent(sidebarContent);
+}
+
 function createCard(listing) {
   const card = document.createElement('div');
-  card.className = 'card mb-4';
+  card.classList.add('card', 'mb-4');
 
-  const img = document.createElement('img');
-  img.src = listing.locationImage;
-  img.className = 'card-img-top';
-  card.appendChild(img);
+  const image = document.createElement('img');
+  image.classList.add('card-img-top');
+  image.src = listing.locationImage;
+  image.alt = listing.name;
+  card.appendChild(image);
 
-  const cardBody = document.createElement('div');
-  cardBody.className = 'card-body';
+  const body = document.createElement('div');
+  body.classList.add('card-body');
+  card.appendChild(body);
 
   const title = document.createElement('h5');
-  title.className = 'card-title';
+  title.classList.add('card-title');
   title.textContent = listing.title;
-  cardBody.appendChild(title);
+  body.appendChild(title);
 
   const description = document.createElement('p');
-  description.className = 'card-text';
+  description.classList.add('card-text');
   description.textContent = listing.description;
-  cardBody.appendChild(description);
+  body.appendChild(description);
 
   const price = document.createElement('p');
-  price.className = 'card-footer';
-  price.textContent = listing.price;
-  card.appendChild(price);
+  price.classList.add('card-text', 'fw-bold');
+  price.textContent = '$' + listing.price;
+  body.appendChild(price);
 
-  card.appendChild(cardBody);
+  card.addEventListener('click', function() {
+    console.log('Clicked on listing ' + listing.id)
+    handleCardClick(listing);
+  });
 
   return card;
 }

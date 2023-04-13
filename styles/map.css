@@ -1,6 +1,9 @@
 :root {
-    --color-primary: #2b2b2b;
+    --color-primary: rgba(43, 43, 43, 0.9);
+    --color-primary-background: rgb(43, 43, 43);
+    --color-primary-border: rgb(255, 255, 255, 0.15);
     --color-secondary: #fff;
+    --color-secondary-text: #fff;
     --main-font: 'Roboto', sans-serif;
 }
 
@@ -33,10 +36,17 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     border-radius: 1rem;
+    border-width: 0px !important;
+    background: var(--color-primary-background) !important;
 }
 
 .card {
-    margin: 10px 0;
+    margin: .5rem 0;
+    border: 2px solid var(--color-primary-border) !important;
+}
+
+.card-body {
+    background: var(--color-primary-background) !important;
 }
 
 .leaflet-tile-container img {
@@ -44,26 +54,13 @@
     outline: 1px solid transparent;
 }
 
-.leaflet-touch .leaflet-control-zoom-in,
-.leaflet-touch .leaflet-control-zoom-out {
-    text-indent: 1px;
-    background-color: var(--color-primary);
-    border: 1px solid var(--color-primary);
-    border-radius: 2px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-    color: #fff;
-    font-size: 18px;
-    height: 26px;
-    line-height: 26px;
-    text-align: center;
-    text-decoration: none;
-    width: 26px;
+.leaflet-control-zoom a {
+    color: var(--color-secondary) !important;
+    background: var(--color-primary) !important;
+    transition: all 0.5s ease;
 }
 
-.leaflet-touch .leaflet-control-zoom-in:hover,
-.leaflet-touch .leaflet-control-zoom-out:hover {
-    background-color: #5b5b5b;
-    border: 1px solid #6b6b6b;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-    color: #fff;
+.leaflet-control-zoom a:hover {
+    color: white !important;
+    background: var(--color-primary) !important;
 }
