@@ -1,0 +1,69 @@
+:root {
+    --color-primary: #2b2b2b;
+    --color-secondary: #fff;
+    --main-font: 'Roboto', sans-serif;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+#coordinates {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    font-family: var(--main-font);
+    color: var(--color-secondary);
+    background-color: var(--color-primary);
+    border-radius: 3px;
+    z-index: 100;
+}
+
+#sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+#sidebar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    border-radius: 1rem;
+}
+
+.card {
+    margin: 10px 0;
+}
+
+.leaflet-tile-container img {
+    will-change: transform;
+    outline: 1px solid transparent;
+}
+
+.leaflet-touch .leaflet-control-zoom-in,
+.leaflet-touch .leaflet-control-zoom-out {
+    text-indent: 1px;
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: 2px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+    color: #fff;
+    font-size: 18px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    text-decoration: none;
+    width: 26px;
+}
+
+.leaflet-touch .leaflet-control-zoom-in:hover,
+.leaflet-touch .leaflet-control-zoom-out:hover {
+    background-color: #5b5b5b;
+    border: 1px solid #6b6b6b;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+    color: #fff;
+}
