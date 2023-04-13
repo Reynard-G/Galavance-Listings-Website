@@ -2,8 +2,8 @@
     --color-primary: rgba(43, 43, 43, 0.9);
     --color-primary-background: rgb(43, 43, 43);
     --color-primary-border: rgb(255, 255, 255, 0.15);
-    --color-secondary: #fff;
-    --color-secondary-text: #fff;
+    --color-secondary: #FFFFFF;
+    --color-secondary-text: #ADB5BD;
     --main-font: 'Roboto', sans-serif;
 }
 
@@ -35,6 +35,7 @@
 #sidebar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+    color: var(--color-secondary-text);
     border-radius: 1rem;
     border-width: 0px !important;
     background: var(--color-primary-background) !important;
