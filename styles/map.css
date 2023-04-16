@@ -43,7 +43,6 @@
 
 .card {
     margin: .5rem 0;
-    border: 2px solid var(--color-primary-border) !important;
 }
 
 .card-body {
