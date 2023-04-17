@@ -18,48 +18,77 @@ function createMarker(listing) {
   return marker;
 }
 
-function handleCardClick(listing) {
-  console.log("Clicked on listing: " + listing.title);
-  // Update the sidebar content with the information of the clicked listing
-  let sidebarContent = '';
-  sidebarContent += '<div class="row">';
-  sidebarContent += '<div class="col-md-12">';
-  sidebarContent += '<div class="card mb-4 border-light">';
-  
-  // Add carousel items
-  sidebarContent += '<div id="carouselControls" class="carousel slide" data-bs-ride="carousel">';
-  sidebarContent += '<div class="carousel-inner">';
+function cardClickDesc(listing) {
+  let sidebarContent = `
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4 border-light">
+          <div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <ol class="carousel-indicators">
+  `;
 
   // Add carousel indicators
-  sidebarContent += '<ol class="carousel-indicators">';
   for (let i = 0; i < listing.locationImages.length; i++) {
-    sidebarContent += '<li data-bs-target="#carouselControls" data-bs-slide-to="' + i + '"' + (i === 0 ? ' class="active"' : '') + '></li>';
-  }
-  sidebarContent += '</ol>';
-
-  for (let i = 0; i < listing.locationImages.length; i++) {
-    sidebarContent += '<div class="carousel-item' + (i === 0 ? ' active' : '') + '">';
-    sidebarContent += '<img src="' + listing.locationImages[i] + '" class="d-block w-100" draggable="false" alt="...">';
-    sidebarContent += '</div>';
+    sidebarContent += `
+      <li data-bs-target="#carouselControls" data-bs-slide-to="${i}" ${i === 0 ? 'class="active"' : ''}></li>
+    `;
   }
 
-  // Add carousel left/right controls
-  sidebarContent += '</div>';
-  sidebarContent += '<button class="carousel-control-prev" type="button" data-bs-target="#carouselControls" data-bs-slide="prev">';
-  sidebarContent += '<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
-  sidebarContent += '<span class="visually-hidden">Previous</span>';
-  sidebarContent += '</button>';
-  sidebarContent += '<button class="carousel-control-next" type="button" data-bs-target="#carouselControls" data-bs-slide="next">';
-  sidebarContent += '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
-  sidebarContent += '<span class="visually-hidden">Next</span>';
-  sidebarContent += '</button>';
-  sidebarContent += '</div>';
-  sidebarContent += '</div>';
-  sidebarContent += '</div>';
-  sidebarContent += '</div>';
+  sidebarContent += `
+              </ol>
+  `;
 
-  // Add title, description, and price information
+  // Add carousel images
+  for (let i = 0; i < listing.locationImages.length; i++) {
+    sidebarContent += `
+      <div class="carousel-item${i === 0 ? ' active' : ''}">
+        <img src="${listing.locationImages[i]}" class="d-block w-100" draggable="false" alt="...">
+      </div>
+    `;
+  }
 
+  // Add carousel controls
+  sidebarContent += `
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+  // Add listing details
+  sidebarContent += `
+  <div class="row">
+    <div class="col-md-12">
+      <h3>${listing.title}</h3>
+      <p class="lead">${listing.description}</p>
+      <div class="d-flex align-items-center">
+        <i class="bi bi-tags" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">$${listing.price}</p>
+      </div>
+      <div class="d-flex align-items-center">
+        <i class="bi bi-building-add" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">Listed at ${listing.listedAt}</p>
+      </div>
+      <div class="d-flex align-items-center">
+        <i class="bi bi-geo-alt" style="font-size: 1rem;"></i> <p class="fw-bold mb-2 ms-2" style="font-size: 1rem;">Located at ${listing.location.x}, ${listing.location.y}, ${listing.location.z}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-dark" onclick="updateListings()">
+        <i class="bi bi-arrow-left-circle"></i> Back to listings
+      </button>
+    </div>
+  </div>
+`;
 
   sidebar.setContent(sidebarContent);
 }
@@ -68,14 +97,14 @@ function createCard(listing) {
   // Create card
   const card = document.createElement('div');
   card.classList.add('card', 'mb-4', 'border-light');
-  card.setAttribute('onclick', 'handleCardClick(' + JSON.stringify(listing, getCircularReplacer()) + ')');
+  card.setAttribute('onclick', 'cardClickDesc(' + JSON.stringify(listing, getCircularReplacer()) + ')');
   card.setAttribute('style', 'cursor: pointer;');
 
-  // Create card image+
+  // Create card images
   const image = document.createElement('img');
   image.classList.add('card-img-top');
   image.setAttribute('draggable', 'false');
-  image.src = listing.locationImages[0]
+  image.src = listing.locationImages[0];
   image.alt = listing.name;
   card.appendChild(image);
 
@@ -98,15 +127,15 @@ function createCard(listing) {
 
   // Create card price
   const price = document.createElement('p');
-  price.classList.add('card-text', 'fw-bold');
+  price.classList.add('card-text');
   price.textContent = '$' + listing.price;
   body.appendChild(price);
 
   // Add click event listener to card
   card.addEventListener('click', function () {
-    handleCardClick(listing);
+    cardClickDesc(listing);
   });
-  
+
   return card;
 }
 
