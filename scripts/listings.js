@@ -159,7 +159,10 @@ function updateListings() {
   let sidebarContent = '';
   if (visibleListings.length === 0) {
     // Align text to center of sidebar
-    sidebarContent = '<h3 class="text-center">No listings found within the current map bounds.</h3>';
+    sidebarContent = '';
+    sidebarContent += '<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center text-center">';
+    sidebarContent += '<h3>No listings found within the current map bounds.</h3>';
+    sidebarContent += '</div>';
   } else {
     sidebarContent += '<div class="row">';
     for (let i = 0; i < visibleListings.length; i++) {
