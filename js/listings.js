@@ -1,3 +1,13 @@
+function getListings() {
+  fetch('/listings')
+    .then(response => response.json())
+    .then(data => {
+      // Do something with the data
+      console.log(data);
+    })
+    .catch(error => console.error(error));
+}
+getListings();
 function getCircularReplacer() {
   const seen = new WeakSet();
   return (key, value) => {
@@ -13,6 +23,15 @@ function getCircularReplacer() {
 
 function createMarker(listing) {
   const latlng = fromLocationToLatLng(listing.location, 1, 6);
+
+  var LeafIcon = L.Icon.extend({
+    options: {
+      iconSize: [38, 95],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+    },
+  });
+
   const marker = L.marker(latlng);
   marker.bindPopup(listing.title);
   return marker;
@@ -74,7 +93,7 @@ function cardClickDesc(listing) {
         <i class="bi bi-tags" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">$${listing.price}</p>
       </div>
       <div class="d-flex align-items-center">
-        <i class="bi bi-building-add" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">Listed at ${listing.listedAt}</p>
+        <i class="bi bi-building-add" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">Listed on ${listing.listedOn}</p>
       </div>
       <div class="d-flex align-items-center">
         <i class="bi bi-geo-alt" style="font-size: 1rem;"></i> <p class="fw-bold mb-2 ms-2" style="font-size: 1rem;">Located at ${listing.location.x}, ${listing.location.y}, ${listing.location.z}</p>
@@ -83,13 +102,14 @@ function cardClickDesc(listing) {
   </div>
   <div class="row">
     <div class="col-md-12">
-      <button type="button" class="btn btn-dark" onclick="updateListings()">
+      <button type="button" class="btn btn-outline-light" onclick="onListing = false; updateListings()">
         <i class="bi bi-arrow-left-circle"></i> Back to listings
       </button>
     </div>
   </div>
 `;
 
+  onListing = true;
   sidebar.setContent(sidebarContent);
 }
 
@@ -184,7 +204,8 @@ var listings = [
     location: { x: 2700, y: 64, z: 4153 },
     marker: null,
     markerImage: null,
-    locationImages: ["https://pbs.twimg.com/media/E2zf1ZTWYAcJC4x?format=jpg&name=large"]
+    locationImages: ["https://pbs.twimg.com/media/E2zf1ZTWYAcJC4x?format=jpg&name=large"],
+    listedOn: "2021-07-01"
   },
   {
     id: 2,
@@ -194,7 +215,8 @@ var listings = [
     location: { x: 2750, y: 64, z: 4153 },
     marker: null,
     markerImage: null,
-    locationImages: ["https://i.ytimg.com/vi/QNgYQanbReE/maxresdefault.jpg", "https://topg.org/gallery/370922/64834.png"]
+    locationImages: ["https://i.ytimg.com/vi/QNgYQanbReE/maxresdefault.jpg", "https://topg.org/gallery/370922/64834.png"],
+    listedOn: "2021-07-02"
   },
   {
     id: 3,
@@ -204,9 +226,13 @@ var listings = [
     location: { x: 2800, y: 64, z: 4153 },
     marker: null,
     markerImage: null,
-    locationImages: ["https://topg.org/gallery/350820/35678.png"]
+    locationImages: ["https://topg.org/gallery/350820/35678.png"],
+    listedOn: "2021-07-03"
   }
 ];
+
+// Variable to check if on/clicked a listing description
+var onListing = false;
 
 // Create markercluster group
 const markersCluster = L.markerClusterGroup({
@@ -227,8 +253,12 @@ for (let i = 0; i < listings.length; i++) {
   map.addLayer(markersCluster);
 }
 
-// Update the listings on map move
-map.on('move', updateListings);
+// Update the listings on map move if not on a listing
+map.on('move', function () {
+  if (!onListing) {
+    updateListings();
+  }
+});
 
 // Initial update of listings
 updateListings();
