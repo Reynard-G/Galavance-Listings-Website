@@ -1,13 +1,57 @@
 function getListings() {
-  fetch('/listings')
-    .then(response => response.json())
-    .then(data => {
-      // Do something with the data
-      console.log(data);
+  return fetch('http://localhost:3000/listings')
+    .then(async res => {
+      const listings = await res.json();
+      createLatLngData(listings);
+      return listings;
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+      console.error(error);
+      return null;
+    });
 }
-getListings();
+
+function createLatLngData(listings) {
+  // Find all listings with no lat/lng
+  const listingsWithoutLatLng = listings.filter(listing => listing.lat === null && listing.lng === null);
+
+  // Convert their x, y, z to lat, lng
+  const listingsWithLatLng = listingsWithoutLatLng.map(listing => {
+    const latlng = fromLocationToLatLng({ x: listing.x, y: listing.y, z: listing.z }, 1, 6);
+    listing.lat = latlng.lat;
+    listing.lng = latlng.lng;
+    return listing;
+  });
+
+  // Update the database with the new lat, lng
+  listingsWithLatLng.forEach(listing => {
+    fetch('http://localhost:3000/latlng', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ "id": listing.id, "lat": listing.lat, "lng": listing.lng }),
+    })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  });
+}
+
+async function createMarkers() {
+  const listings = await getListings();
+
+  // Create markers
+  listings.forEach(listing => {
+
+  });
+
+  console.log(listings);
+};
+
+createMarkers();
+
+/*
 function getCircularReplacer() {
   const seen = new WeakSet();
   return (key, value) => {
@@ -21,21 +65,12 @@ function getCircularReplacer() {
   };
 }
 
-function createMarker(listing) {
-  const latlng = fromLocationToLatLng(listing.location, 1, 6);
+async function createMarkers() {
+  const listings = await getListings();
 
-  var LeafIcon = L.Icon.extend({
-    options: {
-      iconSize: [38, 95],
-      iconAnchor: [22, 94],
-      popupAnchor: [-3, -76],
-    },
-  });
-
-  const marker = L.marker(latlng);
-  marker.bindPopup(listing.title);
-  return marker;
-}
+  // Create markers
+  console.log(listings);
+};
 
 function cardClickDesc(listing) {
   let sidebarContent = `
@@ -242,23 +277,14 @@ const markersCluster = L.markerClusterGroup({
 });
 
 // Create all the markers on map load
-for (let i = 0; i < listings.length; i++) {
-  // Create marker
-  const listing = listings[i];
-  const marker = createMarker(listing);
-
-  // Add marker to cluster group
-  listing.marker = marker;
-  markersCluster.addLayer(marker);
-  map.addLayer(markersCluster);
-}
+createMarkers();
 
 // Update the listings on map move if not on a listing
-map.on('move', function () {
+/*map.on('move', function () {
   if (!onListing) {
     updateListings();
   }
 });
 
 // Initial update of listings
-updateListings();
+updateListings();*/
