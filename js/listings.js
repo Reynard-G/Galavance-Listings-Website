@@ -1,8 +1,7 @@
-function getListings() {
+async function getListings() {
   return fetch('http://localhost:3000/listings')
     .then(async res => {
       const listings = await res.json();
-      createLatLngData(listings);
       return listings;
     })
     .catch(error => {
@@ -11,49 +10,37 @@ function getListings() {
     });
 }
 
-function createLatLngData(listings) {
-  // Find all listings with no lat/lng
-  const listingsWithoutLatLng = listings.filter(listing => listing.lat === null && listing.lng === null);
-
-  // Convert their x, y, z to lat, lng
-  const listingsWithLatLng = listingsWithoutLatLng.map(listing => {
-    const latlng = fromLocationToLatLng({ x: listing.x, y: listing.y, z: listing.z }, 1, 6);
-    listing.lat = latlng.lat;
-    listing.lng = latlng.lng;
-    return listing;
-  });
-
-  // Update the database with the new lat, lng
-  listingsWithLatLng.forEach(listing => {
-    fetch('http://localhost:3000/latlng', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "id": listing.id, "lat": listing.lat, "lng": listing.lng }),
-    })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  });
-}
-
 async function createMarkers() {
   const listings = await getListings();
 
   // Get custom marker icons
   const icons = getMarkerIcons(listings);
 
+  // Convert every listing coordinates to a LatLng object
+  listings.forEach(listing => {
+    if (listing.x !== null && listing.y !== null && listing.z !== null) {
+      listing.location = fromLocationToLatLng({ x: listing.x, y: listing.y, z: listing.z });
+    } else if (listing.lat !== null && listing.lng !== null) {
+      listing.location = { lat: listing.lat, lng: listing.lng };
+    } else {
+      console.error(`Listing ${listing.id} has no coordinates! Skipping...`);
+      return;
+    }
+  });
+
   // Create markers
   listings.forEach(listing => {
-    L.marker([listing.lat, listing.lng])
-      .addTo(map);
+    const marker = L.marker(listing.location, {
+      icon: icons[listing.icon] || icons['default'],
+    }).addTo(map);
+
+    marker.on('click', () => {
+      createCardDescription(listing);
+    });
   });
 
   console.log(listings);
 };
-
-createMarkers();
 
 function getMarkerIcons(listings) {
   const leafIcon = L.Icon.extend({
@@ -67,12 +54,12 @@ function getMarkerIcons(listings) {
   const uniqueIcons = [...new Set(listings.map(listing => listing.icon))].filter(icon => icon !== '');
 
   // Create a dictionary of icons
+  icons['default'] = new leafIcon({ iconUrl: `https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/images/${L.Icon.Default.prototype.options.iconUrl}` });
   if (uniqueIcons.length === 0) {
     const icons = {};
     uniqueIcons.forEach(icon => {
       icons[icon] = new leafIcon({ iconUrl: `img/markers/${icon}.png` });
     });
-    icons['default'] = new leafIcon({ iconUrl: `https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/images/${L.Icon.Default.prototype.options.iconUrl}` });
 
     console.log(icons);
     return icons;
@@ -80,6 +67,8 @@ function getMarkerIcons(listings) {
     return null;
   }
 }
+
+createMarkers();
 
 /*
 function getCircularReplacer() {
@@ -101,7 +90,7 @@ async function createMarkers() {
   // Create markers
   console.log(listings);
 };
-
+*/
 function cardClickDesc(listing) {
   let sidebarContent = `
     <div class="row">
@@ -259,7 +248,7 @@ function updateListings() {
   }
   sidebar.setContent(sidebarContent);
 }
-
+/*
 var listings = [
   {
     id: 1,
