@@ -41,15 +41,45 @@ function createLatLngData(listings) {
 async function createMarkers() {
   const listings = await getListings();
 
+  // Get custom marker icons
+  const icons = getMarkerIcons(listings);
+
   // Create markers
   listings.forEach(listing => {
-
+    L.marker([listing.lat, listing.lng])
+      .addTo(map);
   });
 
   console.log(listings);
 };
 
 createMarkers();
+
+function getMarkerIcons(listings) {
+  const leafIcon = L.Icon.extend({
+    options: {
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+    }
+  });
+
+  // Get all unique icons but skip empty strings
+  const uniqueIcons = [...new Set(listings.map(listing => listing.icon))].filter(icon => icon !== '');
+
+  // Create a dictionary of icons
+  if (uniqueIcons.length === 0) {
+    const icons = {};
+    uniqueIcons.forEach(icon => {
+      icons[icon] = new leafIcon({ iconUrl: `img/markers/${icon}.png` });
+    });
+    icons['default'] = new leafIcon({ iconUrl: `https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/images/${L.Icon.Default.prototype.options.iconUrl}` });
+
+    console.log(icons);
+    return icons;
+  } else {
+    return null;
+  }
+}
 
 /*
 function getCircularReplacer() {
