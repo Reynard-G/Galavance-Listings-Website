@@ -26,8 +26,6 @@ module.exports = (pool) => {
                             x: Number(row.x),
                             y: Number(row.y),
                             z: Number(row.z),
-                            lat: row.lat === null ? null : Number(row.lat),
-                            lng: row.lng === null ? null : Number(row.lng),
                         }));
                         res.status(200).send(formattedRows);
                         conn.release();
@@ -57,8 +55,6 @@ module.exports = (pool) => {
                     x: Number(row.x),
                     y: Number(row.y),
                     z: Number(row.z),
-                    lat: row.lat === null ? null : Number(row.lat),
-                    lng: row.lng === null ? null : Number(row.lng),
                     updated_at_unix: Number(row.updated_at_unix),
                     created_at_unix: Number(row.created_at_unix),
                 }));
