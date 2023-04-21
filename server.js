@@ -1,6 +1,7 @@
 const express = require("express");
 const https = require("https");
 const app = express();
+const fs = require("fs");
 const mysql = require("mariadb");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -22,8 +23,8 @@ app.use(cors());
 app.use(routes);
 
 const options = {
-    key: fs.readFileSync("/etc/letsencrypt/live/panel.milklegend.xyz/privkey.pem", "utf8"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/panel.milklegend.xyz/fullchain.pem", "utf8"),
+    key: fs.readFileSync("ssl/privkey.pem", "utf8"),
+    cert: fs.readFileSync("ssl/fullchain.pem", "utf8"),
 };
 
 https.createServer(options, app).listen(port, () => {
