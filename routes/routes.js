@@ -12,6 +12,8 @@ module.exports = (pool) => {
 
     // Parse JSON bodies from MySQL queries
     router.get('/listings', (req, res) => {
+        console.log("Request received for /listings")
+
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Cache-Control", "no-cache");
@@ -41,6 +43,8 @@ module.exports = (pool) => {
     });
 
     router.get('/listings/images', (req, res) => {
+        console.log("Request received for /listings/images")
+
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Cache-Control", "no-cache");
@@ -78,6 +82,8 @@ module.exports = (pool) => {
     });
 
     router.get('/listings/:listingId/images', (req, res) => {
+        console.log("Request received for /listings/:listingId/images")
+
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Cache-Control", "no-cache");
