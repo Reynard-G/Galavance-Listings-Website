@@ -1,5 +1,5 @@
 async function getListings() {
-  return fetch('http://localhost:3000/listings')
+  return fetch('http://localhost:3000/listings/images')
     .then(async res => {
       const listings = await res.json();
       return listings;
@@ -10,18 +10,16 @@ async function getListings() {
     });
 }
 
-async function createMarkers() {
-  const listings = await getListings();
-
+async function createMarkers(listings) {
   // Get custom marker icons
   const icons = getMarkerIcons(listings);
 
   // Convert every listing coordinates to a LatLng object
   listings.forEach(listing => {
     if (listing.x !== null && listing.y !== null && listing.z !== null) {
-      listing.location = fromLocationToLatLng({ x: listing.x, y: listing.y, z: listing.z });
-    } else if (listing.lat !== null && listing.lng !== null) {
-      listing.location = { lat: listing.lat, lng: listing.lng };
+      const latlng = fromLocationToLatLng({ x: listing.x, y: listing.y, z: listing.z }, 1, 6);
+      listing.lat = latlng.lat;
+      listing.lng = latlng.lng;
     } else {
       console.error(`Listing ${listing.id} has no coordinates! Skipping...`);
       return;
@@ -30,16 +28,14 @@ async function createMarkers() {
 
   // Create markers
   listings.forEach(listing => {
-    const marker = L.marker(listing.location, {
-      icon: icons[listing.icon] || icons['default'],
+    const marker = L.marker([listing.lat, listing.lng], {
+      icon: icons[listing.icon] ? icons[listing.icon] : icons['default']
     }).addTo(map);
 
     marker.on('click', () => {
-      createCardDescription(listing);
+      createCardDescription(listings, listing);
     });
   });
-
-  console.log(listings);
 };
 
 function getMarkerIcons(listings) {
@@ -54,6 +50,7 @@ function getMarkerIcons(listings) {
   const uniqueIcons = [...new Set(listings.map(listing => listing.icon))].filter(icon => icon !== '');
 
   // Create a dictionary of icons
+  var icons = {};
   icons['default'] = new leafIcon({ iconUrl: `https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/images/${L.Icon.Default.prototype.options.iconUrl}` });
   if (uniqueIcons.length === 0) {
     const icons = {};
@@ -61,37 +58,61 @@ function getMarkerIcons(listings) {
       icons[icon] = new leafIcon({ iconUrl: `img/markers/${icon}.png` });
     });
 
-    console.log(icons);
     return icons;
   } else {
-    return null;
+    return icons;
   }
 }
 
-createMarkers();
+async function createCards(listings) {
+  try {
+    const cardContainer = document.createElement('div');
+    cardContainer.classList.add('card-container');
 
-/*
-function getCircularReplacer() {
-  const seen = new WeakSet();
-  return (key, value) => {
-    if (typeof value === "object" && value !== null) {
-      if (seen.has(value)) {
-        return;
-      }
-      seen.add(value);
+    for (let i = 0; i < listings.length; i++) {
+      const listing = listings[i];
+
+      const card = document.createElement('div');
+      card.classList.add('card', 'mb-4', 'border-light');
+      card.setAttribute('onclick', `createCardDescription(${JSON.stringify(listings)}, ${JSON.stringify(listing)})`);
+      card.setAttribute('style', 'cursor: pointer;');
+
+      const image = document.createElement('img');
+      image.classList.add('card-img-top');
+      image.setAttribute('draggable', 'false');
+      image.src = listing.images[0].link;
+      image.alt = listing.title;
+      card.appendChild(image);
+
+      const body = document.createElement('div');
+      body.classList.add('card-body', 'text-light', 'bg-dark', 'rounded-bottom');
+      card.appendChild(body);
+
+      const title = document.createElement('h5');
+      title.classList.add('card-title');
+      title.textContent = listing.title;
+      body.appendChild(title);
+
+      const description = document.createElement('p');
+      description.classList.add('card-text');
+      description.textContent = listing.description;
+      body.appendChild(description);
+
+      const price = document.createElement('p');
+      price.classList.add('card-text');
+      price.textContent = '$' + listing.price;
+      body.appendChild(price);
+
+      cardContainer.appendChild(card);
+      sidebar.setContent(cardContainer);
     }
-    return value;
-  };
+    return cardContainer;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-async function createMarkers() {
-  const listings = await getListings();
-
-  // Create markers
-  console.log(listings);
-};
-*/
-function cardClickDesc(listing) {
+async function createCardDescription(listings, listing) {
   let sidebarContent = `
     <div class="row">
       <div class="col-md-12">
@@ -102,7 +123,7 @@ function cardClickDesc(listing) {
   `;
 
   // Add carousel indicators
-  for (let i = 0; i < listing.locationImages.length; i++) {
+  for (let i = 0; i < listing.images.length; i++) {
     sidebarContent += `
       <li data-bs-target="#carouselControls" data-bs-slide-to="${i}" ${i === 0 ? 'class="active"' : ''}></li>
     `;
@@ -113,10 +134,10 @@ function cardClickDesc(listing) {
   `;
 
   // Add carousel images
-  for (let i = 0; i < listing.locationImages.length; i++) {
+  for (let i = 0; i < listing.images.length; i++) {
     sidebarContent += `
       <div class="carousel-item${i === 0 ? ' active' : ''}">
-        <img src="${listing.locationImages[i]}" class="d-block w-100" draggable="false" alt="...">
+        <img src="${listing.images[i].link}" class="d-block w-100" draggable="false" alt="...">
       </div>
     `;
   }
@@ -137,6 +158,11 @@ function cardClickDesc(listing) {
       </div>
     `;
 
+  // Convert unix timestamp to browser's local time
+  const date = new Date(listing.created_at_unix * 1000);
+  const formatter = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' });
+  const formattedDate = formatter.format(date);
+
   // Add listing details
   sidebarContent += `
   <div class="row">
@@ -147,163 +173,54 @@ function cardClickDesc(listing) {
         <i class="bi bi-tags" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">$${listing.price}</p>
       </div>
       <div class="d-flex align-items-center">
-        <i class="bi bi-building-add" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">Listed on ${listing.listedOn}</p>
+        <i class="bi bi-building-add" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">Listed on ${formattedDate}</p>
       </div>
       <div class="d-flex align-items-center">
-        <i class="bi bi-geo-alt" style="font-size: 1rem;"></i> <p class="fw-bold mb-2 ms-2" style="font-size: 1rem;">Located at ${listing.location.x}, ${listing.location.y}, ${listing.location.z}</p>
+        <i class="bi bi-geo-alt" style="font-size: 1rem;"></i> <p class="fw-bold mb-2 ms-2" style="font-size: 1rem;">Located at ${listing.x}, ${listing.y}, ${listing.z}</p>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
-      <button type="button" class="btn btn-outline-light" onclick="onListing = false; updateListings()">
+      <button type="button" class="btn btn-outline-light" onclick='updateListings(${JSON.stringify(listings)})'>
         <i class="bi bi-arrow-left-circle"></i> Back to listings
       </button>
     </div>
   </div>
 `;
 
-  onListing = true;
   sidebar.setContent(sidebarContent);
 }
 
-function createCard(listing) {
-  // Create card
-  const card = document.createElement('div');
-  card.classList.add('card', 'mb-4', 'border-light');
-  card.setAttribute('onclick', 'cardClickDesc(' + JSON.stringify(listing, getCircularReplacer()) + ')');
-  card.setAttribute('style', 'cursor: pointer;');
-
-  // Create card images
-  const image = document.createElement('img');
-  image.classList.add('card-img-top');
-  image.setAttribute('draggable', 'false');
-  image.src = listing.locationImages[0];
-  image.alt = listing.name;
-  card.appendChild(image);
-
-  // Create card body
-  const body = document.createElement('div');
-  body.classList.add('card-body', 'text-light', 'bg-dark', 'rounded-bottom');
-  card.appendChild(body);
-
-  // Create card title
-  const title = document.createElement('h5');
-  title.classList.add('card-title');
-  title.textContent = listing.title;
-  body.appendChild(title);
-
-  // Create card description
-  const description = document.createElement('p');
-  description.classList.add('card-text');
-  description.textContent = listing.description;
-  body.appendChild(description);
-
-  // Create card price
-  const price = document.createElement('p');
-  price.classList.add('card-text');
-  price.textContent = '$' + listing.price;
-  body.appendChild(price);
-
-  // Add click event listener to card
-  card.addEventListener('click', function () {
-    cardClickDesc(listing);
-  });
-
-  return card;
-}
-
-function updateListings() {
-  const visibleListings = [];
-
+function updateListings(listings) {
   // Get current visible bounds of the map
   const bounds = map.getBounds();
+  const visibleListings = [];
 
   // Loop through all listings
   for (let i = 0; i < listings.length; i++) {
     const listing = listings[i];
 
     // Check if the listing marker is within the current bounds of the map
-    if (bounds.contains(listing.marker.getLatLng())) {
+    const latlng = fromLocationToLatLng({ x: listing.x, y: listing.y, z: listing.z }, 1, 6);
+    if (bounds.contains(latlng)) {
       visibleListings.push(listing);
+      createCards(visibleListings);
     }
   }
 
-  // Update the sidebar content with the list of visible listings
-  let sidebarContent = '';
+  // If there are no visible listings, display a message
   if (visibleListings.length === 0) {
-    // Align text to center of sidebar
-    sidebarContent = '';
-    sidebarContent += '<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center text-center">';
-    sidebarContent += '<h3>No listings found within the current map bounds.</h3>';
-    sidebarContent += '</div>';
-  } else {
-    sidebarContent += '<div class="row">';
-    for (let i = 0; i < visibleListings.length; i++) {
-      const listing = visibleListings[i];
-      const card = createCard(listing);
-      sidebarContent += '<div class="col-md-12">' + card.outerHTML + '</div>';
-    }
-    sidebarContent += '</div>';
+    sidebar.setContent('<h3 class="d-flex flex-column min-vh-100 justify-content-center text-center">No listings found within the current map bounds</h3>');
   }
-  sidebar.setContent(sidebarContent);
 }
-/*
-var listings = [
-  {
-    id: 1,
-    title: "Listing 1",
-    description: "This is the first listing.",
-    price: 100,
-    location: { x: 2700, y: 64, z: 4153 },
-    marker: null,
-    markerImage: null,
-    locationImages: ["https://pbs.twimg.com/media/E2zf1ZTWYAcJC4x?format=jpg&name=large"],
-    listedOn: "2021-07-01"
-  },
-  {
-    id: 2,
-    title: "Listing 2",
-    description: "This is the second listing.",
-    price: 200,
-    location: { x: 2750, y: 64, z: 4153 },
-    marker: null,
-    markerImage: null,
-    locationImages: ["https://i.ytimg.com/vi/QNgYQanbReE/maxresdefault.jpg", "https://topg.org/gallery/370922/64834.png"],
-    listedOn: "2021-07-02"
-  },
-  {
-    id: 3,
-    title: "Listing 3",
-    description: "This is the third listing.",
-    price: 300,
-    location: { x: 2800, y: 64, z: 4153 },
-    marker: null,
-    markerImage: null,
-    locationImages: ["https://topg.org/gallery/350820/35678.png"],
-    listedOn: "2021-07-03"
-  }
-];
 
-// Variable to check if on/clicked a listing description
-var onListing = false;
+getListings().then((listings) => {
+  // Create a marker for each listing
+  createMarkers(listings);
 
-// Create markercluster group
-const markersCluster = L.markerClusterGroup({
-  spiderfyOnMaxZoom: true,
-  showCoverageOnHover: true,
-  zoomToBoundsOnClick: true
+  // On map move, update the listings
+  map.on('move', () => {
+    updateListings(listings);
+  });
 });
-
-// Create all the markers on map load
-createMarkers();
-
-// Update the listings on map move if not on a listing
-/*map.on('move', function () {
-  if (!onListing) {
-    updateListings();
-  }
-});
-
-// Initial update of listings
-updateListings();*/
