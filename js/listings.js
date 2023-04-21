@@ -1,5 +1,5 @@
 async function getListings() {
-  return fetch('http://panel.milklegend.xyz:3000/listings/images')
+  return fetch('https://panel.milklegend.xyz:3000/listings/images')
     .then(async res => {
       const listings = await res.json();
       return listings;
