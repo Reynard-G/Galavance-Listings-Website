@@ -29,7 +29,7 @@ async function createMarkers(listings) {
   // Create markers
   listings.forEach(listing => {
     const marker = L.marker([listing.lat, listing.lng], {
-      icon: icons[listing.icon] ? icons[listing.icon] : icons['default']
+      icon: icons[listing.id] ? icons[listing.id] : icons['default']
     }).addTo(map);
 
     marker.on('click', () => {
@@ -39,29 +39,33 @@ async function createMarkers(listings) {
 };
 
 function getMarkerIcons(listings) {
+  // Get all unique icons and add the listing id but skip empty strings
+  const uniqueIcons = [...new Set(listings.map(listing => {
+    var icon = {};
+    icon.id = listing.id
+    icon.icon = listing.marker_icon;
+    return icon
+  }))]
+    .filter(icon => icon !== '');
+
   const leafIcon = L.Icon.extend({
     options: {
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
+      iconSize: [25, 40],
+      iconAnchor: [12.5, 40],
     }
   });
-
-  // Get all unique icons but skip empty strings
-  const uniqueIcons = [...new Set(listings.map(listing => listing.icon))].filter(icon => icon !== '');
 
   // Create a dictionary of icons
   var icons = {};
   icons['default'] = new leafIcon({ iconUrl: `https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/images/${L.Icon.Default.prototype.options.iconUrl}` });
-  if (uniqueIcons.length === 0) {
-    const icons = {};
+  if (uniqueIcons.length != 0) {
     uniqueIcons.forEach(icon => {
-      icons[icon] = new leafIcon({ iconUrl: `img/markers/${icon}.png` });
+      if (icon.icon == null) return;
+      icons[icon.id] = new leafIcon({ iconUrl: icon.icon.link, iconSize: [icon.icon.width, icon.icon.height], iconAnchor: [icon.icon.width / 2, icon.icon.height] });
     });
-
-    return icons;
-  } else {
-    return icons;
   }
+
+  return icons;
 }
 
 async function createCards(listings) {
@@ -100,7 +104,8 @@ async function createCards(listings) {
 
       const price = document.createElement('p');
       price.classList.add('card-text');
-      price.textContent = '$' + listing.price;
+      const currencyFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' });
+      price.textContent = currencyFormatter.format(listing.price);
       body.appendChild(price);
 
       cardContainer.appendChild(card);
@@ -160,8 +165,10 @@ async function createCardDescription(listings, listing) {
 
   // Convert unix timestamp to browser's local time
   const date = new Date(listing.created_at_unix * 1000);
-  const formatter = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' });
-  const formattedDate = formatter.format(date);
+  const dateFormatter = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' });
+  const currencyFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' });
+  const formattedDate = dateFormatter.format(date);
+  const formattedPrice = currencyFormatter.format(listing.price);
 
   // Add listing details
   sidebarContent += `
@@ -170,7 +177,7 @@ async function createCardDescription(listings, listing) {
       <h3>${listing.title}</h3>
       <p class="lead">${listing.description}</p>
       <div class="d-flex align-items-center">
-        <i class="bi bi-tags" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">$${listing.price}</p>
+        <i class="bi bi-tags" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">${formattedPrice}</p>
       </div>
       <div class="d-flex align-items-center">
         <i class="bi bi-building-add" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">Listed on ${formattedDate}</p>
@@ -182,7 +189,7 @@ async function createCardDescription(listings, listing) {
   </div>
   <div class="row">
     <div class="col-md-12">
-      <button type="button" class="btn btn-outline-light" onclick='updateListings(${JSON.stringify(listings)})'>
+      <button type="button" class="btn btn-outline-light" onclick='updateListings(${JSON.stringify(listings).replace(/'/g, '\\')})'>
         <i class="bi bi-arrow-left-circle"></i> Back to listings
       </button>
     </div>

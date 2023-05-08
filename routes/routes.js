@@ -10,38 +10,6 @@ module.exports = (pool) => {
         res.send("Hello World!");
     });
 
-    // Parse JSON bodies from MySQL queries
-    router.get('/listings', (req, res) => {
-        console.log("Request received for /listings")
-
-        res.setHeader("Content-Type", "application/json");
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Cache-Control", "no-cache");
-
-        pool.getConnection()
-            .then((conn) => {
-                conn.query("SELECT * FROM listings")
-                    .then((rows) => {
-                        const formattedRows = rows.map(row => ({
-                            ...row,
-                            id: Number(row.id),
-                            x: Number(row.x),
-                            y: Number(row.y),
-                            z: Number(row.z),
-                        }));
-                        res.status(200).send(formattedRows);
-                        conn.release();
-                    })
-                    .catch((err) => {
-                        res.send(err);
-                        conn.release();
-                    });
-            })
-            .catch((err) => {
-                res.send(err);
-            });
-    });
-
     router.get('/listings/images', (req, res) => {
         console.log("Request received for /listings/images")
 
@@ -73,38 +41,19 @@ module.exports = (pool) => {
     
                     formattedRows[i].images = images;
                 }
+
+                for (let i = 0; i < formattedRows.length; i++) {
+                    const marker = await conn.query(
+                        `SELECT m.name, m.link, m.width, m.height FROM listings l ` +
+                        `INNER JOIN markers m ON l.marker_icon = m.id ` +
+                        `WHERE l.id = ?`
+                        , [formattedRows[i].id]);
+
+                    formattedRows[i].marker_icon = marker[0] ? marker[0] : null;
+                }
+
                 res.status(200).send(formattedRows);
                 conn.release();
-            })
-            .catch((err) => {
-                res.send(err);
-            });
-    });
-
-    router.get('/listings/:listingId/images', (req, res) => {
-        console.log("Request received for /listings/:listingId/images")
-
-        res.setHeader("Content-Type", "application/json");
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Cache-Control", "no-cache");
-
-        const listingId = req.params.listingId;
-        pool.getConnection()
-            .then((conn) => {
-                conn.query(
-                    `SELECT i.link FROM listings l ` +
-                    `INNER JOIN listing_images il ON il.listing_id = l.id ` +
-                    `INNER JOIN images i ON il.image_id = i.id ` +
-                    `WHERE l.id = ?`
-                    , [listingId])
-                    .then((rows) => {
-                        res.status(200).send(rows);
-                        conn.release();
-                    })
-                    .catch((err) => {
-                        res.send(err);
-                        conn.release();
-                    });
             })
             .catch((err) => {
                 res.send(err);
