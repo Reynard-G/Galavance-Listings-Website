@@ -201,10 +201,10 @@ async function createCardDescription(listings, listing) {
         <i class="bi bi-tags" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">${formattedPrice}</p>
       </div>
       <div class="d-flex align-items-center">
-        <i class="bi bi-building-add" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">Listed on ${formattedDate}</p>
+        <i class="bi bi-building-add" style="font-size: 1rem;"></i> <p class="mb-0 ms-2" style="font-size: 1rem;">Listed on <span class="fw-bold">${formattedDate}</span></p>
       </div>
       <div class="d-flex align-items-center">
-        <i class="bi bi-geo-alt" style="font-size: 1rem;"></i> <p class="fw-bold mb-2 ms-2" style="font-size: 1rem;">Located at ${listing.x}, ${listing.y}, ${listing.z}</p>
+        <i class="bi bi-geo-alt" style="font-size: 1rem;"></i> <p class="mb-2 ms-2" style="font-size: 1rem;">Located at <span class="fw-bold">${listing.x}, ${listing.y}, ${listing.z}</span></p>
       </div>
     </div>
   </div>
