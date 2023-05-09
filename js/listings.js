@@ -196,7 +196,7 @@ async function createCardDescription(listings, listing) {
   <div class="row">
     <div class="col-md-12">
       <h3>${listing.title}</h3>
-      <p class="lead">${URLify(listing.description)}</p>
+      <p class="lead">${listing.description ? URLify(listing.description) : "No description provided"}</p>
       <div class="d-flex align-items-center">
         <i class="bi bi-tags" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">${formattedPrice}</p>
       </div>
@@ -258,6 +258,7 @@ function URLify(string) {
   if (urls) {
     // Replace urls with anchor tags
     urls.forEach(url => {
+      // Replace url with anchor tag
       string = string.replace(url, `<a href="${url}" target="_blank">${url}</a>`);
     });
   }
