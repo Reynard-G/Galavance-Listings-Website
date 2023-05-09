@@ -11,6 +11,14 @@ async function getListings() {
 }
 
 async function createMarkers(listings) {
+  // Create marker cluster group
+  var markers = L.markerClusterGroup({
+    showCoverageOnHover: true,
+    zoomToBoundsOnClick: true,
+    spiderfyOnMaxZoom: true,
+    removeOutsideVisibleBounds: true,
+  });
+
   // Get custom marker icons
   const icons = getMarkerIcons(listings);
 
@@ -30,21 +38,27 @@ async function createMarkers(listings) {
   listings.forEach(listing => {
     const marker = L.marker([listing.lat, listing.lng], {
       icon: icons[listing.id] ? icons[listing.id] : icons['default']
-    }).addTo(map);
+    });
+
+    // Add marker to cluster group
+    markers.addLayer(marker);
 
     marker.on('click', () => {
       createCardDescription(listings, listing);
     });
   });
+
+  // Add cluster group to map
+  map.addLayer(markers);
 };
 
 function getMarkerIcons(listings) {
   // Get all unique icons and add the listing id but skip empty strings
   const uniqueIcons = [...new Set(listings.map(listing => {
     var icon = {};
-    icon.id = listing.id
+    icon.id = listing.id;
     icon.icon = listing.marker_icon;
-    return icon
+    return icon;
   }))]
     .filter(icon => icon !== '');
 
@@ -73,9 +87,7 @@ async function createCards(listings) {
     const cardContainer = document.createElement('div');
     cardContainer.classList.add('card-container');
 
-    for (let i = 0; i < listings.length; i++) {
-      const listing = listings[i];
-
+    listings.forEach(listing => {
       const card = document.createElement('div');
       card.classList.add('card', 'mb-4', 'border-light');
       card.setAttribute('onclick', `createCardDescription(${JSON.stringify(listings)}, ${JSON.stringify(listing)})`);
@@ -84,7 +96,7 @@ async function createCards(listings) {
       const image = document.createElement('img');
       image.classList.add('card-img-top');
       image.setAttribute('draggable', 'false');
-      image.src = listing.images[0].link;
+      image.src = listing.images[0] ? listing.images[0].link : 'https://cdn.bootstrapstudio.io/placeholders/1400x800.png';
       image.alt = listing.title;
       card.appendChild(image);
 
@@ -110,7 +122,8 @@ async function createCards(listings) {
 
       cardContainer.appendChild(card);
       sidebar.setContent(cardContainer);
-    }
+    });
+
     return cardContainer;
   } catch (error) {
     console.error(error);
@@ -139,12 +152,20 @@ async function createCardDescription(listings, listing) {
   `;
 
   // Add carousel images
-  for (let i = 0; i < listing.images.length; i++) {
+  if (listing.images.length === 0) {
     sidebarContent += `
+      <div class="carousel-item active">
+        <img src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" class="d-block w-100" draggable="false" alt="...">
+      </div>
+    `;
+  } else {
+    for (let i = 0; i < listing.images.length; i++) {
+      sidebarContent += `
       <div class="carousel-item${i === 0 ? ' active' : ''}">
         <img src="${listing.images[i].link}" class="d-block w-100" draggable="false" alt="...">
       </div>
     `;
+    }
   }
 
   // Add carousel controls
@@ -175,7 +196,7 @@ async function createCardDescription(listings, listing) {
   <div class="row">
     <div class="col-md-12">
       <h3>${listing.title}</h3>
-      <p class="lead">${listing.description}</p>
+      <p class="lead">${URLify(listing.description)}</p>
       <div class="d-flex align-items-center">
         <i class="bi bi-tags" style="font-size: 1rem;"></i> <p class="fw-bold mb-0 ms-2" style="font-size: 1rem;">${formattedPrice}</p>
       </div>
@@ -231,6 +252,19 @@ function updateListings(listings) {
   return visibleListings;
 }
 
+function URLify(string) {
+  // Match urls that start with http, https, or www
+  const urls = string.match(/(https?:\/\/[^\s]+)|(www\.[^\s]+)/g);
+  if (urls) {
+    // Replace urls with anchor tags
+    urls.forEach(url => {
+      string = string.replace(url, `<a href="${url}" target="_blank">${url}</a>`);
+    });
+  }
+
+  return string;
+}
+
 getListings().then((listings) => {
   // Create a marker for each listing
   createMarkers(listings);
@@ -245,11 +279,11 @@ getListings().then((listings) => {
     if (sidebar.getContainer().querySelector("button")) return;
 
     // Check if no new listings have been added
-    if (JSON.stringify(currentListings) == JSON.stringify(previousListings)) {
+    if (JSON.stringify(currentListings) === JSON.stringify(previousListings)) {
       console.log('No new listings have been added');
       return;
     }
-    
+
     // Update the listings
     previousListings = updateListings(listings);
   });
