@@ -199,35 +199,58 @@ async function createCardDescription(listings, listing) {
   sidebar.setContent(sidebarContent);
 }
 
-function updateListings(listings) {
+function listingsInBounds(listings) {
   // Get current visible bounds of the map
   const bounds = map.getBounds();
   const visibleListings = [];
 
   // Loop through all listings
-  for (let i = 0; i < listings.length; i++) {
-    const listing = listings[i];
-
+  listings.forEach(listing => {
     // Check if the listing marker is within the current bounds of the map
     const latlng = fromLocationToLatLng({ x: listing.x, y: listing.y, z: listing.z }, 1, 6);
     if (bounds.contains(latlng)) {
       visibleListings.push(listing);
-      createCards(visibleListings);
     }
-  }
+  });
+
+  return visibleListings;
+}
+
+function updateListings(listings) {
+  // Get all listings within the current bounds of the map
+  const visibleListings = listingsInBounds(listings);
+
+  // Create cards for all visible listings
+  createCards(visibleListings);
 
   // If there are no visible listings, display a message
   if (visibleListings.length === 0) {
     sidebar.setContent('<h3 class="d-flex flex-column min-vh-100 justify-content-center text-center">No listings found within the current map bounds</h3>');
   }
+
+  return visibleListings;
 }
 
 getListings().then((listings) => {
   // Create a marker for each listing
   createMarkers(listings);
 
+  var currentListings, previousListings;
+
   // On map move, update the listings
   map.on('move', () => {
-    updateListings(listings);
+    currentListings = listingsInBounds(listings);
+
+    // Check if we are currently viewing a listing
+    if (sidebar.getContainer().querySelector("button")) return;
+
+    // Check if no new listings have been added
+    if (JSON.stringify(currentListings) == JSON.stringify(previousListings)) {
+      console.log('No new listings have been added');
+      return;
+    }
+    
+    // Update the listings
+    previousListings = updateListings(listings);
   });
 });
