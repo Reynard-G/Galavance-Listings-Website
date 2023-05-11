@@ -117,7 +117,11 @@ async function createCards(listings) {
       const price = document.createElement('p');
       price.classList.add('card-text');
       const currencyFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' });
-      price.textContent = currencyFormatter.format(listing.price);
+      price.textContent = listing.price ?
+        currencyFormatter.format(listing.price) :
+        listing.price_range.split('-')
+          .map(price => currencyFormatter.format(price))
+          .join(' - ');
       body.appendChild(price);
 
       cardContainer.appendChild(card);
@@ -131,6 +135,8 @@ async function createCards(listings) {
 }
 
 async function createCardDescription(listings, listing) {
+  map.flyTo(fromLocationToLatLng({ x: listing.x, y: listing.y, z: listing.z }, 1, 6), 7);
+
   let sidebarContent = `
     <div class="row">
       <div class="col-md-12">
@@ -189,7 +195,11 @@ async function createCardDescription(listings, listing) {
   const dateFormatter = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' });
   const currencyFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' });
   const formattedDate = dateFormatter.format(date);
-  const formattedPrice = currencyFormatter.format(listing.price);
+  const formattedPrice = listing.price ?
+    currencyFormatter.format(listing.price) :
+    listing.price_range.split('-')
+      .map(price => currencyFormatter.format(price))
+      .join(' - ');
 
   // Add listing details
   sidebarContent += `
