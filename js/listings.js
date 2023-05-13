@@ -96,7 +96,7 @@ async function createCards(listings) {
       const image = document.createElement('img');
       image.classList.add('card-img-top');
       image.setAttribute('draggable', 'false');
-      image.src = listing.images[0] ? listing.images[0].link : 'https://cdn.bootstrapstudio.io/placeholders/1400x800.png';
+      image.src = listing.images[0].link ? listing.images[0].link : 'images/1400x800.png';
       image.alt = listing.title;
       card.appendChild(image);
 
@@ -158,20 +158,12 @@ async function createCardDescription(listings, listing) {
   `;
 
   // Add carousel images
-  if (listing.images.length === 0) {
+  for (let i = 0; i < listing.images.length; i++) {
     sidebarContent += `
-      <div class="carousel-item active">
-        <img src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" class="d-block w-100" draggable="false" alt="...">
-      </div>
-    `;
-  } else {
-    for (let i = 0; i < listing.images.length; i++) {
-      sidebarContent += `
       <div class="carousel-item${i === 0 ? ' active' : ''}">
-        <img src="${listing.images[i].link}" class="d-block w-100" draggable="false" alt="...">
+        <img src="${listing.images[i].link ? listing.images[i].link : "images/1400x800.png"}" class="d-block w-100" draggable="false" alt="...">
       </div>
     `;
-    }
   }
 
   // Add carousel controls
@@ -284,16 +276,14 @@ getListings().then((listings) => {
 
   // On map move, update the listings
   map.on('move', () => {
+    // Get all listings within the current bounds of the map
     currentListings = listingsInBounds(listings);
 
     // Check if we are currently viewing a listing
     if (sidebar.getContainer().querySelector("button")) return;
 
     // Check if no new listings have been added
-    if (JSON.stringify(currentListings) === JSON.stringify(previousListings)) {
-      console.log('No new listings have been added');
-      return;
-    }
+    if (JSON.stringify(currentListings) === JSON.stringify(previousListings)) return;
 
     // Update the listings
     previousListings = updateListings(listings);
