@@ -10,17 +10,17 @@ module.exports = (pool) => {
         res.send("Hello World!");
     });
 
-    router.get('/listings/images', (req, res) => {
-        console.log("Request received for /listings/images")
+    router.get('/listings', (req, res) => {
+        console.log("Request received for /listings/images");
 
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Cache-Control", "no-cache");
-    
+
         pool.getConnection()
             .then(async (conn) => {
                 const rows = await conn.query("SELECT *, UNIX_TIMESTAMP(updated_at) AS updated_at_unix, UNIX_TIMESTAMP(created_at) AS created_at_unix FROM listings");
-    
+
                 const formattedRows = rows.map(row => ({
                     ...row,
                     id: Number(row.id),
@@ -30,7 +30,8 @@ module.exports = (pool) => {
                     updated_at_unix: Number(row.updated_at_unix),
                     created_at_unix: Number(row.created_at_unix),
                 }));
-    
+
+                // Get the image ids based on listing id
                 for (let i = 0; i < formattedRows.length; i++) {
                     const images = await conn.query(
                         `SELECT i.link FROM listings l ` +
@@ -42,6 +43,7 @@ module.exports = (pool) => {
                     formattedRows[i].images = images;
                 }
 
+                // Get marker name, link, width, height based on listing id
                 for (let i = 0; i < formattedRows.length; i++) {
                     const marker = await conn.query(
                         `SELECT m.name, m.link, m.width, m.height FROM listings l ` +

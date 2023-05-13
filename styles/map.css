@@ -28,17 +28,21 @@
     z-index: 100;
 }
 
-#sidebar::-webkit-scrollbar {
-    display: none;
-}
-
 #sidebar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
     color: var(--color-secondary-text);
     border-radius: 1rem;
     border-width: 0px !important;
     background: var(--color-primary-background) !important;
+    
+}
+
+#sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--color-secondary-text);
+    border-radius: 10px;
 }
 
 .card {
