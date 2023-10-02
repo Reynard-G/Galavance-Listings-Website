@@ -8,7 +8,7 @@ This repository contains the source code for the HFR Listings Website, a website
 
 ## Project Status
 
-![DC Tiles Server Updater](https://cronitor.io/badges/41gGNN/production/8LIlGS9YJZpMQ-3p-MtXB5RAvbU.svg)
+![HFR Website](https://cronitor.io/badges/PlMGOl/production/wH8tHbzcFOkvzyQ0dDhpLeLwfa8.svg) ![DC Tiles Server Updater](https://cronitor.io/badges/41gGNN/production/8LIlGS9YJZpMQ-3p-MtXB5RAvbU.svg)
 
 The tile server is currently up and running, and development is ongoing.
 
