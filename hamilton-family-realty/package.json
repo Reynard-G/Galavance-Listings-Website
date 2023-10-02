@@ -1,0 +1,27 @@
+{
+  "name": "hamilton-family-realty",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@nextui-org/navbar": "^2.0.22",
+    "@nextui-org/system": "^2.0.10",
+    "@nextui-org/theme": "^2.1.9",
+    "framer-motion": "^10.16.4",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "autoprefixer": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "postcss": "latest",
+    "tailwindcss": "latest"
+  }
+}
