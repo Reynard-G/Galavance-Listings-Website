@@ -30,7 +30,7 @@ var map = L.map('map', {
 }).setView([spawn.lat, spawn.lng]);
 
 const bounds = fromLocationToLatLng({ x: 6000, y: 64, z: 6000 }, 1, 6);
-var redmontMap = L.tileLayer('https://tiles.milklegend.xyz/tiles/{z}/{x}/{y}.png', {
+var redmontMap = L.tileLayer('https://tiles.milklegend.xyz/{z}/{x}/{y}.png', {
     minZoom: 2,
     maxZoom: 8,
     maxNativeZoom: 7,
