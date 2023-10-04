@@ -68,3 +68,17 @@ export default function Home() {
     </div>
   );
 };
+/*
+export async function getStaticProps() {
+  return {
+    props: {},
+    revalidate: 600,
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}*/

@@ -32,7 +32,6 @@ const MapComponent = () => {
       scrollWheelZoom={true}
       attributionControl={false}
       crs={L.CRS.Minecraft}
-      // 2/3 of the screen width
       style={{ height: '100vh', width: '66.66667vw', cursor: 'default' }}
     >
       <TileLayer

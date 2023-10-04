@@ -1,4 +1,7 @@
-import { Card, CardHeader, CardBody, CardFooter, Chip } from '@nextui-org/react';
+import { Card, CardHeader, CardBody, CardFooter, Divider, Chip, Image } from '@nextui-org/react';
+import SquareFootRoundedIcon from '@mui/icons-material/SquareFootRounded';
+import HotelRoundedIcon from '@mui/icons-material/HotelRounded';
+import ShowerRoundedIcon from '@mui/icons-material/ShowerRounded';
 
 const Listings = ({ listings }) => {
   return (
@@ -17,22 +20,40 @@ const Listings = ({ listings }) => {
               isPressable
               className='shadow-md !transition !duration-300 hover:shadow-2xl'
             >
-              <div className="carousel-container relative h-full w-full">
-                <Chip color="success" size="sm" variant="flat" className="absolute top-2 right-2">
+              <div className="carousel-container relative w-full">
+                <Chip color="success" size="sm" variant="shadow" className="absolute top-2 right-2 z-10">
                   {listing.status}
                 </Chip>
-                <Chip color="secondary" radius="sm" size="sm" variant="flat" className="absolute bottom-2 left-2">
+                <Chip color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
                   {listing.propertyType}
                 </Chip>
+                <Image
+                  key="https://i.postimg.cc/9MR8F6FM/Bangla-1.png"
+                  src="https://i.postimg.cc/9MR8F6FM/Bangla-1.png"
+                  alt="Apartment"
+                  className="object-cover z-0"
+                />
               </div>
-              <CardHeader>
+              <CardBody className="overflow-hidden pt-2 pb-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <SquareFootRoundedIcon className="mr-1" fontSize='md' />
+                    <p className="text-sm text-gray-500">{listing.propertySizeSq} m<sup>2</sup></p>
+                  </div>
+                  <div className="flex items-center">
+                    <HotelRoundedIcon className="mr-1" fontSize='md' />
+                    <p className="text-sm text-gray-500">{listing.beds} bds</p>
+                  </div>
+                  <div className="flex items-center">
+                    <ShowerRoundedIcon className="mr-1" fontSize='md' />
+                    <p className="text-sm text-gray-500">{listing.baths} ba</p>
+                  </div>
+                </div>
+              </CardBody>
+              <Divider />
+              <CardHeader className="pt-2">
                 <p className="text-lg font-bold">${listing.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>
               </CardHeader>
-              <CardBody>
-                <p>{listing.propertySizeSq} sq ft</p>
-                <p>{listing.beds} beds</p>
-                <p>{listing.baths} baths</p>
-              </CardBody>
               <CardFooter>
                 <p className='text-sm text-gray-500'>{listing.plot}</p>
               </CardFooter>
