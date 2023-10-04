@@ -1,9 +1,29 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, Chip, Image } from '@nextui-org/react';
+
 import SquareFootRoundedIcon from '@mui/icons-material/SquareFootRounded';
 import HotelRoundedIcon from '@mui/icons-material/HotelRounded';
 import ShowerRoundedIcon from '@mui/icons-material/ShowerRounded';
+import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import ApartmentRoundedIcon from '@mui/icons-material/ApartmentRounded';
+import FactoryRoundedIcon from '@mui/icons-material/FactoryRounded';
+import LocalGroceryStoreRoundedIcon from '@mui/icons-material/LocalGroceryStoreRounded';
+import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 
 const Listings = ({ listings }) => {
+  const chipStatusDict = {
+    "For Sale": <AttachMoneyRoundedIcon fontSize='md' />,
+    "For Rent": <KeyRoundedIcon fontSize='md' />
+  }
+  const chipPropertyDict = {
+    "House": <HomeRoundedIcon fontSize='md' />,
+    "Apartment": <ApartmentRoundedIcon fontSize='md' />,
+    "Industrial": <FactoryRoundedIcon fontSize='md' />,
+    "Store": <LocalGroceryStoreRoundedIcon fontSize='md' />,
+    "Skyscraper": <BusinessRoundedIcon fontSize='md' />
+  }
+
   return (
     <div className="max-h-screen w-full md:w-1/3 flex flex-col">
       <div className="flex items-center justify-between py-5 shadow-lg md:flex-col hidden md:flex">
@@ -18,13 +38,14 @@ const Listings = ({ listings }) => {
             <Card
               key={listing.plot}
               isPressable
+              onPress={() => window.open(`/properties/${listing.plot}`, '_blank')}
               className='shadow-md !transition !duration-300 hover:shadow-2xl'
             >
               <div className="carousel-container relative w-full">
-                <Chip color="success" size="sm" variant="shadow" className="absolute top-2 right-2 z-10">
+                <Chip startContent={chipStatusDict[listing.status]} color="success" size="sm" variant="shadow" className="absolute top-2 right-2 z-10">
                   {listing.status}
                 </Chip>
-                <Chip color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
+                <Chip startContent={chipPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
                   {listing.propertyType}
                 </Chip>
                 <Image

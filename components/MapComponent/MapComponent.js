@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 
 L.Projection.Minecraft = {
   project: function (latlng) {
@@ -15,7 +15,7 @@ L.CRS.Minecraft = L.extend({}, L.CRS.Simple, {
   transformation: new L.Transformation(1 / 32, 0, 1 / 32, 0),
 });
 
-const MapComponent = () => {
+const MapComponent = ({listings}) => {
   const MapEvents = () => {
     useMapEvents({
       click(e) {
@@ -41,6 +41,14 @@ const MapComponent = () => {
         bounds={[[0, 0], [6000, 6000]]}
         noWrap={true}
       />
+      {listings.map((listing) => (
+        <Marker position={listing.location}>
+          <Popup>
+            {listing.plot}
+          </Popup>
+        </Marker>
+      ))
+      }
       <MapEvents />
     </MapContainer>
   );

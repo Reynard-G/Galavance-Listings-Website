@@ -6,6 +6,7 @@ const listings = [
   {
     plot: "C023",
     city: "Reveille",
+    location: [3102, 4096],
     price: 100000,
     propertyType: "Store",
     propertySizeSq: 1000,
@@ -16,6 +17,7 @@ const listings = [
   {
     plot: "S001",
     city: "Reveille",
+    location: [2210, 3865],
     price: 150000,
     propertyType: "Skyscraper",
     propertySizeSq: 2000,
@@ -26,8 +28,9 @@ const listings = [
   {
     plot: "I005",
     city: "Klondike",
+    location: [1853, 3483],
     price: 200000,
-    propertyType: "Condo",
+    propertyType: "Apartment",
     propertySizeSq: 1500,
     status: "For Rent",
     beds: 2,
@@ -36,8 +39,9 @@ const listings = [
   {
     plot: "CBD001",
     city: "Willow",
+    location: [2595, 3152],
     price: 500000,
-    propertyType: "Penthouse",
+    propertyType: "Industrial",
     propertySizeSq: 3000,
     status: "For Sale",
     beds: 5,
@@ -46,6 +50,7 @@ const listings = [
   {
     plot: "R010",
     city: "Aventura",
+    location: [3022, 3656],
     price: 80000,
     propertyType: "House",
     propertySizeSq: 800,
@@ -55,20 +60,10 @@ const listings = [
   },
 ];
 
-/*
-Possible property types:
-- House
-- Apartment
-- Industrial
-- Store
-- Skyscraper
-- Office
-*/
-
 export default function Home() {
   return (
     <div className="flex">
-      <Map />
+      <Map listings={listings} />
       <Listings listings={listings} />
     </div>
   );
