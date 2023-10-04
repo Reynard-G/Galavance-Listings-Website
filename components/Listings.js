@@ -54,8 +54,9 @@ const Listings = ({ listings }) => {
               <CardHeader className="pt-2">
                 <p className="text-lg font-bold">${listing.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>
               </CardHeader>
-              <CardFooter>
-                <p className='text-sm text-gray-500'>{listing.plot}</p>
+              <CardFooter className="flex items-center justify-between pt-0">
+                <p className="text-sm text-gray-500">{listing.plot}</p>
+                <p className="text-sm text-gray-500">{listing.city}</p>
               </CardFooter>
             </Card>
           ))}

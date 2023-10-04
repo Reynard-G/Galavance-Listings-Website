@@ -5,6 +5,7 @@ import Listings from '@components/Listings';
 const listings = [
   {
     plot: "C023",
+    city: "Reveille",
     price: 100000,
     propertyType: "Store",
     propertySizeSq: 1000,
@@ -14,6 +15,7 @@ const listings = [
   },
   {
     plot: "S001",
+    city: "Reveille",
     price: 150000,
     propertyType: "Skyscraper",
     propertySizeSq: 2000,
@@ -23,6 +25,7 @@ const listings = [
   },
   {
     plot: "I005",
+    city: "Klondike",
     price: 200000,
     propertyType: "Condo",
     propertySizeSq: 1500,
@@ -32,6 +35,7 @@ const listings = [
   },
   {
     plot: "CBD001",
+    city: "Willow",
     price: 500000,
     propertyType: "Penthouse",
     propertySizeSq: 3000,
@@ -41,6 +45,7 @@ const listings = [
   },
   {
     plot: "R010",
+    city: "Aventura",
     price: 80000,
     propertyType: "House",
     propertySizeSq: 800,
