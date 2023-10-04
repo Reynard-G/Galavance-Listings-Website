@@ -48,7 +48,7 @@ const listings = [
     beds: 2,
     baths: 1,
   },
-]
+];
 
 /*
 Possible property types:
