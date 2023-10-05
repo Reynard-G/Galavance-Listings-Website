@@ -15,12 +15,24 @@ L.CRS.Minecraft = L.extend({}, L.CRS.Simple, {
   transformation: new L.Transformation(1 / 32, 0, 1 / 32, 0),
 });
 
-const MapComponent = ({listings}) => {
+const MapComponent = ({ listings, setListingsInBounds }) => {
+  const getListingsInBounds = (e) => {
+    const bounds = e.target.getBounds();
+    const listingsInBounds = listings.filter(listing => bounds.contains(listing.location));
+    setListingsInBounds(listingsInBounds);
+  };
+
   const MapEvents = () => {
     useMapEvents({
       click(e) {
         console.log(`${e.latlng.lat}, ${e.latlng.lng}`);
       },
+      moveend(e) {
+        getListingsInBounds(e);
+      },
+      zoomlevelschange(e) {
+        getListingsInBounds(e);
+      }
     });
     return false;
   };
@@ -42,7 +54,24 @@ const MapComponent = ({listings}) => {
         noWrap={true}
       />
       {listings.map((listing) => (
-        <Marker position={listing.location}>
+        <Marker
+          key={listing.plot}
+          position={listing.location}
+          eventHandlers={{
+            click: (e) => {
+              e.target.closePopup();
+              window.open(`/properties/${listing.plot}`, '_blank')
+            }
+          }}
+          icon={
+            L.divIcon({
+              className: 'marker-container',
+              html: `<div class="marker">${listing.plot}</div>`,
+              iconSize: [40, 20],
+              iconAnchor: [20, 20],
+            })
+          }
+        >
           <Popup>
             {listing.plot}
           </Popup>

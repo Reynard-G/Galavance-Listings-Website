@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Map from '@components/MapComponent/Map';
 import Listings from '@components/Listings';
 
@@ -7,7 +9,7 @@ const listings = [
     plot: "C023",
     city: "Reveille",
     location: [3102, 4096],
-    price: 100000,
+    price: 200,
     propertyType: "Store",
     propertySizeSq: 1000,
     status: "For Sale",
@@ -18,7 +20,7 @@ const listings = [
     plot: "S001",
     city: "Reveille",
     location: [2210, 3865],
-    price: 150000,
+    price: 300,
     propertyType: "Skyscraper",
     propertySizeSq: 2000,
     status: "For Sale",
@@ -29,7 +31,7 @@ const listings = [
     plot: "I005",
     city: "Klondike",
     location: [1853, 3483],
-    price: 200000,
+    price: 20,
     propertyType: "Apartment",
     propertySizeSq: 1500,
     status: "For Rent",
@@ -40,7 +42,7 @@ const listings = [
     plot: "CBD001",
     city: "Willow",
     location: [2595, 3152],
-    price: 500000,
+    price: [500, 1050],
     propertyType: "Industrial",
     propertySizeSq: 3000,
     status: "For Sale",
@@ -51,7 +53,7 @@ const listings = [
     plot: "R010",
     city: "Aventura",
     location: [3022, 3656],
-    price: 80000,
+    price: 2445,
     propertyType: "House",
     propertySizeSq: 800,
     status: "For Rent",
@@ -61,10 +63,12 @@ const listings = [
 ];
 
 export default function Home() {
+  const [listingsInBounds, setListingsInBounds] = useState(listings);
+
   return (
     <div className="flex">
-      <Map listings={listings} />
-      <Listings listings={listings} />
+      <Map listings={listings} setListingsInBounds={setListingsInBounds} />
+      <Listings listings={listingsInBounds} />
     </div>
   );
 };

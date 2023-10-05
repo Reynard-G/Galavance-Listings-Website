@@ -12,17 +12,17 @@ import LocalGroceryStoreRoundedIcon from '@mui/icons-material/LocalGroceryStoreR
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 
 const Listings = ({ listings }) => {
-  const chipStatusDict = {
+  const iconStatusDict = {
     "For Sale": <AttachMoneyRoundedIcon fontSize='md' />,
     "For Rent": <KeyRoundedIcon fontSize='md' />
-  }
-  const chipPropertyDict = {
+  };
+  const iconPropertyDict = {
     "House": <HomeRoundedIcon fontSize='md' />,
     "Apartment": <ApartmentRoundedIcon fontSize='md' />,
     "Industrial": <FactoryRoundedIcon fontSize='md' />,
     "Store": <LocalGroceryStoreRoundedIcon fontSize='md' />,
     "Skyscraper": <BusinessRoundedIcon fontSize='md' />
-  }
+  };
 
   return (
     <div className="max-h-screen w-full md:w-1/3 flex flex-col">
@@ -42,10 +42,10 @@ const Listings = ({ listings }) => {
               className='shadow-md !transition !duration-300 hover:shadow-2xl'
             >
               <div className="carousel-container relative w-full">
-                <Chip startContent={chipStatusDict[listing.status]} color="success" size="sm" variant="shadow" className="absolute top-2 right-2 z-10">
+                <Chip startContent={iconStatusDict[listing.status]} color="success" size="sm" variant="shadow" className="absolute top-2 right-2 z-10">
                   {listing.status}
                 </Chip>
-                <Chip startContent={chipPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
+                <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
                   {listing.propertyType}
                 </Chip>
                 <Image
@@ -73,7 +73,9 @@ const Listings = ({ listings }) => {
               </CardBody>
               <Divider />
               <CardHeader className="pt-2">
-                <p className="text-lg font-bold">${listing.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>
+                <p className="text-lg font-bold">{listing.price[1]
+                  ? `${Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listing.price[0])} - ${Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listing.price[1])}`
+                  : Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listing.price)}</p>
               </CardHeader>
               <CardFooter className="flex items-center justify-between pt-0">
                 <p className="text-sm text-gray-500">{listing.plot}</p>

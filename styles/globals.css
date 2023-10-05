@@ -19,3 +19,27 @@
     display: none;
   }
 }
+
+.marker {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  background-color: #A3000B;
+  font-size: 11px;
+  text-align: center;
+  padding: 1px 7px;
+}
+
+.marker::after {
+  position: absolute;
+  top: 19px;
+  width: 0;
+  height: 0;
+  border-top: solid 5px #A3000B;
+  border-left: solid 5px transparent;
+  border-right: solid 5px transparent;
+  content: '';
+}
