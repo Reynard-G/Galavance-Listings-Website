@@ -44,7 +44,7 @@ const MapComponent = ({ listings, setListingsInBounds }) => {
       scrollWheelZoom={true}
       attributionControl={false}
       crs={L.CRS.Minecraft}
-      style={{ height: '100vh', width: '66.66667vw', cursor: 'default' }}
+      className="w-full h-screen md:w-2/3"
     >
       <TileLayer
         url="https://tiles.milklegend.xyz/{z}/{x}/{y}.png"

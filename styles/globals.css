@@ -15,9 +15,14 @@
 }
 
 @media (max-width: 768px) {
-  .leaflet-container {
+  .listings {
     display: none;
   }
+}
+
+.leaflet-bar a,
+.leaflet-control a {
+  transition: color .2s ease-in, background-color .2s ease-in !important;
 }
 
 .marker {

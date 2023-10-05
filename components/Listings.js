@@ -1,4 +1,5 @@
-import { Card, CardHeader, CardBody, CardFooter, Divider, Chip, Image } from '@nextui-org/react';
+import { Card, CardHeader, CardBody, CardFooter, Divider, Chip } from '@nextui-org/react';
+import Carousel from './Carousel';
 
 import SquareFootRoundedIcon from '@mui/icons-material/SquareFootRounded';
 import HotelRoundedIcon from '@mui/icons-material/HotelRounded';
@@ -25,8 +26,8 @@ const Listings = ({ listings }) => {
   };
 
   return (
-    <div className="max-h-screen w-full md:w-1/3 flex flex-col">
-      <div className="flex items-center justify-between py-5 shadow-lg md:flex-col hidden md:flex">
+    <div className="listings max-h-screen w-0 md:w-1/3 flex flex-col">
+      <div className="flex items-center justify-between py-5 shadow-lg flex-col flex">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-200 sm:truncate lg:text-3xl">Properties</h2>
           <p className="lg:text-md mt-3 text-sm text-gray-400 md:text-center">{listings.length} listings found</p>
@@ -42,18 +43,13 @@ const Listings = ({ listings }) => {
               className='shadow-md !transition !duration-300 hover:shadow-2xl'
             >
               <div className="carousel-container relative w-full">
-                <Chip startContent={iconStatusDict[listing.status]} color="success" size="sm" variant="shadow" className="absolute top-2 right-2 z-10">
+                <Chip startContent={iconStatusDict[listing.status]} color="success" size="sm" variant="shadow" className="absolute top-4 right-4 z-10">
                   {listing.status}
                 </Chip>
-                <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
+                <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-4 left-4 z-10">
                   {listing.propertyType}
                 </Chip>
-                <Image
-                  key="https://i.postimg.cc/9MR8F6FM/Bangla-1.png"
-                  src="https://i.postimg.cc/9MR8F6FM/Bangla-1.png"
-                  alt="Apartment"
-                  className="object-cover z-0"
-                />
+                <Carousel slides={listing} options={{ loop: true }} />
               </div>
               <CardBody className="overflow-hidden pt-2 pb-2">
                 <div className="flex items-center justify-between">

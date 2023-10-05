@@ -13,6 +13,7 @@ const listings = [
     propertyType: "Store",
     propertySizeSq: 1000,
     status: "For Sale",
+    images: ["https://i.postimg.cc/9MR8F6FM/Bangla-1.png", "https://i.postimg.cc/8CFBhh8X/Bangla-2.png"],
     beds: 3,
     baths: 2,
   },
@@ -24,6 +25,7 @@ const listings = [
     propertyType: "Skyscraper",
     propertySizeSq: 2000,
     status: "For Sale",
+    images: ["https://i.postimg.cc/sxcswGFb/C-Suit-1.png", "https://i.postimg.cc/ryJT64bP/C-Suit-2.png"],
     beds: 4,
     baths: 3,
   },
@@ -35,6 +37,7 @@ const listings = [
     propertyType: "Apartment",
     propertySizeSq: 1500,
     status: "For Rent",
+    images: ["https://i.postimg.cc/cLbKJHdG/Penthouse-1.png", "https://i.postimg.cc/Qdwt3yqX/Penthouse-2.png"],
     beds: 2,
     baths: 2,
   },
@@ -46,6 +49,7 @@ const listings = [
     propertyType: "Industrial",
     propertySizeSq: 3000,
     status: "For Sale",
+    images: ["https://i.postimg.cc/5tMN3VDc/Bunnings-Apt-1.png", "https://i.postimg.cc/PxXXgMt2/Bunnings-Apt-2.png"],
     beds: 5,
     baths: 4,
   },
@@ -57,6 +61,7 @@ const listings = [
     propertyType: "House",
     propertySizeSq: 800,
     status: "For Rent",
+    images: ["https://i.postimg.cc/BvQZygZN/Martin-1.png", "https://i.postimg.cc/Nf6gjV5p/Martin-2.png"],
     beds: 2,
     baths: 1,
   },
@@ -79,10 +84,4 @@ export async function getStaticProps() {
     revalidate: 600,
   };
 }
-
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  };
-}*/
+*/
