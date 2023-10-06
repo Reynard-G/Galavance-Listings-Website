@@ -1,4 +1,5 @@
-import { Card, CardHeader, CardBody, CardFooter, Divider, Chip } from '@nextui-org/react';
+import { useState, useEffect } from 'react';
+import { Card, CardHeader, CardBody, CardFooter, Divider, Chip, Select, SelectItem } from '@nextui-org/react';
 import Carousel from './Carousel';
 
 import SquareFootRoundedIcon from '@mui/icons-material/SquareFootRounded';
@@ -13,6 +14,9 @@ import LocalGroceryStoreRoundedIcon from '@mui/icons-material/LocalGroceryStoreR
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 
 const Listings = ({ listings }) => {
+  const [sortedListings, setSortedListings] = useState(listings);
+  const [sortValue, setSortValue] = useState('newest');
+
   const iconStatusDict = {
     "For Sale": <AttachMoneyRoundedIcon fontSize='md' />,
     "For Rent": <KeyRoundedIcon fontSize='md' />
@@ -24,6 +28,60 @@ const Listings = ({ listings }) => {
     "Store": <LocalGroceryStoreRoundedIcon fontSize='md' />,
     "Skyscraper": <BusinessRoundedIcon fontSize='md' />
   };
+  const sortOptions = [
+    { label: 'Newest', value: 'newest' },
+    { label: 'Price (High to Low)', value: 'priceHigh' },
+    { label: 'Price (Low to High)', value: 'priceLow' },
+    { label: 'Size (High to Low)', value: 'sizeHigh' },
+    { label: 'Size (Low to High)', value: 'sizeLow' },
+    { label: 'Beds (High to Low)', value: 'bedsHigh' },
+    { label: 'Beds (Low to High)', value: 'bedsLow' },
+    { label: 'Baths (High to Low)', value: 'bathsHigh' },
+    { label: 'Baths (Low to High)', value: 'bathsLow' },
+  ];
+
+  const sortListings = (value) => {
+    let sortedListings = [...listings];
+    switch (value) {
+      case 'newest':
+        sortedListings.sort((a, b) => b.listedOn - a.listedOn);
+        break;
+      case 'priceHigh':
+        sortedListings.sort((a, b) => b.price - a.price);
+        break;
+      case 'priceLow':
+        sortedListings.sort((a, b) => a.price - b.price);
+        break;
+      case 'sizeHigh':
+        sortedListings.sort((a, b) => b.propertySizeSq - a.propertySizeSq);
+        break;
+      case 'sizeLow':
+        sortedListings.sort((a, b) => a.propertySizeSq - b.propertySizeSq);
+        break;
+      case 'bedsHigh':
+        sortedListings.sort((a, b) => b.beds - a.beds);
+        break;
+      case 'bedsLow':
+        sortedListings.sort((a, b) => a.beds - b.beds);
+        break;
+      case 'bathsHigh':
+        sortedListings.sort((a, b) => b.baths - a.baths);
+        break;
+      case 'bathsLow':
+        sortedListings.sort((a, b) => a.baths - b.baths);
+        break;
+      default:
+        break;
+    }
+
+    setSortValue(value);
+    setSortedListings(sortedListings);
+  }
+
+  // Update sorted listings on map bounds change
+  useEffect(() => {
+    sortListings(sortValue);
+  }, [listings]);
 
   return (
     <div className="listings max-h-screen w-0 md:w-1/3 flex flex-col">
@@ -32,10 +90,23 @@ const Listings = ({ listings }) => {
           <h2 className="text-2xl font-bold leading-7 text-gray-200 sm:truncate lg:text-3xl">Properties</h2>
           <p className="lg:text-md mt-3 text-sm text-gray-400 md:text-center">{listings.length} listings found</p>
         </div>
+        <div className="flex items-center justify-between p-3 w-3/4">
+          <Select
+            size="sm"
+            radius="md"
+            label="Sort by"
+            className="shadow-lg"
+            onChange={(e) => sortListings(e.target.value)}
+          >
+            {sortOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+            ))}
+          </Select>
+        </div>
       </div>
       <div className="grid-container flex-grow overflow-auto no-scrollbar h-full">
         <div className="listings-container grid auto-rows-auto grid-cols-1 gap-2 p-4 md:grid-cols-1 2xl:grid-cols-2">
-          {listings.map((listing) => (
+          {sortedListings.map((listing) => (
             <Card
               key={listing.plot}
               isPressable
@@ -85,4 +156,4 @@ const Listings = ({ listings }) => {
   );
 };
 
-export default Listings;
+export default Listings;;
