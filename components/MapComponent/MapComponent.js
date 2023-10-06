@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 
 L.Projection.Minecraft = {
   project: function (latlng) {
@@ -58,10 +58,7 @@ const MapComponent = ({ listings, setListingsInBounds }) => {
           key={listing.plot}
           position={listing.location}
           eventHandlers={{
-            click: (e) => {
-              e.target.closePopup();
-              window.open(`/properties/${listing.plot}`, '_blank')
-            }
+            click: () => window.open(`/properties/${listing.plot}`, '_blank'),
           }}
           icon={
             L.divIcon({
@@ -72,9 +69,6 @@ const MapComponent = ({ listings, setListingsInBounds }) => {
             })
           }
         >
-          <Popup>
-            {listing.plot}
-          </Popup>
         </Marker>
       ))
       }
