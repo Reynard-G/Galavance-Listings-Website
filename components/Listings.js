@@ -110,7 +110,7 @@ const Listings = ({ listings }) => {
             <Card
               key={listing.plot}
               isPressable
-              onPress={() => window.open(`/properties/${listing.plot}`, '_blank')}
+              onClick={() => window.open(`/properties/${listing.plot}`, '_blank')}
               className='shadow-md !transition !duration-300 hover:shadow-2xl'
             >
               <div className="carousel-container relative w-full">
