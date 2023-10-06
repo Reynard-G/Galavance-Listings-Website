@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Map from '@components/MapComponent/Map';
 import Listings from '@components/Listings';
@@ -74,10 +74,15 @@ const listings = [
 
 export default function Home() {
   const [listingsInBounds, setListingsInBounds] = useState(listings);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    setIsDesktop(window.innerWidth > 768);
+  }, []);
 
   return (
     <div className="flex">
-      <Map listings={listings} setListingsInBounds={setListingsInBounds} />
+      <Map listings={listings} setListingsInBounds={isDesktop ? setListingsInBounds : undefined} />
       <Listings listings={listingsInBounds} />
     </div>
   );

@@ -17,6 +17,7 @@ L.CRS.Minecraft = L.extend({}, L.CRS.Simple, {
 
 const MapComponent = ({ listings, setListingsInBounds }) => {
   const getListingsInBounds = (e) => {
+    if (!setListingsInBounds) return;
     const bounds = e.target.getBounds();
     const listingsInBounds = listings.filter(listing => bounds.contains(listing.location));
     setListingsInBounds(listingsInBounds);
@@ -44,7 +45,7 @@ const MapComponent = ({ listings, setListingsInBounds }) => {
       scrollWheelZoom={true}
       attributionControl={false}
       crs={L.CRS.Minecraft}
-      className="w-full h-screen md:w-2/3"
+      className="w-0 h-screen md:w-2/3"
     >
       <TileLayer
         url="https://tiles.milklegend.xyz/{z}/{x}/{y}.png"
@@ -75,6 +76,10 @@ const MapComponent = ({ listings, setListingsInBounds }) => {
       <MapEvents />
     </MapContainer>
   );
+};
+
+MapComponent.defaultProps = {
+  setListingsInBounds: null,
 };
 
 export default MapComponent;

@@ -84,7 +84,7 @@ const Listings = ({ listings }) => {
   }, [listings]);
 
   return (
-    <div className="listings max-h-screen w-0 md:w-1/3 flex flex-col">
+    <div className="listings max-h-screen max-w-screen md:w-1/3 flex flex-col">
       <div className="flex items-center justify-between py-5 shadow-lg flex-col flex">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-200 sm:truncate lg:text-3xl">Properties</h2>
