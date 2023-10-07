@@ -1,6 +1,5 @@
 import '@styles/globals.css';
 import 'leaflet/dist/leaflet.css';
-import '@styles/embla.css';
 
 import React from 'react';
 import { NextUIProvider } from '@nextui-org/react';

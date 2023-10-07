@@ -76,7 +76,7 @@ const Listings = ({ listings }) => {
 
     setSortValue(value);
     setSortedListings(sortedListings);
-  }
+  };
 
   // Update sorted listings on map bounds change
   useEffect(() => {
@@ -114,13 +114,13 @@ const Listings = ({ listings }) => {
               className='shadow-md !transition !duration-300 hover:shadow-2xl'
             >
               <div className="carousel-container relative w-full">
-                <Chip startContent={iconStatusDict[listing.status]} color="success" size="sm" variant="shadow" className="absolute top-4 right-4 z-10">
+                <Chip startContent={iconStatusDict[listing.status]} color="success" size="sm" variant="shadow" className="absolute top-2 right-2 z-10">
                   {listing.status}
                 </Chip>
-                <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-4 left-4 z-10">
+                <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
                   {listing.propertyType}
                 </Chip>
-                <Carousel slides={listing} options={{ loop: true }} />
+                <Carousel listing={listing} />
               </div>
               <CardBody className="overflow-hidden pt-2 pb-2">
                 <div className="flex items-center justify-between">
