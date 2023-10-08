@@ -40,8 +40,8 @@ const Listings = ({ listings }) => {
           <p className="lg:text-md mt-3 text-sm text-gray-400 md:text-center animate-fade-up"><strong>{listings.length}</strong> listings found</p>
         </div>
         <div className="flex items-center justify-between p-2 gap-2 w-3/4">
-          <SortButton listings={listings} setSortedListings={setSortedListings} />
-          <FiltersButton />
+          <SortButton listings={listings} setListings={setSortedListings} />
+          <FiltersButton listings={listings} setListings={setSortedListings} />
         </div>
       </div>
       <div className="grid-container flex-grow overflow-auto no-scrollbar h-full">

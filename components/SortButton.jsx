@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
 
-const SortButton = ({ listings, setSortedListings }) => {
+const SortButton = ({ listings, setListings }) => {
   const [sortValue, setSortValue] = useState('newest');
 
   const sortOptions = [
@@ -34,7 +34,7 @@ const SortButton = ({ listings, setSortedListings }) => {
         break;
     }
 
-    setSortedListings(sortedListings);
+    setListings(sortedListings);
   };
 
   // Update sorted listings on map bounds change and sort value change
