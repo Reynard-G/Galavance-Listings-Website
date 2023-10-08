@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { Spinner } from '@nextui-org/react';
+import { Spinner } from '@nextui-org/spinner';
 
 const Map = dynamic(() => import('./MapComponent'), {
   ssr: false,

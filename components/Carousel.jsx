@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@nextui-org/image";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';

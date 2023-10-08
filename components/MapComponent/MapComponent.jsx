@@ -40,12 +40,12 @@ const MapComponent = ({ listings, setListingsInBounds }) => {
 
   return (
     <MapContainer
-      center={[2725, 4153]}
-      zoom={6}
+      center={[3000, 3000]}
+      zoom={2}
       scrollWheelZoom={true}
       attributionControl={false}
       crs={L.CRS.Minecraft}
-      className="w-0 h-screen md:w-2/3"
+      className="w-0 h-screen md:w-2/3 z-0"
     >
       <TileLayer
         url="https://tiles.milklegend.xyz/{z}/{x}/{y}.png"

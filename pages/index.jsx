@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { isMobile } from 'react-device-detect';
 
 import Map from '@components/MapComponent/Map';
 import Listings from '@components/Listings';
 
 // Testing Data
-const listings = [
+const saleListings = [
   {
     plot: "C023",
     city: "Reveille",
@@ -38,7 +39,7 @@ const listings = [
     price: 20,
     propertyType: "Apartment",
     propertySizeSq: 1500,
-    status: "For Rent",
+    status: "For Sale",
     images: ["https://i.postimg.cc/cLbKJHdG/Penthouse-1.png", "https://i.postimg.cc/Qdwt3yqX/Penthouse-2.png"],
     beds: 2,
     baths: 2,
@@ -64,7 +65,7 @@ const listings = [
     price: 2445,
     propertyType: "House",
     propertySizeSq: 800,
-    status: "For Rent",
+    status: "For Sale",
     images: ["https://i.postimg.cc/BvQZygZN/Martin-1.png", "https://i.postimg.cc/Nf6gjV5p/Martin-2.png"],
     beds: 2,
     baths: 1,
@@ -72,17 +73,66 @@ const listings = [
   },
 ];
 
-export default function Home() {
-  const [listingsInBounds, setListingsInBounds] = useState(listings);
-  const [isDesktop, setIsDesktop] = useState(false);
+const rentListings = [
+  {
+    plot: "C023",
+    city: "Reveille",
+    location: [3102, 4096],
+    price: 200,
+    propertyType: "Store",
+    propertySizeSq: 1000,
+    status: "For Rent",
+    images: ["https://i.postimg.cc/9MR8F6FM/Bangla-1.png", "https://i.postimg.cc/8CFBhh8X/Bangla-2.png"],
+    beds: 3,
+    baths: 2,
+    listedOn: 1677220233,
+  },
+  {
+    plot: "S001",
+    city: "Reveille",
+    location: [2210, 3865],
+    price: 300,
+    propertyType: "Skyscraper",
+    propertySizeSq: 2000,
+    status: "For Rent",
+    images: ["https://i.postimg.cc/sxcswGFb/C-Suit-1.png", "https://i.postimg.cc/ryJT64bP/C-Suit-2.png"],
+    beds: 4,
+    baths: 3,
+    listedOn: 1627776000,
+  },
+  {
+    plot: "I005",
+    city: "Klondike",
+    location: [1853, 3483],
+    price: 20,
+    propertyType: "Apartment",
+    propertySizeSq: 1500,
+    status: "For Rent",
+    images: ["https://i.postimg.cc/cLbKJHdG/Penthouse-1.png", "https://i.postimg.cc/Qdwt3yqX/Penthouse-2.png"],
+    beds: 2,
+    baths: 2,
+    listedOn: 1666848633,
+  },
+  {
+    plot: "CBD001",
+    city: "Willow",
+    location: [2595, 3152],
+    price: [500, 1050],
+    propertyType: "Industrial",
+    propertySizeSq: 3000,
+    status: "For Rent",
+    images: ["https://i.postimg.cc/5tMN3VDc/Bunnings-Apt-1.png", "https://i.postimg.cc/PxXXgMt2/Bunnings-Apt-2.png"],
+    beds: 5,
+    baths: 4
+  },
+];
 
-  useEffect(() => {
-    setIsDesktop(window.innerWidth > 768);
-  }, []);
+export default function Home() {
+  const [listingsInBounds, setListingsInBounds] = useState(saleListings);
 
   return (
     <div className="flex">
-      <Map listings={listings} setListingsInBounds={isDesktop ? setListingsInBounds : undefined} />
+      <Map listings={saleListings} setListingsInBounds={isMobile ? null : setListingsInBounds} />
       <Listings listings={listingsInBounds} />
     </div>
   );
