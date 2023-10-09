@@ -9,15 +9,13 @@ import FiltersButton from './FiltersButton';
 import SquareFootRoundedIcon from '@mui/icons-material/SquareFootRounded';
 import HotelRoundedIcon from '@mui/icons-material/HotelRounded';
 import ShowerRoundedIcon from '@mui/icons-material/ShowerRounded';
-import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
-import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ApartmentRoundedIcon from '@mui/icons-material/ApartmentRounded';
 import FactoryRoundedIcon from '@mui/icons-material/FactoryRounded';
 import LocalGroceryStoreRoundedIcon from '@mui/icons-material/LocalGroceryStoreRounded';
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 
-const Listings = ({ listings }) => {
+const Listings = ({ listings, setFilteredListings }) => {
   const [processedListings, setProcessedListings] = useState(listings);
   const [sortValue, setSortValue] = useState('');
   const [filters, setFilters] = useState({
@@ -78,12 +76,9 @@ const Listings = ({ listings }) => {
     }
 
     setProcessedListings(sortedListings);
-  }, [listings, filters, sortValue]);
+    setFilteredListings(sortedListings);
+  }, [listings, filters, sortValue, setFilteredListings]);
 
-  const iconStatusDict = useMemo(() => ({
-    "Sale": <AttachMoneyRoundedIcon fontSize='md' />,
-    "Rent": <KeyRoundedIcon fontSize='md' />
-  }), []);
   const iconPropertyDict = useMemo(() => ({
     "House": <HomeRoundedIcon fontSize='md' />,
     "Apartment": <ApartmentRoundedIcon fontSize='md' />,
@@ -94,7 +89,7 @@ const Listings = ({ listings }) => {
 
   return (
     <div className="listings max-h-screen max-w-screen md:w-1/3 flex flex-col">
-      <div className="flex items-center justify-between py-5 shadow-lg flex-col flex">
+      <div className="flex items-center justify-between py-5 flex-col flex">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-200 sm:truncate lg:text-3xl animate-fade animate-ease-in-out animate-duration-1000">Properties</h2>
           <p className="lg:text-md mt-3 text-sm text-gray-400 md:text-center animate-fade-up"><strong>{processedListings.length}</strong> listings found</p>
@@ -120,9 +115,6 @@ const Listings = ({ listings }) => {
               className='shadow-md !transition !duration-300 hover:shadow-2xl animate-fade'
             >
               <div className="carousel-container relative w-full">
-                <Chip startContent={iconStatusDict[listing.status]} color="success" size="sm" variant="shadow" className="absolute top-2 right-2 z-10">
-                  {listing.status}
-                </Chip>
                 <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
                   {listing.propertyType}
                 </Chip>

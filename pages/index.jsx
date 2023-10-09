@@ -131,11 +131,12 @@ const listings = [...saleListings, ...rentListings];
 
 export default function Home() {
   const [listingsInBounds, setListingsInBounds] = useState(listings);
+  const [filteredListings, setFilteredListings] = useState(listings);
 
   return (
     <div className="flex">
-      <Map listings={listings} setListingsInBounds={isMobile ? null : setListingsInBounds} />
-      <Listings listings={listingsInBounds} />
+      <Map listings={listings} filteredListings={filteredListings} setListingsInBounds={isMobile ? null : setListingsInBounds} />
+      <Listings listings={listingsInBounds} setFilteredListings={setFilteredListings} />
     </div>
   );
 };

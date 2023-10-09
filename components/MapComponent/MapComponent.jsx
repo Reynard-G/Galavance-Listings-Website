@@ -15,7 +15,7 @@ L.CRS.Minecraft = L.extend({}, L.CRS.Simple, {
   transformation: new L.Transformation(1 / 32, 0, 1 / 32, 0),
 });
 
-const MapComponent = ({ listings, setListingsInBounds }) => {
+const MapComponent = ({ listings, filteredListings, setListingsInBounds }) => {
   const getListingsInBounds = (e) => {
     if (!setListingsInBounds) return;
     const bounds = e.target.getBounds();
@@ -54,7 +54,7 @@ const MapComponent = ({ listings, setListingsInBounds }) => {
         bounds={[[0, 0], [6000, 6000]]}
         noWrap={true}
       />
-      {listings.map((listing) => (
+      {filteredListings.map((listing) => (
         <Marker
           key={listing.plot}
           position={listing.location}
@@ -64,7 +64,7 @@ const MapComponent = ({ listings, setListingsInBounds }) => {
           icon={
             L.divIcon({
               className: 'marker-container',
-              html: `<div class="marker">${listing.plot}</div>`,
+              html: `<div class="marker ${listing.status === 'Sale' ? 'marker-sale' : 'marker-rent'}">${listing.plot}</div>`,
               iconSize: [40, 20],
               iconAnchor: [20, 20],
             })
