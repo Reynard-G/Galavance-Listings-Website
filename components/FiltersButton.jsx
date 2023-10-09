@@ -168,7 +168,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                     { type: "house", textValue: "House", icon: <HomeRoundedIcon /> },
                     { type: "apartment", textValue: "Apartment", icon: <ApartmentRoundedIcon /> },
                     { type: "industrial", textValue: "Industrial", icon: <FactoryRoundedIcon /> },
-                    { type: "store", textValue: "Store", icon: <LocalGroceryStoreRoundedIcon /> },
+                    { type: "commercial", textValue: "Commercial", icon: <LocalGroceryStoreRoundedIcon /> },
                     { type: "skyscraper", textValue: "Skyscraper", icon: <BusinessRoundedIcon /> }
                   ].map(({ type, textValue, icon }) => (
                     <Button
@@ -227,6 +227,23 @@ const FiltersButton = ({ filters, setFilters }) => {
                     </Button>
                   ))}
                 </ButtonGroup>
+                <Divider />
+                <h3 className="text-2xl font-bold text-left">Rent Type</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {[
+                    { type: "apartment", textValue: "Apartment", icon: <ApartmentRoundedIcon /> },
+                    { type: "commercial", textValue: "Commercial", icon: <LocalGroceryStoreRoundedIcon /> },
+                  ].map(({ type, textValue, icon }) => (
+                    <Button
+                      key={type}
+                      variant={filters.rent.homeType === type ? "solid" : "ghost"}
+                      onClick={() => handleHomeTypeChange(type, "rent")}
+                    >
+                      {icon}
+                      {textValue}
+                    </Button>
+                  ))}
+                </div>
               </ModalBody>
             </Tab>
           </Tabs>

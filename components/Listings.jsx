@@ -83,7 +83,7 @@ const Listings = ({ listings, setFilteredListings }) => {
     "House": <HomeRoundedIcon fontSize='md' />,
     "Apartment": <ApartmentRoundedIcon fontSize='md' />,
     "Industrial": <FactoryRoundedIcon fontSize='md' />,
-    "Store": <LocalGroceryStoreRoundedIcon fontSize='md' />,
+    "Commercial": <LocalGroceryStoreRoundedIcon fontSize='md' />,
     "Skyscraper": <BusinessRoundedIcon fontSize='md' />
   }), []);
 
@@ -103,7 +103,7 @@ const Listings = ({ listings, setFilteredListings }) => {
         {processedListings.length === 0 && (
           <div className="flex flex-col items-center justify-center h-1/2">
             <h3 className="text-2xl font-bold animate-fade-left animate-ease-in-out">No listings found</h3>
-            <p className="text-sm text-gray-500 animate-fade-up animate-delay-200">Try changing your filters</p>
+            <p className="text-sm text-gray-500 animate-fade-up animate-delay-200">Try changing your filters or hovering over a larger area</p>
           </div>
         )}
         <div className="listings-container grid auto-rows-auto grid-cols-1 gap-2 p-4 md:grid-cols-1 2xl:grid-cols-2">
