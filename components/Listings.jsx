@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { Divider } from '@nextui-org/divider';
 import { Chip } from '@nextui-org/chip';
@@ -18,41 +18,101 @@ import LocalGroceryStoreRoundedIcon from '@mui/icons-material/LocalGroceryStoreR
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 
 const Listings = ({ listings }) => {
-  const [sortedListings, setSortedListings] = useState(listings);
+  const [processedListings, setProcessedListings] = useState(listings);
+  const [sortValue, setSortValue] = useState('');
+  const [filters, setFilters] = useState({
+    propertyStatus: "sale",
+    sale: {
+      price: [0, 1000000],
+      beds: [],
+      baths: [],
+      homeType: ""
+    },
+    rent: {
+      price: [0, 10000],
+      beds: [],
+      baths: []
+    }
+  });
 
-  const iconStatusDict = {
-    "For Sale": <AttachMoneyRoundedIcon fontSize='md' />,
-    "For Rent": <KeyRoundedIcon fontSize='md' />
-  };
-  const iconPropertyDict = {
+  useMemo(() => {
+    // Filter
+    let filteredListings = [...listings];
+    // Filter by property status
+    filteredListings = filteredListings.filter(listing => listing.status.toLowerCase() === filters.propertyStatus.toLowerCase());
+    // Filter by price & price ranges
+    filteredListings = filteredListings.filter(listing => listing.price >= filters[filters.propertyStatus].price[0] && listing.price <= filters[filters.propertyStatus].price[1] || (filters[filters.propertyStatus].price[0] <= listing.price[0] && listing.price[0] <= filters[filters.propertyStatus].price[1]) || (filters[filters.propertyStatus].price[0] <= listing.price[1] && listing.price[1] <= filters[filters.propertyStatus].price[1]));
+    // Filter by beds
+    if (filters[filters.propertyStatus].beds.length > 0) {
+      filteredListings = filteredListings.filter(listing => filters[filters.propertyStatus].beds.includes(listing.beds));
+    }
+    // Filter by baths
+    if (filters[filters.propertyStatus].baths.length > 0) {
+      filteredListings = filteredListings.filter(listing => filters[filters.propertyStatus].baths.includes(listing.baths));
+    }
+    // Filter by home type
+    if (filters[filters.propertyStatus].homeType !== "" && filters[filters.propertyStatus].homeType != null) {
+      filteredListings = filteredListings.filter(listing => listing.propertyType.toLowerCase() === filters[filters.propertyStatus].homeType);
+    }
+
+    // Sort
+    let sortedListings = [...filteredListings];
+    switch (sortValue) {
+      case 'newest':
+        sortedListings.sort((a, b) => b.listedOn - a.listedOn);
+        break;
+      case 'priceHigh':
+        sortedListings.sort((a, b) => b.price - a.price);
+        break;
+      case 'priceLow':
+        sortedListings.sort((a, b) => a.price - b.price);
+        break;
+      case 'sizeHigh':
+        sortedListings.sort((a, b) => b.propertySizeSq - a.propertySizeSq);
+        break;
+      case 'sizeLow':
+        sortedListings.sort((a, b) => a.propertySizeSq - b.propertySizeSq);
+        break;
+      default:
+        break;
+    }
+
+    setProcessedListings(sortedListings);
+  }, [listings, filters, sortValue]);
+
+  const iconStatusDict = useMemo(() => ({
+    "Sale": <AttachMoneyRoundedIcon fontSize='md' />,
+    "Rent": <KeyRoundedIcon fontSize='md' />
+  }), []);
+  const iconPropertyDict = useMemo(() => ({
     "House": <HomeRoundedIcon fontSize='md' />,
     "Apartment": <ApartmentRoundedIcon fontSize='md' />,
     "Industrial": <FactoryRoundedIcon fontSize='md' />,
     "Store": <LocalGroceryStoreRoundedIcon fontSize='md' />,
     "Skyscraper": <BusinessRoundedIcon fontSize='md' />
-  };
+  }), []);
 
   return (
     <div className="listings max-h-screen max-w-screen md:w-1/3 flex flex-col">
       <div className="flex items-center justify-between py-5 shadow-lg flex-col flex">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-200 sm:truncate lg:text-3xl animate-fade animate-ease-in-out animate-duration-1000">Properties</h2>
-          <p className="lg:text-md mt-3 text-sm text-gray-400 md:text-center animate-fade-up"><strong>{listings.length}</strong> listings found</p>
+          <p className="lg:text-md mt-3 text-sm text-gray-400 md:text-center animate-fade-up"><strong>{processedListings.length}</strong> listings found</p>
         </div>
         <div className="flex items-center justify-between p-2 gap-2 w-3/4">
-          <SortButton listings={listings} setListings={setSortedListings} />
-          <FiltersButton listings={listings} setListings={setSortedListings} />
+          <SortButton sortValue={sortValue} setSortValue={setSortValue} />
+          <FiltersButton filters={filters} setFilters={setFilters} />
         </div>
       </div>
       <div className="grid-container flex-grow overflow-auto no-scrollbar h-full">
-        {sortedListings.length === 0 && (
+        {processedListings.length === 0 && (
           <div className="flex flex-col items-center justify-center h-1/2">
             <h3 className="text-2xl font-bold animate-fade-left animate-ease-in-out">No listings found</h3>
             <p className="text-sm text-gray-500 animate-fade-up animate-delay-200">Try changing your filters</p>
           </div>
         )}
         <div className="listings-container grid auto-rows-auto grid-cols-1 gap-2 p-4 md:grid-cols-1 2xl:grid-cols-2">
-          {sortedListings.map((listing) => (
+          {processedListings.map((listing) => (
             <Card
               key={listing.plot}
               isPressable
