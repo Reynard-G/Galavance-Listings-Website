@@ -115,9 +115,11 @@ const Listings = ({ listings, setFilteredListings }) => {
               className='shadow-md !transition !duration-300 hover:shadow-2xl animate-fade'
             >
               <div className="carousel-container relative w-full">
-                <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
-                  {listing.propertyType}
-                </Chip>
+                {listing.propertyType &&
+                  <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
+                    {listing.propertyType}
+                  </Chip>
+                }
                 <Carousel listing={listing} />
               </div>
               <CardBody className="overflow-hidden pt-2 pb-2">
