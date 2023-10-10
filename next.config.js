@@ -5,6 +5,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = withBundleAnalyzer({
   reactStrictMode: true,
+  images: {
+    domains: ['i.postimg.cc'],
+  },
 });
 
 module.exports = nextConfig;

@@ -1,3 +1,4 @@
+import NextImage from "next/image";
 import { Image } from "@nextui-org/image";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -21,8 +22,11 @@ const Carousel = ({ listing }) => {
       {listing.images.map((image) => (
         <SwiperSlide key={image}>
           <Image
+            as={NextImage}
             src={image}
             alt={listing.plot}
+            width={400}
+            height={200}
             isZoomed
           />
         </SwiperSlide>
