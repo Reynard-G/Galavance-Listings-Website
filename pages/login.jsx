@@ -21,7 +21,7 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <Card className="w-1/3 p-5">
+      <Card className="w-full md:w-1/3 p-5">
         <div className="flex justify-center">
           <Image
             as={NextImage}
