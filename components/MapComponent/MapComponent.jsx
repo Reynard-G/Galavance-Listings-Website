@@ -48,7 +48,7 @@ const MapComponent = ({ listings, filteredListings, setListingsInBounds }) => {
       className="w-0 h-screen md:w-2/3 z-0"
     >
       <TileLayer
-        url="https://tiles.milklegend.xyz/{z}/{x}/{y}.png"
+        url="https://tiles.milklegend.xyz/{z}/{x}/{y}.webp"
         minZoom={2}
         maxZoom={7}
         bounds={[[0, 0], [6000, 6000]]}

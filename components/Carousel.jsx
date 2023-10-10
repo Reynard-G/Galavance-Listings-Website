@@ -19,12 +19,13 @@ const Carousel = ({ listing }) => {
         '--swiper-pagination-bullet-inactive-color': '#D4D4D8',
       }}
     >
-      {listing.images.map((image) => (
+      {listing.images.map((image, index) => (
         <SwiperSlide key={image}>
           <Image
             as={NextImage}
             src={image}
             alt={listing.plot}
+            priority={index === 0 ? true : false}
             width={400}
             height={200}
             isZoomed
