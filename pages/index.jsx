@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 
@@ -134,10 +135,18 @@ export default function Home() {
   const [filteredListings, setFilteredListings] = useState(listings);
 
   return (
-    <div className="flex">
-      <Map listings={listings} filteredListings={filteredListings} setListingsInBounds={isMobile ? null : setListingsInBounds} />
-      <Listings listings={listingsInBounds} setFilteredListings={setFilteredListings} />
-    </div>
+    <>
+      <Head>
+        <title>HFR | Listings</title>
+        <meta name="description" content="Hamilton Family Realty is a premier real estate agency based in the Commonwealth of Redmont.
+            We aim to be the top real estate firm in the nation, helping clients buy, sell, or rent the property of their dreams." />
+      </Head>
+
+      <div className="flex">
+        <Map listings={listings} filteredListings={filteredListings} setListingsInBounds={isMobile ? null : setListingsInBounds} />
+        <Listings listings={listingsInBounds} setFilteredListings={setFilteredListings} />
+      </div>
+    </>
   );
 };
 /*
