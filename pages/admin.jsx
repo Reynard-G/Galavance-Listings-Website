@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
-import NextImage from 'next/image';
-import { Navbar, NavbarMenuToggle, NavbarBrand, NavbarContent, NavbarItem } from '@nextui-org/navbar';
+import AdminNavbar from '@components/AdminNavbar';
 import { Tabs, Tab } from '@nextui-org/tabs';
 import { Spinner } from '@nextui-org/spinner';
-import { Button } from '@nextui-org/button';
-import { Image } from '@nextui-org/image';
-import { Link } from '@nextui-org/link';
 
 const Admin = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navbarItems = [
+    { title: 'Dashboard', href: '/admin' },
+    { title: 'Listings', href: '/admin/listings' },
+    { title: 'Property Types', href: '/admin/property-types' },
+    { title: 'Operation Types', href: '/admin/operation-types' }
+  ];
 
   const handleAuth = async () => {
     await fetch('/api/auth', {
@@ -58,23 +61,7 @@ const Admin = () => {
 
   return (
     <div>
-      <Navbar isBordered>
-        <NavbarContent>
-          <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="sm:hidden" />
-          <NavbarBrand>
-            <Image as={NextImage} src="/hamilton-realty.png" width={50} height={50} alt="Hamilton Family Realty Logo" />
-            <p className="font-bold text-inherit ml-2">Hamilton Family Realty</p>
-          </NavbarBrand>
-        </NavbarContent>
-
-        <NavbarContent className="hidden sm:flex gap-4" justify="start">
-          <NavbarItem>
-            <Link color="foreground" href="/admin/listings">
-              Listings
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
-      </Navbar>
+      <AdminNavbar />
     </div>
   );
 };
