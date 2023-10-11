@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import NextImage from "next/image";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Card } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
 import { Spacer } from '@nextui-org/spacer';
@@ -12,11 +13,41 @@ import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 
-export default function Login() {
+const Login = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [invalidUsername, setInvalidUsername] = useState(false);
+  const [invalidPassword, setInvalidPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
 
-  const toggleVisibility = () => {
-    setShowPassword(!showPassword);
+  const toggleVisibility = () => setShowPassword(!showPassword);
+
+  const handleLogin = async () => {
+    await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password, remember })
+    }).then(res => {
+      if (res.ok) router.push('/admin');
+      else setLoading(false), setInvalidUsername(true), setInvalidPassword(true);
+    });
+  };
+
+  useEffect(() => {
+    router.prefetch('/admin');
+    const checkAuth = async () => {
+      const res = await fetch('/api/auth');
+      if (res.ok) router.push('/admin');
+    };
+
+    checkAuth();
+  }, [router]);
+
+  const handleEnterKeyPress = (event) => {
+    if (event.key === 'Enter') setLoading(true), handleLogin();
   };
 
   return (
@@ -37,12 +68,24 @@ export default function Login() {
         <h2 className="text-2xl font-bold text-center">HFR Admin Login</h2>
         <Input
           isClearable
+          isRequired
+          label="Username"
           placeholder="Username"
           variant="underlined"
           startContent={<BadgeRoundedIcon />}
+          value={username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setInvalidUsername(false);
+          }}
+          isInvalid={invalidUsername}
+          errorMessage={invalidUsername && "Incorrect username or password"}
+          onKeyDown={handleEnterKeyPress}
         />
-        <Spacer y={1} />
+        <Spacer y={3} />
         <Input
+          isRequired
+          label="Password"
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           variant="underlined"
@@ -54,18 +97,32 @@ export default function Login() {
                 : <VisibilityOffRoundedIcon onClick={() => setShowPassword(!showPassword)} />}
             </button>
           }
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setInvalidPassword(false);
+          }}
+          isInvalid={invalidPassword}
+          errorMessage={invalidPassword && "Incorrect username or password"}
+          onKeyDown={handleEnterKeyPress}
         />
         <Spacer y={2} />
-        <Checkbox color="primary">Remember Me</Checkbox>
+        <Checkbox color="primary" isSelected={remember} onValueChange={setRemember}>Remember me</Checkbox>
         <Spacer y={5} />
         <Button
           color="primary"
           variant="shadow"
           fullWidth
-        >
+          isLoading={loading}
+          onClick={() => {
+            setLoading(true);
+            handleLogin();
+          }}>
           Login
         </Button>
       </Card>
     </div>
   );
 };
+
+export default Login;
