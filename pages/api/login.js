@@ -9,7 +9,6 @@ export default async function handler(req, res) {
   }
 
   const { username, password, remember } = req.body;
-  console.log(req.body);
 
   if (!username || !password) {
     return res.status(400).json({ message: "Username and password required" });
@@ -60,7 +59,7 @@ export default async function handler(req, res) {
     );
 
     console.log(`User ${user.username} logged in`);
-    return res.status(200).json({ message: "Logged in", token });
+    return res.status(200).json({ message: "Logged in" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });

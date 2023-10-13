@@ -1,5 +1,5 @@
 import NextImage from "next/image";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Card } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
@@ -35,16 +35,6 @@ const Login = () => {
       else setLoading(false), setInvalidUsername(true), setInvalidPassword(true);
     });
   };
-
-  useEffect(() => {
-    router.prefetch('/admin');
-    const checkAuth = async () => {
-      const res = await fetch('/api/auth');
-      if (res.ok) router.push('/admin');
-    };
-
-    checkAuth();
-  }, [router]);
 
   const handleEnterKeyPress = (event) => {
     if (event.key === 'Enter') setLoading(true), handleLogin();

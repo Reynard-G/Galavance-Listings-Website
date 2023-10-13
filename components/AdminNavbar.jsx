@@ -45,7 +45,7 @@ const AdminNavbar = () => {
 
       <NavbarMenu>
         {navbarItems.map((item) => (
-          <NavbarMenuItem key={item.title} isActive={Router.pathname === item.href}>
+          <NavbarMenuItem key={item.title}>
             <Link color="foreground" className="w-full" size="lg" href={item.href}>
               {item.title}
             </Link>
