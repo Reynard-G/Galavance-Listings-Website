@@ -16,6 +16,6 @@ export default async function handler(req, res) {
     })
   );
 
-  console.log(`User ${user.username} logged out`);
+  console.log(`User logged out.`);
   return res.status(200).json({ message: "Logged out" });
 }

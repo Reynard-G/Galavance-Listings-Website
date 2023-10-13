@@ -13,6 +13,6 @@ export default function handler(req, res) {
 
     return res.status(200).json({ message: "Authorized" });
   } catch (error) {
-    return res.status(400).json({ message: "Invalid token" });
+    return res.status(400).json({ message: "Unauthorized" });
   }
 }
