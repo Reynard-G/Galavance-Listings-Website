@@ -32,7 +32,7 @@ const AdminNavbar = () => {
 
   return (
     <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
-      <NavbarContent className="md:hidden" justify="start">
+      <NavbarContent justify="start">
         <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
       </NavbarContent>
 
@@ -43,23 +43,6 @@ const AdminNavbar = () => {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent justify="end">
-        <NavbarItem className="flex md:hidden">
-          <Button size="md" color="warning" variant="flat" onClick={handleLogout}>
-            Logout
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
-
-      <NavbarContent className="hidden md:flex gap-4" justify="center">
-        {navbarItems.map((item) => (
-          <NavbarItem key={item.title} isActive={Router.pathname === item.href}>
-            <Link color="foreground" href={item.href}>
-              {item.title}
-            </Link>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
       <NavbarMenu>
         {navbarItems.map((item) => (
           <NavbarMenuItem key={item.title} isActive={Router.pathname === item.href}>
@@ -69,6 +52,14 @@ const AdminNavbar = () => {
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
+
+      <NavbarContent justify="end">
+        <NavbarItem className="flex">
+          <Button size="md" color="warning" variant="flat" onClick={handleLogout}>
+            Logout
+          </Button>
+        </NavbarItem>
+      </NavbarContent>
     </Navbar>
   );
 };
