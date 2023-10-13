@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 export async function middleware(req) {
   const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith('/admin') || pathname.startsWith('/api')) {
+  // Allow access to /login and /admin with a valid token, other than /api/login
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api') && !pathname.startsWith('/api/login')) {
     const token = req.cookies.get('token')?.value;
 
     if (!token) return NextResponse.redirect(new URL('/login', req.url));
