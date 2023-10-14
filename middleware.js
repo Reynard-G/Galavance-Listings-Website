@@ -20,14 +20,14 @@ export async function middleware(req) {
       ["verify"]
     );
 
-    const test = await crypto.subtle.verify(
+    const verified = await crypto.subtle.verify(
       "HMAC",
       secret,
       Buffer.from(token.split(".")[2], "base64url"),
       new TextEncoder().encode(token.split(".").splice(0, 2).join("."))
     );
 
-    if (!test) {
+    if (!verified) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
   }
