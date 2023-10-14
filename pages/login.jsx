@@ -19,8 +19,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [invalidUsername, setInvalidUsername] = useState(false);
-  const [invalidPassword, setInvalidPassword] = useState(false);
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [remember, setRemember] = useState(false);
 
   const toggleVisibility = () => setShowPassword(!showPassword);
@@ -32,7 +31,7 @@ const Login = () => {
       body: JSON.stringify({ username, password, remember })
     }).then(res => {
       if (res.ok) router.push('/admin');
-      else setLoading(false), setInvalidUsername(true), setInvalidPassword(true);
+      else setLoading(false), setInvalidCredentials(true);
     });
   };
 
@@ -66,10 +65,10 @@ const Login = () => {
           value={username}
           onChange={(e) => {
             setUsername(e.target.value);
-            setInvalidUsername(false);
+            setInvalidCredentials(false);
           }}
-          isInvalid={invalidUsername}
-          errorMessage={invalidUsername && "Incorrect username or password"}
+          isInvalid={invalidCredentials}
+          errorMessage={invalidCredentials && "Incorrect username or password"}
           onKeyDown={handleEnterKeyPress}
         />
         <Spacer y={3} />
@@ -90,10 +89,10 @@ const Login = () => {
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
-            setInvalidPassword(false);
+            setInvalidCredentials(false);
           }}
-          isInvalid={invalidPassword}
-          errorMessage={invalidPassword && "Incorrect username or password"}
+          isInvalid={invalidCredentials}
+          errorMessage={invalidCredentials && "Incorrect username or password"}
           onKeyDown={handleEnterKeyPress}
         />
         <Spacer y={2} />
