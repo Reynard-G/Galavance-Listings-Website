@@ -12,7 +12,7 @@ import FactoryRoundedIcon from '@mui/icons-material/FactoryRounded';
 import LocalGroceryStoreRoundedIcon from '@mui/icons-material/LocalGroceryStoreRounded';
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 
-const ListingCard = ({ listing }) => {
+const ListingCard = ({ listing, link }) => {
   const iconPropertyDict = {
     "House": <HomeRoundedIcon fontSize='md' />,
     "Apartment": <ApartmentRoundedIcon fontSize='md' />,
@@ -25,7 +25,7 @@ const ListingCard = ({ listing }) => {
     <Card
       key={listing.plot}
       isPressable
-      onClick={() => window.open(`/properties/${listing.plot}`, '_blank')}
+      onClick={() => window.open(link, '_blank')}
       className='shadow-md !transition !duration-300 hover:shadow-2xl animate-fade'
     >
       <div className="carousel-container relative w-full" onClick={(e) => e.stopPropagation()}>

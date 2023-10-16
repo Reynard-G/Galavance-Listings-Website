@@ -51,7 +51,7 @@ const Listings = () => {
         )}
         <div className="listings-container grid auto-rows-auto grid-cols-1 gap-2 p-4 md:grid-cols-1 2xl:grid-cols-2">
           {filteredListings.map((listing) => (
-            <ListingCard key={listing.plot} listing={listing} />
+            <ListingCard key={listing.plot} listing={listing} link={`/properties/${listing.plot}`} />
           ))}
         </div>
       </div>
