@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { isMobile } from 'react-device-detect';
 
 import ListingsContext from '@context/ListingsContext';
 
@@ -22,7 +23,7 @@ const MapComponent = () => {
   const { listings, filteredListings, setListingsInBounds } = useContext(ListingsContext);
 
   const getListingsInBounds = (e) => {
-    if (!setListingsInBounds) return;
+    if (isMobile) return;
     const bounds = e.target.getBounds();
     const listingsInBounds = listings.filter(listing => bounds.contains(listing.location));
     setListingsInBounds(listingsInBounds);

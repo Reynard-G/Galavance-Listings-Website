@@ -1,15 +1,16 @@
 import NextImage from "next/image";
 import { Image } from "@nextui-org/image";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 const imageLoader = ({ src, width }) => {
   return `https://ik.imagekit.io/milklegend/tr:w-${width}/${src}`;
 }
 
-const Carousel = ({ listing }) => {
+const ImageCarousel = ({ listing }) => {
   const width = 480;
   const height = 240;
 
@@ -20,10 +21,13 @@ const Carousel = ({ listing }) => {
       lazyPreloadPrevNext={1}
       loop={true}
       pagination={{ dynamicBullets: true }}
-      modules={[Pagination]}
+      navigation={true}
+      modules={[Pagination, Navigation]}
       style={{
         '--swiper-pagination-color': '#D4D4D8',
         '--swiper-pagination-bullet-inactive-color': '#D4D4D8',
+        '--swiper-navigation-color': '#D4D4D8',
+        '--swiper-navigation-size': '1.5rem'
       }}
     >
       {listing.images.map((image, index) => (
@@ -35,7 +39,6 @@ const Carousel = ({ listing }) => {
             priority={index === 0 ? true : false}
             width={width}
             height={height}
-            isZoomed
           />
         </SwiperSlide>
       ))}
@@ -43,4 +46,4 @@ const Carousel = ({ listing }) => {
   );
 };
 
-export default Carousel;
+export default ImageCarousel;
