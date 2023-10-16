@@ -1,4 +1,7 @@
+import { useContext } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+
+import ListingsContext from '@context/ListingsContext';
 
 L.Projection.Minecraft = {
   project: function (latlng) {
@@ -15,7 +18,9 @@ L.CRS.Minecraft = L.extend({}, L.CRS.Simple, {
   transformation: new L.Transformation(1 / 32, 0, 1 / 32, 0),
 });
 
-const MapComponent = ({ listings, filteredListings, setListingsInBounds }) => {
+const MapComponent = () => {
+  const { listings, filteredListings, setListingsInBounds } = useContext(ListingsContext);
+
   const getListingsInBounds = (e) => {
     if (!setListingsInBounds) return;
     const bounds = e.target.getBounds();
@@ -64,7 +69,7 @@ const MapComponent = ({ listings, filteredListings, setListingsInBounds }) => {
           icon={
             L.divIcon({
               className: 'marker-container',
-              html: `<div class="marker ${listing.status === 'Sale' ? 'marker-sale' : 'marker-rent'}">${listing.plot}</div>`,
+              html: `<div class="marker ${listing.status === 'For Sale' ? 'marker-sale' : 'marker-rent'}">${listing.plot}</div>`,
               iconSize: [40, 20],
               iconAnchor: [20, 20],
             })
@@ -76,10 +81,6 @@ const MapComponent = ({ listings, filteredListings, setListingsInBounds }) => {
       <MapEvents />
     </MapContainer>
   );
-};
-
-MapComponent.defaultProps = {
-  setListingsInBounds: null,
 };
 
 export default MapComponent;

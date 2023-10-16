@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useContext } from 'react';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { Divider } from '@nextui-org/divider';
 import { Chip } from '@nextui-org/chip';
@@ -6,6 +6,8 @@ import Carousel from './Carousel';
 import SortButton from './SortButton';
 import FiltersButton from './FiltersButton';
 import { sortAndFilter } from 'lib/ListingsUtils';
+
+import ListingsContext from '@context/ListingsContext';
 
 import SquareFootRoundedIcon from '@mui/icons-material/SquareFootRounded';
 import HotelRoundedIcon from '@mui/icons-material/HotelRounded';
@@ -16,8 +18,8 @@ import FactoryRoundedIcon from '@mui/icons-material/FactoryRounded';
 import LocalGroceryStoreRoundedIcon from '@mui/icons-material/LocalGroceryStoreRounded';
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 
-const Listings = ({ listings, setFilteredListings }) => {
-  const [processedListings, setProcessedListings] = useState(listings);
+const Listings = () => {
+  const { listingsInBounds, filteredListings, setFilteredListings } = useContext(ListingsContext);
   const [sortValue, setSortValue] = useState('');
   const [filters, setFilters] = useState({
     propertyStatus: "For Sale",
@@ -35,11 +37,10 @@ const Listings = ({ listings, setFilteredListings }) => {
   });
 
   useMemo(() => {
-    const sortedListings = sortAndFilter(listings, filters, sortValue);
+    const sortedListings = sortAndFilter(listingsInBounds, filters, sortValue);
 
-    setProcessedListings(sortedListings);
     setFilteredListings(sortedListings);
-  }, [listings, filters, sortValue, setFilteredListings]);
+  }, [listingsInBounds, filters, sortValue, setFilteredListings]);
 
   const iconPropertyDict = useMemo(() => ({
     "House": <HomeRoundedIcon fontSize='md' />,
@@ -54,7 +55,7 @@ const Listings = ({ listings, setFilteredListings }) => {
       <div className="flex items-center justify-between py-5 flex-col flex">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-200 sm:truncate lg:text-3xl animate-fade animate-ease-in-out animate-duration-1000">Properties</h2>
-          <p className="lg:text-md mt-3 text-sm text-gray-400 md:text-center animate-fade-up"><strong>{processedListings.length}</strong> listings found</p>
+          <p className="lg:text-md mt-3 text-sm text-gray-400 md:text-center animate-fade-up"><strong>{filteredListings.length}</strong> listings found</p>
         </div>
         <div className="flex items-center justify-between p-2 gap-2 w-3/4">
           <SortButton sortValue={sortValue} setSortValue={setSortValue} />
@@ -62,14 +63,14 @@ const Listings = ({ listings, setFilteredListings }) => {
         </div>
       </div>
       <div className="grid-container flex-grow overflow-auto no-scrollbar h-full">
-        {processedListings.length === 0 && (
+        {filteredListings.length === 0 && (
           <div className="flex flex-col items-center justify-center h-1/2">
             <h3 className="text-2xl font-bold animate-fade-left animate-ease-in-out">No listings found</h3>
             <p className="text-sm text-gray-500 animate-fade-up animate-delay-200">Try changing your filters or hovering over a larger area</p>
           </div>
         )}
         <div className="listings-container grid auto-rows-auto grid-cols-1 gap-2 p-4 md:grid-cols-1 2xl:grid-cols-2">
-          {processedListings.map((listing) => (
+          {filteredListings.map((listing) => (
             <Card
               key={listing.plot}
               isPressable
@@ -118,4 +119,4 @@ const Listings = ({ listings, setFilteredListings }) => {
   );
 };
 
-export default Listings;;
+export default Listings;
