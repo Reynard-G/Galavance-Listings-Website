@@ -5,7 +5,14 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+const imageLoader = ({ src, width }) => {
+  return `https://ik.imagekit.io/milklegend/tr:w-${width}/${src}`;
+}
+
 const Carousel = ({ listing }) => {
+  const width = 480;
+  const height = 240;
+
   return (
     <Swiper
       spaceBetween={50}
@@ -23,11 +30,11 @@ const Carousel = ({ listing }) => {
         <SwiperSlide key={image}>
           <Image
             as={NextImage}
-            src={image}
+            src={imageLoader({ src: image, width: width })}
             alt={listing.plot}
             priority={index === 0 ? true : false}
-            width={400}
-            height={200}
+            width={width}
+            height={height}
             isZoomed
           />
         </SwiperSlide>

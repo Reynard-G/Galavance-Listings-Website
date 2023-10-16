@@ -56,12 +56,12 @@ const FiltersButton = ({ filters, setFilters }) => {
 
   const handleBathsChange = (value, type) => {
     // If the user already selected the value, remove it
-    if (filters[type].baths.includes(value[0])) {
+    if (filters[type].bathrooms.includes(value[0])) {
       setFilters(prevFilters => ({
         ...prevFilters,
         [type]: {
           ...prevFilters[type],
-          baths: []
+          bathrooms: []
         }
       }));
       return;
@@ -71,7 +71,7 @@ const FiltersButton = ({ filters, setFilters }) => {
       ...prevFilters,
       [type]: {
         ...prevFilters[type],
-        baths: value
+        bathrooms: value
       }
     }));
   };
@@ -117,7 +117,7 @@ const FiltersButton = ({ filters, setFilters }) => {
             onSelectionChange={(propertyStatus) => handlePropertyStatusChange(propertyStatus)}
             selectedKey={filters.propertyStatus}
           >
-            <Tab key="sale" title="For Sale">
+            <Tab key="For Sale" title="For Sale">
               <Divider />
               <ModalBody>
                 <h3 className="text-2xl font-bold text-left">Price</h3>
@@ -135,8 +135,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue }) => (
                     <Button
                       key={type}
-                      variant={filters.sale.beds.includes(type) ? "solid" : "ghost"}
-                      onClick={() => handleBedsChange([type], "sale")}
+                      variant={filters["For Sale"].beds.includes(type) ? "solid" : "ghost"}
+                      onClick={() => handleBedsChange([type], "For Sale")}
                     >
                       {textValue}
                     </Button>
@@ -154,8 +154,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue }) => (
                     <Button
                       key={type}
-                      variant={filters.sale.baths.includes(type) ? "solid" : "ghost"}
-                      onClick={() => handleBathsChange([type], "sale")}
+                      variant={filters["For Sale"].bathrooms.includes(type) ? "solid" : "ghost"}
+                      onClick={() => handleBathsChange([type], "For Sale")}
                     >
                       {textValue}
                     </Button>
@@ -173,8 +173,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue, icon }) => (
                     <Button
                       key={type}
-                      variant={filters.sale.homeType === type ? "solid" : "ghost"}
-                      onClick={() => handleHomeTypeChange(type, "sale")}
+                      variant={filters["For Sale"].homeType === type ? "solid" : "ghost"}
+                      onClick={() => handleHomeTypeChange(type, "For Sale")}
                     >
                       {icon}
                       {textValue}
@@ -183,7 +183,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                 </div>
               </ModalBody>
             </Tab>
-            <Tab key="rent" title="For Rent">
+            <Tab key="For Rent" title="For Rent">
               <Divider />
               <ModalBody>
                 <h3 className="text-2xl font-bold text-left">Price</h3>
@@ -201,8 +201,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue }) => (
                     <Button
                       key={type}
-                      variant={filters.rent.beds.includes(type) ? "solid" : "ghost"}
-                      onClick={() => handleBedsChange([type], "rent")}
+                      variant={filters["For Rent"].beds.includes(type) ? "solid" : "ghost"}
+                      onClick={() => handleBedsChange([type], "For Rent")}
                     >
                       {textValue}
                     </Button>
@@ -220,8 +220,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue }) => (
                     <Button
                       key={type}
-                      variant={filters.rent.baths.includes(type) ? "solid" : "ghost"}
-                      onClick={() => handleBathsChange([type], "rent")}
+                      variant={filters["For Rent"].bathrooms.includes(type) ? "solid" : "ghost"}
+                      onClick={() => handleBathsChange([type], "For Rent")}
                     >
                       {textValue}
                     </Button>
@@ -236,8 +236,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue, icon }) => (
                     <Button
                       key={type}
-                      variant={filters.rent.homeType === type ? "solid" : "ghost"}
-                      onClick={() => handleHomeTypeChange(type, "rent")}
+                      variant={filters["For Rent"].homeType === type ? "solid" : "ghost"}
+                      onClick={() => handleHomeTypeChange(type, "For Rent")}
                     >
                       {icon}
                       {textValue}

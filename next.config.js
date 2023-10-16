@@ -6,7 +6,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = withBundleAnalyzer({
   reactStrictMode: true,
   images: {
-    domains: ['i.postimg.cc'],
+    domains: ['ik.imagekit.io'],
   },
 });
 

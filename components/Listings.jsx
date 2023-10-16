@@ -5,6 +5,7 @@ import { Chip } from '@nextui-org/chip';
 import Carousel from './Carousel';
 import SortButton from './SortButton';
 import FiltersButton from './FiltersButton';
+import { sortAndFilter } from 'lib/ListingsUtils';
 
 import SquareFootRoundedIcon from '@mui/icons-material/SquareFootRounded';
 import HotelRoundedIcon from '@mui/icons-material/HotelRounded';
@@ -19,61 +20,22 @@ const Listings = ({ listings, setFilteredListings }) => {
   const [processedListings, setProcessedListings] = useState(listings);
   const [sortValue, setSortValue] = useState('');
   const [filters, setFilters] = useState({
-    propertyStatus: "sale",
-    sale: {
+    propertyStatus: "For Sale",
+    "For Sale": {
       price: [0, 1000000],
       beds: [],
-      baths: [],
+      bathrooms: [],
       homeType: ""
     },
-    rent: {
+    "For Rent": {
       price: [0, 10000],
       beds: [],
-      baths: []
+      bathrooms: []
     }
   });
 
   useMemo(() => {
-    // Filter
-    let filteredListings = [...listings];
-    // Filter by property status
-    filteredListings = filteredListings.filter(listing => listing.status.toLowerCase() === filters.propertyStatus.toLowerCase());
-    // Filter by price & price ranges
-    filteredListings = filteredListings.filter(listing => listing.price >= filters[filters.propertyStatus].price[0] && listing.price <= filters[filters.propertyStatus].price[1] || (filters[filters.propertyStatus].price[0] <= listing.price[0] && listing.price[0] <= filters[filters.propertyStatus].price[1]) || (filters[filters.propertyStatus].price[0] <= listing.price[1] && listing.price[1] <= filters[filters.propertyStatus].price[1]));
-    // Filter by beds
-    if (filters[filters.propertyStatus].beds.length > 0) {
-      filteredListings = filteredListings.filter(listing => filters[filters.propertyStatus].beds.includes(listing.beds));
-    }
-    // Filter by baths
-    if (filters[filters.propertyStatus].baths.length > 0) {
-      filteredListings = filteredListings.filter(listing => filters[filters.propertyStatus].baths.includes(listing.baths));
-    }
-    // Filter by home type
-    if (filters[filters.propertyStatus].homeType !== "" && filters[filters.propertyStatus].homeType != null) {
-      filteredListings = filteredListings.filter(listing => listing.propertyType.toLowerCase() === filters[filters.propertyStatus].homeType);
-    }
-
-    // Sort
-    let sortedListings = [...filteredListings];
-    switch (sortValue) {
-      case 'newest':
-        sortedListings.sort((a, b) => b.listedOn - a.listedOn);
-        break;
-      case 'priceHigh':
-        sortedListings.sort((a, b) => b.price - a.price);
-        break;
-      case 'priceLow':
-        sortedListings.sort((a, b) => a.price - b.price);
-        break;
-      case 'sizeHigh':
-        sortedListings.sort((a, b) => b.propertySizeSq - a.propertySizeSq);
-        break;
-      case 'sizeLow':
-        sortedListings.sort((a, b) => a.propertySizeSq - b.propertySizeSq);
-        break;
-      default:
-        break;
-    }
+    const sortedListings = sortAndFilter(listings, filters, sortValue);
 
     setProcessedListings(sortedListings);
     setFilteredListings(sortedListings);
@@ -115,9 +77,9 @@ const Listings = ({ listings, setFilteredListings }) => {
               className='shadow-md !transition !duration-300 hover:shadow-2xl animate-fade'
             >
               <div className="carousel-container relative w-full">
-                {listing.propertyType &&
-                  <Chip startContent={iconPropertyDict[listing.propertyType]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
-                    {listing.propertyType}
+                {listing.property_type &&
+                  <Chip startContent={iconPropertyDict[listing.property_type]} color="secondary" radius="sm" size="sm" variant="shadow" className="absolute bottom-2 left-2 z-10">
+                    {listing.property_type}
                   </Chip>
                 }
                 <Carousel listing={listing} />
@@ -126,7 +88,7 @@ const Listings = ({ listings, setFilteredListings }) => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <SquareFootRoundedIcon className="mr-1" fontSize='md' />
-                    <p className="text-sm text-gray-500">{listing.propertySizeSq} m<sup>2</sup></p>
+                    <p className="text-sm text-gray-500">{listing.sq_meters} m<sup>2</sup></p>
                   </div>
                   <div className="flex items-center">
                     <HotelRoundedIcon className="mr-1" fontSize='md' />
@@ -134,15 +96,15 @@ const Listings = ({ listings, setFilteredListings }) => {
                   </div>
                   <div className="flex items-center">
                     <ShowerRoundedIcon className="mr-1" fontSize='md' />
-                    <p className="text-sm text-gray-500">{listing.baths} ba</p>
+                    <p className="text-sm text-gray-500">{listing.bathrooms} ba</p>
                   </div>
                 </div>
               </CardBody>
               <Divider />
               <CardHeader className="pt-2">
-                <p className="text-lg font-bold">{listing.price[1]
-                  ? `${Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listing.price[0])} - ${Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listing.price[1])}`
-                  : Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listing.price)}</p>
+                <p className="text-lg font-bold">
+                  {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listing.price[0])} {listing.price[1] && `- ${Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listing.price[1])}`}
+                </p>
               </CardHeader>
               <CardFooter className="flex items-center justify-between pt-0">
                 <p className="text-sm text-gray-500">{listing.plot}</p>
