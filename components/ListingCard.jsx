@@ -60,7 +60,7 @@ const ListingCard = ({ listing, link }) => {
       </CardHeader>
       <CardFooter className="flex items-center justify-between pt-0">
         <p className="text-sm text-gray-500">{listing.plot}</p>
-        <p className="text-sm text-gray-500">{listing.city}</p>
+        <p className="text-sm text-gray-500">{listing.town}</p>
       </CardFooter>
     </Card>
   );

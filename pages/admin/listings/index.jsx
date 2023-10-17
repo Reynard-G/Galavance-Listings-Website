@@ -71,6 +71,7 @@ import sql from "@lib/db";
 export async function getServerSideProps() {
   const rows = await sql`
     SELECT listings.*,
+      EXTRACT(epoch FROM listings.updated_at) as updated_at,
       EXTRACT(epoch FROM listings.created_at) as created_at,
       property_types.name as property_type,
       towns.name as town,
