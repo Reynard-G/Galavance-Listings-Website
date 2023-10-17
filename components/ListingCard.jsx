@@ -40,15 +40,15 @@ const ListingCard = ({ listing, link }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <SquareFootRoundedIcon className="mr-1" fontSize='md' />
-            <p className="text-sm text-gray-500">{listing.sq_meters} m<sup>2</sup></p>
+            <p className="text-sm text-gray-400">{listing.sq_meters} m<sup>2</sup></p>
           </div>
           <div className="flex items-center">
             <HotelRoundedIcon className="mr-1" fontSize='md' />
-            <p className="text-sm text-gray-500">{listing.beds} bds</p>
+            <p className="text-sm text-gray-400">{listing.beds} bds</p>
           </div>
           <div className="flex items-center">
             <ShowerRoundedIcon className="mr-1" fontSize='md' />
-            <p className="text-sm text-gray-500">{listing.bathrooms} ba</p>
+            <p className="text-sm text-gray-400">{listing.bathrooms} ba</p>
           </div>
         </div>
       </CardBody>
@@ -59,8 +59,8 @@ const ListingCard = ({ listing, link }) => {
         </p>
       </CardHeader>
       <CardFooter className="flex items-center justify-between pt-0">
-        <p className="text-sm text-gray-500">{listing.plot}</p>
-        <p className="text-sm text-gray-500">{listing.town}</p>
+        <p className="text-sm text-gray-400">{listing.plot}</p>
+        <p className="text-sm text-gray-400">{listing.town}</p>
       </CardFooter>
     </Card>
   );

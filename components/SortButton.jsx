@@ -21,7 +21,7 @@ const SortButton = ({ setSortValue }) => {
       {sortOptions.map((option) => (
         <SelectItem key={option.value} textValue={option.textValue}>
           <p className="text-sm">{option.label}</p>
-          <p className="text-tiny text-gray-500">{option.subLabel}</p>
+          <p className="text-tiny text-gray-400">{option.subLabel}</p>
         </SelectItem>
       ))}
     </Select>

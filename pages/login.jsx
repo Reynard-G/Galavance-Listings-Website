@@ -56,8 +56,6 @@ const Login = () => {
         <Spacer y={5} />
         <h2 className="text-2xl font-bold text-center">HFR Admin Login</h2>
         <Input
-          isClearable
-          isRequired
           label="Username"
           placeholder="Username"
           variant="underlined"
@@ -73,7 +71,6 @@ const Login = () => {
         />
         <Spacer y={3} />
         <Input
-          isRequired
           label="Password"
           type={showPassword ? "text" : "password"}
           placeholder="Password"

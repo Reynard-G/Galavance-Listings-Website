@@ -43,7 +43,7 @@ const AdminListings = ({ listings }) => {
 
       <div>
         <AdminNavbar />
-        <Tabs fullWidth variant="bordered" className="flex w-1/2 justify-center mx-auto mt-5">
+        <Tabs fullWidth variant="bordered" className="flex w-full md:w-1/2 justify-center mx-auto mt-5">
           <Tab title="Listings">
             <div className="flex items-center justify-between p-2 w-full md:w-1/2 mx-auto gap-2">
               <SearchBar setSearch={setSearch} />
