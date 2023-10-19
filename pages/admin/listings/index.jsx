@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import Router from "next/router";
 import { Tabs, Tab } from "@nextui-org/tabs";
+import { Card, CardBody, CardFooter } from "@nextui-org/card";
+import { Button } from "@nextui-org/button";
 import AdminNavbar from "@components/AdminNavbar";
 import SortButton from "@components/SortButton";
 import FiltersButton from "@components/FiltersButton";
 import SearchBar from "@components/SearchBar";
 import ListingCard from "@components/ListingCard";
 import { sortAndFilter } from "@lib/ListingsUtils";
+
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 const AdminListings = ({ listings }) => {
   const [processedListings, setProcessedListings] = useState(listings);
@@ -52,7 +58,32 @@ const AdminListings = ({ listings }) => {
             </div>
             <div className="listings-container grid auto-rows-auto gap-2 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {processedListings.map((listing) => (
-                <ListingCard key={listing.plot} listing={listing} link={`/admin/listings/edit/${listing.plot}`} />
+                <Card key={listing.plot} shadow>
+                  <CardBody className="pb-0">
+                    <ListingCard key={listing.plot} listing={listing} />
+                  </CardBody>
+                  <CardFooter className="flex gap-2">
+                    <Button
+                      size="sm"
+                      color="primary"
+                      variant="ghost"
+                      startContent={<EditRoundedIcon fontSize="small" />}
+                      className="w-1/2"
+                      onClick={() => Router.push(`/admin/listings/edit/${listing.plot}`)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      color="danger"
+                      variant="ghost"
+                      startContent={<DeleteRoundedIcon fontSize="small" />}
+                      className="w-1/2"
+                    >
+                      Delete
+                    </Button>
+                  </CardFooter>
+                </Card>
               ))}
             </div>
           </Tab>

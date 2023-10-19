@@ -25,7 +25,7 @@ const ListingCard = ({ listing, link }) => {
     <Card
       key={listing.plot}
       isPressable
-      onClick={() => window.open(link, '_blank')}
+      onClick={() => link && window.open(link, '_blank')}
       className='shadow-md !transition !duration-300 hover:shadow-2xl animate-fade'
     >
       <div className="carousel-container relative w-full" onClick={(e) => e.stopPropagation()}>

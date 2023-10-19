@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Router from 'next/router';
 import AdminNavbar from '@components/AdminNavbar';
 import { Input } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
@@ -10,7 +11,9 @@ import ListingCard from '@components/ListingCard';
 
 const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
   const [form, setForm] = useState({
+    id: listing.id,
     plot: listing.plot,
+    location: listing.location,
     status: listing.status,
     price: listing.price,
     beds: listing.beds,
@@ -20,8 +23,64 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
     town: listing.town,
     images: listing.images
   });
-
   const [priceRange, setPriceRange] = useState(false);
+  const [isSubmitDisabled, setSubmitDisabled] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const requiredFields = ['plot', 'location', 'status', 'price', 'property_type', 'town'];
+    const isFieldInvalid = (field) => !form[field];
+
+    setSubmitDisabled(false);
+
+    if (form.price[0] == undefined) {
+      setSubmitDisabled(true);
+    } else if (priceRange && form.price[1] == undefined) {
+      setSubmitDisabled(true);
+    }
+
+    if (requiredFields.some(isFieldInvalid)) {
+      setSubmitDisabled(true);
+    }
+
+    if (priceRange && form.price[1] <= form.price[0]) {
+      setSubmitDisabled(true);
+    }
+
+    const bounds = { x: 6000, z: 6000 };
+    if (form.location.some((coord) => coord < -bounds.x || coord > bounds.x)) {
+      setSubmitDisabled(true);
+    }
+
+    if (form.price.some((price) => price < 0)) {
+      setSubmitDisabled(true);
+    }
+  }, [form, priceRange]);
+
+  const isValueInvalid = (value) => {
+    return value == undefined || value == "";
+  }
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    setIsSubmitting(true);
+
+    await fetch('/api/editListing', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form)
+    }).then((res) => {
+      if (res.status == 200) {
+        Router.push('/admin/listings');
+      } else {
+        setIsSubmitting(false);
+      }
+    }).catch((err) => {
+      console.log(err);
+      setIsSubmitting(false);
+    });
+  };
 
   const handlePriceRange = () => {
     setPriceRange(!priceRange);
@@ -33,11 +92,11 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
 
   const replaceIdsWithNames = (listing) => {
     const newListing = { ...listing };
-    newListing.town = towns.find((town) => town.id == listing.town).name;
-    newListing.property_type = propertyTypes.find((propertyType) => propertyType.id == listing.property_type).name;
+    newListing.town = towns.find((town) => town.id == listing.town)?.name || "Unknown";
+    newListing.property_type = propertyTypes.find((propertyType) => propertyType.id == listing.property_type)?.name || "Unknown";
 
     return newListing;
-  }
+  };
 
   return (
     <>
@@ -73,6 +132,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
             placeholder="Plot"
             variant="faded"
             isRequired
+            isInvalid={isValueInvalid(form.plot)}
             defaultValue={listing.plot}
             onValueChange={(value) => setForm({ ...form, plot: value })}
           />
@@ -123,12 +183,13 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
                 placeholder={priceRange ? "Min Price" : "Price"}
                 variant="faded"
                 isRequired
+                isInvalid={isValueInvalid(form.price[0])}
                 defaultValue={listing.price[0]}
                 onValueChange={(value) => {
                   if (priceRange && form.price[1]) {
-                    setForm({ ...form, price: [value, form.price[1]] });
+                    setForm({ ...form, price: [value || undefined, form.price[1]] });
                   } else {
-                    setForm({ ...form, price: [value] });
+                    setForm({ ...form, price: [value || undefined] });
                   }
                 }}
                 startContent={
@@ -147,9 +208,10 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
                     placeholder="Max Price"
                     variant="faded"
                     isRequired
+                    isInvalid={isValueInvalid(form.price[1])}
                     defaultValue={listing.price[1]}
                     onValueChange={(value) => {
-                      setForm({ ...form, price: [form.price[0], value] });
+                      setForm({ ...form, price: [form.price[0], value || undefined] });
                     }}
                     startContent={
                       <div className="pointer-events-none flex items-center">
@@ -177,8 +239,9 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
                 placeholder="x"
                 variant="faded"
                 isRequired
+                isInvalid={isValueInvalid(form.location[0])}
                 defaultValue={listing.location[0]}
-                onValueChange={(value) => setForm({ ...form, location: [value || 0, form.location?.[1] || 0] })}
+                onValueChange={(value) => setForm({ ...form, location: [value, form.location?.[1]] })}
                 className="w-1/2 mr-2"
                 startContent={
                   <div className="pointer-events-none flex items-center">
@@ -193,8 +256,9 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
                 placeholder="z"
                 variant="faded"
                 isRequired
+                isInvalid={isValueInvalid(form.location[1])}
                 defaultValue={listing.location[1]}
-                onValueChange={(value) => setForm({ ...form, location: [form.location?.[0] || 0, value || 0] })}
+                onValueChange={(value) => setForm({ ...form, location: [form.location?.[0], value] })}
                 className="w-1/2 ml-2"
                 startContent={
                   <div className="pointer-events-none flex items-center">
@@ -208,8 +272,9 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
             label="Property Status"
             variant="faded"
             isRequired
+            isInvalid={isValueInvalid(form.status)}
             defaultSelectedKeys={[listing.status.toString()]}
-            onSelectionChange={(value) => setForm({ ...form, status: value.currentKey })}
+            onSelectionChange={(value) => value.size > 0 ? setForm({ ...form, status: value.currentKey }) : setForm({ ...form, status: null })}
           >
             {statuses.map((status) => (
               <SelectItem key={status.id} value={status.id}>{status.name}</SelectItem>
@@ -219,8 +284,9 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
             label="Property Type"
             variant="faded"
             isRequired
+            isInvalid={isValueInvalid(form.property_type)}
             defaultSelectedKeys={[listing.property_type.toString()]}
-            onSelectionChange={(value) => setForm({ ...form, property_type: value.currentKey })}
+            onSelectionChange={(value) => value.size > 0 ? setForm({ ...form, property_type: value.currentKey }) : setForm({ ...form, property_type: null })}
           >
             {propertyTypes.map((propertyType) => (
               <SelectItem key={propertyType.id} value={propertyType.id}>{propertyType.name}</SelectItem>
@@ -230,8 +296,9 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
             label="Town"
             variant="faded"
             isRequired
+            isInvalid={isValueInvalid(form.town)}
             defaultSelectedKeys={[listing.town.toString()]}
-            onSelectionChange={(value) => setForm({ ...form, town: value.currentKey })}
+            onSelectionChange={(value) => value.size > 0 ? setForm({ ...form, town: value.currentKey }) : setForm({ ...form, town: null })}
             className="col-span-2"
           >
             {towns.map((town) => (
@@ -239,8 +306,10 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
             ))}
           </Select>
           {/*
-            * Adding/Removing/Reordering Images are not implemented yet
+            * Reordering Images are not implemented yet
+            * Adding/Removing Images through media library?
           */}
+          <Button size="md" color="primary" isDisabled={isSubmitDisabled} isLoading={isSubmitting} className="col-span-2" onClick={handleFormSubmit}>Submit</Button>
         </div>
       </div>
     </>
@@ -249,7 +318,19 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
 
 export default EditListing;
 
-import sql from "@lib/db";
+import sql from '@lib/db';
+
+export async function getStaticPaths() {
+  const listings = await sql`
+    SELECT plot FROM listings
+  `;
+
+  const paths = listings.map((listing) => ({
+    params: { plot: listing.plot }
+  }));
+
+  return { paths, fallback: 'blocking' };
+}
 
 export async function getStaticProps({ params }) {
   const listing = (await sql`
@@ -258,6 +339,13 @@ export async function getStaticProps({ params }) {
       EXTRACT(epoch FROM created_at) as created_at
     FROM listings WHERE plot = ${params.plot}
   `)[0];
+
+  if (!listing) {
+    return {
+      notFound: true,
+    }
+  }
+
   const statuses = (await sql`
     SELECT *,
       EXTRACT(epoch FROM created_at) as created_at
@@ -282,16 +370,4 @@ export async function getStaticProps({ params }) {
       towns
     }
   };
-}
-
-export async function getStaticPaths() {
-  const listings = await sql`
-    SELECT plot FROM listings
-  `;
-
-  const paths = listings.map((listing) => ({
-    params: { plot: listing.plot }
-  }));
-
-  return { paths, fallback: 'blocking' };
 }
