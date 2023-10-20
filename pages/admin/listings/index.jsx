@@ -9,12 +9,13 @@ import SortButton from "@components/SortButton";
 import FiltersButton from "@components/FiltersButton";
 import SearchBar from "@components/SearchBar";
 import ListingCard from "@components/ListingCard";
+import ListingDeleteButton from "@components/ListingDeleteButton";
 import { sortAndFilter } from "@lib/ListingsUtils";
 
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 const AdminListings = ({ listings }) => {
+  const [isEditLoading, setIsEditLoading] = useState({});
   const [processedListings, setProcessedListings] = useState(listings);
   const [search, setSearch] = useState("");
   const [sortValue, setSortValue] = useState("");
@@ -49,6 +50,7 @@ const AdminListings = ({ listings }) => {
 
       <div>
         <AdminNavbar />
+
         <Tabs fullWidth variant="bordered" className="flex w-full md:w-1/2 justify-center mx-auto mt-5">
           <Tab title="Listings">
             <div className="flex items-center justify-between p-2 w-full md:w-1/2 mx-auto gap-2">
@@ -67,21 +69,22 @@ const AdminListings = ({ listings }) => {
                       size="sm"
                       color="primary"
                       variant="ghost"
-                      startContent={<EditRoundedIcon fontSize="small" />}
+                      isLoading={isEditLoading[listing.plot]}
+                      startContent={!isEditLoading[listing.plot] && <EditRoundedIcon fontSize="small" />}
                       className="w-1/2"
-                      onClick={() => Router.push(`/admin/listings/edit/${listing.plot}`)}
+                      onClick={async () => {
+                        setIsEditLoading({ ...isEditLoading, [listing.plot]: true });
+                        await Router.push(`/admin/listings/edit/${listing.plot}`);
+                        setIsEditLoading({ ...isEditLoading, [listing.plot]: false });
+                      }}
                     >
                       Edit
                     </Button>
-                    <Button
-                      size="sm"
-                      color="danger"
-                      variant="ghost"
-                      startContent={<DeleteRoundedIcon fontSize="small" />}
-                      className="w-1/2"
-                    >
-                      Delete
-                    </Button>
+                    <ListingDeleteButton
+                      id={listing.id}
+                      plot={listing.plot}
+                      onDelete={() => Router.replace(Router.asPath)}
+                    />
                   </CardFooter>
                 </Card>
               ))}

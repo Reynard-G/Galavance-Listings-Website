@@ -5,6 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = withBundleAnalyzer({
   reactStrictMode: true,
+  swcMinify: true,
   images: {
     domains: ['ik.imagekit.io'],
   },
