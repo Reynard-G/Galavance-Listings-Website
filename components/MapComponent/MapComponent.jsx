@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { isMobile } from 'react-device-detect';
+import Minimap from '@components/MapComponent/Minimap';
 
 import ListingsContext from '@context/ListingsContext';
 
@@ -77,8 +78,8 @@ const MapComponent = () => {
           }
         >
         </Marker>
-      ))
-      }
+      ))}
+      <Minimap crs={L.CRS.Minecraft} />
       <MapEvents />
     </MapContainer>
   );
