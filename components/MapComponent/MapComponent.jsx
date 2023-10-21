@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { isMobile } from 'react-device-detect';
 import Minimap from '@components/MapComponent/Minimap';
@@ -22,6 +22,7 @@ L.CRS.Minecraft = L.extend({}, L.CRS.Simple, {
 
 const MapComponent = () => {
   const { listings, filteredListings, setListingsInBounds } = useContext(ListingsContext);
+  const animateRef = useRef(true);
 
   const getListingsInBounds = (e) => {
     if (isMobile) return;
@@ -33,7 +34,9 @@ const MapComponent = () => {
   const MapEvents = () => {
     useMapEvents({
       click(e) {
-        console.log(`${e.latlng.lat}, ${e.latlng.lng}`);
+        // Set view to clicked location
+        const map = e.target;
+        map.setView(e.latlng, map.getZoom(), { animate: animateRef.current || false });
       },
       moveend(e) {
         getListingsInBounds(e);
