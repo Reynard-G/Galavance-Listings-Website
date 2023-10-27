@@ -4,17 +4,19 @@ import Router from "next/router";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
+
 import AdminNavbar from "@components/AdminNavbar";
 import SortButton from "@components/SortButton";
 import FiltersButton from "@components/FiltersButton";
 import SearchBar from "@components/SearchBar";
 import ListingCard from "@components/ListingCard";
 import ListingDeleteButton from "@components/ListingDeleteButton";
+import AddListing from '@components/Forms/AddListing';
 import { sortAndFilter } from "@lib/ListingsUtils";
 
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
-const AdminListings = ({ listings }) => {
+const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
   const [isEditLoading, setIsEditLoading] = useState({});
   const [processedListings, setProcessedListings] = useState(listings);
   const [search, setSearch] = useState("");
@@ -51,7 +53,7 @@ const AdminListings = ({ listings }) => {
       <div>
         <AdminNavbar />
 
-        <Tabs fullWidth variant="bordered" className="flex w-full md:w-1/2 justify-center mx-auto mt-5">
+        <Tabs fullWidth variant="bordered" className="flex w-full md:w-1/2 justify-center mx-auto p-4 mt-5">
           <Tab title="Listings">
             <div className="flex items-center justify-between p-2 w-full md:w-1/2 mx-auto gap-2">
               <SearchBar setSearch={setSearch} />
@@ -72,7 +74,7 @@ const AdminListings = ({ listings }) => {
                       isLoading={isEditLoading[listing.plot]}
                       startContent={!isEditLoading[listing.plot] && <EditRoundedIcon fontSize="small" />}
                       className="w-1/2"
-                      onClick={async () => {
+                      onPress={async () => {
                         setIsEditLoading({ ...isEditLoading, [listing.plot]: true });
                         await Router.push(`/admin/listings/edit/${listing.plot}`);
                         setIsEditLoading({ ...isEditLoading, [listing.plot]: false });
@@ -91,6 +93,7 @@ const AdminListings = ({ listings }) => {
             </div>
           </Tab>
           <Tab title="Add Listing">
+            <AddListing statuses={statuses} propertyTypes={propertyTypes} towns={towns} />
           </Tab>
         </Tabs>
       </div>
@@ -116,9 +119,28 @@ export async function getServerSideProps() {
     JOIN statuses ON listings.status = statuses.id
   `;
 
+  const statuses = (await sql`
+    SELECT *,
+      EXTRACT(epoch FROM created_at) as created_at
+    FROM statuses
+  `);
+  const propertyTypes = (await sql`
+    SELECT *,
+      EXTRACT(epoch FROM created_at) as created_at
+    FROM property_types
+  `);
+  const towns = (await sql`
+    SELECT *,
+      EXTRACT(epoch FROM created_at) as created_at
+    FROM towns
+  `);
+
   return {
     props: {
       listings: rows,
+      statuses,
+      propertyTypes,
+      towns,
     },
   };
 }

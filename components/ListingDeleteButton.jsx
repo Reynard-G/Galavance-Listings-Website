@@ -17,9 +17,8 @@ const ListingDeleteButton = ({ id, plot, onDelete }) => {
     }).then(() => {
       setIsConfirmationVisible(false);
       onDelete();
-    }).catch((err) => {
+    }).catch(() => {
       setIsConfirmationVisible(false);
-      console.error(err);
     });
   };
 
@@ -40,7 +39,7 @@ const ListingDeleteButton = ({ id, plot, onDelete }) => {
         color="danger"
         variant="ghost"
         className="w-1/2"
-        onClick={() => setIsConfirmationVisible(true)}
+        onPress={() => setIsConfirmationVisible(true)}
         startContent={<DeleteRoundedIcon fontSize="small" />}
       >
         Delete

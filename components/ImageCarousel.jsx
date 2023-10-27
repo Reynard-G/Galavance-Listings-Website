@@ -2,13 +2,10 @@ import NextImage from "next/image";
 import { Image } from "@nextui-org/image";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
+import { imageLoader } from "@lib/ListingsUtils";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
-const imageLoader = ({ src, width }) => {
-  return `https://ik.imagekit.io/milklegend/tr:w-${width}/${src}`;
-}
 
 const ImageCarousel = ({ listing }) => {
   const width = 480;

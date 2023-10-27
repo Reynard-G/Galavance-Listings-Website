@@ -55,7 +55,7 @@ const AdminNavbar = () => {
 
       <NavbarContent justify="end">
         <NavbarItem className="flex">
-          <Button size="md" color="warning" variant="flat" onClick={handleLogout}>
+          <Button size="md" color="warning" variant="flat" onPress={handleLogout}>
             Logout
           </Button>
         </NavbarItem>

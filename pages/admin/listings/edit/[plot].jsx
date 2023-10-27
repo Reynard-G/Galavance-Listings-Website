@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Router from 'next/router';
-import AdminNavbar from '@components/AdminNavbar';
 import { Input } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
 import { Button } from '@nextui-org/button';
+import { Avatar } from '@nextui-org/avatar';
 import { Card, CardHeader, CardBody } from '@nextui-org/card';
 import { Divider } from '@nextui-org/divider';
+import { imageLoader } from '@lib/ListingsUtils';
+
+import AdminNavbar from '@components/AdminNavbar';
 import ListingCard from '@components/ListingCard';
 
 const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
@@ -59,7 +62,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
 
   const isValueInvalid = (value) => {
     return value == undefined || value == "";
-  }
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -108,7 +111,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
       <AdminNavbar />
 
       <div className="flex justify-center items-center">
-        <Card className="w-full sm:w-3/4 md:w-1/2 lg:w-2/6 2xl:w-1/4 shadow-lg mt-2">
+        <Card className="w-full sm:w-3/4 md:w-1/2 lg:w-2/6 2xl:w-1/4 shadow-lg mx-4 mt-2">
           <CardHeader className="pt-2 px-4 flex-col items-start">
             <h3 className="text-lg font-medium text-left">Preview</h3>
             <p className="text-sm text-gray-400">Preview the listing below</p>
@@ -121,10 +124,12 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
 
       <div className="flex-1 flex flex-col justify-center px-4 pb-4 md:px-0 w-full sm:w-3/4 md:w-1/2 space-y-6 mx-auto mt-5">
         <div>
-          <h3 className="text-lg font-medium text-left">Edit Listing</h3>
+          <h3 className="text-lg font-medium text-left">Edit a Listing</h3>
           <p className="text-sm text-gray-400">Edit the listing below</p>
         </div>
+        
         <Divider />
+
         <div className="max-lg:flex max-lg:flex-col max-lg:space-y-4 lg:grid lg:grid-cols-2 lg:gap-4">
           <Input
             type="text"
@@ -136,6 +141,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
             defaultValue={listing.plot}
             onValueChange={(value) => setForm({ ...form, plot: value })}
           />
+
           <Input
             type="number"
             label="Square Meters"
@@ -149,6 +155,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
               </div>
             }
           />
+
           <Input
             type="number"
             label="Bedrooms"
@@ -162,6 +169,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
               </div>
             }
           />
+
           <Input
             type="number"
             label="Bathrooms"
@@ -175,6 +183,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
               </div>
             }
           />
+
           <div className="flex flex-col">
             <div className="flex items-center">
               <Input
@@ -225,18 +234,19 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
               <Button
                 size="md"
                 variant="bordered"
-                onClick={handlePriceRange}
+                onPress={handlePriceRange}
               >
                 {priceRange ? "Single Price" : "Price Range"}
               </Button>
             </div>
           </div>
+
           <div className="flex flex-col">
             <div className="flex items-center">
               <Input
-                label="Location"
+                label="X Coordinate"
                 type="number"
-                placeholder="x"
+                placeholder="Enter the X coordinate"
                 variant="faded"
                 isRequired
                 isInvalid={isValueInvalid(form.location[0])}
@@ -249,11 +259,10 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
                   </div>
                 }
               />
-              <span className="text-gray-400">, </span>
               <Input
-                label="Location"
+                label="Z Coordinate"
                 type="number"
-                placeholder="z"
+                placeholder="Enter the Z coordinate"
                 variant="faded"
                 isRequired
                 isInvalid={isValueInvalid(form.location[1])}
@@ -268,48 +277,69 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
               />
             </div>
           </div>
+
           <Select
             label="Property Status"
             variant="faded"
             isRequired
             isInvalid={isValueInvalid(form.status)}
             defaultSelectedKeys={[listing.status.toString()]}
-            onSelectionChange={(value) => value.size > 0 ? setForm({ ...form, status: value.currentKey }) : setForm({ ...form, status: null })}
+            onSelectionChange={(value) => setForm({ ...form, status: Array.from(value).join(',') || undefined })}
           >
             {statuses.map((status) => (
               <SelectItem key={status.id} value={status.id}>{status.name}</SelectItem>
             ))}
           </Select>
+
           <Select
             label="Property Type"
             variant="faded"
             isRequired
             isInvalid={isValueInvalid(form.property_type)}
             defaultSelectedKeys={[listing.property_type.toString()]}
-            onSelectionChange={(value) => value.size > 0 ? setForm({ ...form, property_type: value.currentKey }) : setForm({ ...form, property_type: null })}
+            onSelectionChange={(value) => setForm({ ...form, property_type: Array.from(value).join(',') || undefined })}
           >
             {propertyTypes.map((propertyType) => (
               <SelectItem key={propertyType.id} value={propertyType.id}>{propertyType.name}</SelectItem>
             ))}
           </Select>
+
           <Select
+            items={towns}
             label="Town"
             variant="faded"
             isRequired
             isInvalid={isValueInvalid(form.town)}
             defaultSelectedKeys={[listing.town.toString()]}
-            onSelectionChange={(value) => value.size > 0 ? setForm({ ...form, town: value.currentKey }) : setForm({ ...form, town: null })}
+            onSelectionChange={(value) => setForm({ ...form, town: Array.from(value).join(',') || undefined })}
             className="col-span-2"
+            renderValue={(items) => {
+              return items.map((item) => (
+                <div className="flex items-center gap-2">
+                  <Avatar alt={item.data.name} src={imageLoader({ src: item.data.icon, width: 24 })} className="w-6 h-6 text-tiny" />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">{item.data.name}</span>
+                  </div>
+                </div>
+              ));
+            }}
           >
-            {towns.map((town) => (
-              <SelectItem key={town.id} value={town.id}>{town.name}</SelectItem>
-            ))}
+            {(town) => (
+              <SelectItem key={town.id} value={town.id} textValue={town.name}>
+                <div className="flex items-center gap-2">
+                  <Avatar alt={town.name} src={imageLoader({ src: town.icon, width: 24 })} className="w-6 h-6 text-tiny" />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">{town.name}</span>
+                  </div>
+                </div>
+              </SelectItem>
+            )}
           </Select>
           {/*
             * Reordering Images are not implemented yet
             * Adding/Removing Images through media library?
           */}
-          <Button size="md" color="primary" isDisabled={isSubmitDisabled} isLoading={isSubmitting} className="col-span-2" onClick={handleFormSubmit}>Submit</Button>
+          <Button size="md" color="primary" variant="shadow" isDisabled={isSubmitDisabled} isLoading={isSubmitting} className="col-span-2" onPress={handleFormSubmit}>Submit</Button>
         </div>
       </div>
     </>
@@ -343,7 +373,7 @@ export async function getStaticProps({ params }) {
   if (!listing) {
     return {
       notFound: true,
-    }
+    };
   }
 
   const statuses = (await sql`

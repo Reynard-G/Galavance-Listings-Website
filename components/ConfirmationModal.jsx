@@ -14,7 +14,7 @@ const ConfirmationModal = ({ visible, children, title, buttonText, onConfirmed, 
   };
 
   return (
-    <Modal isOpen={visible} onClose={onCancel} className="w-11/12 md:w-1/2 mx-auto">
+    <Modal backdrop="blur" isOpen={visible} onClose={onCancel} className="w-11/12 md:w-1/2 mx-auto">
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
         <ModalBody>
@@ -25,10 +25,10 @@ const ConfirmationModal = ({ visible, children, title, buttonText, onConfirmed, 
         </ModalBody>
         <ModalFooter>
           <div className="flex justify-center gap-2">
-            <Button variant="ghost" onClick={onCancel}>
+            <Button variant="ghost" onPress={onCancel}>
               Cancel
             </Button>
-            <Button isLoading={isLoading} color="danger" variant="ghost" onClick={handleConfirmed}>
+            <Button isLoading={isLoading} color="danger" variant="ghost" onPress={handleConfirmed}>
               {buttonText}
             </Button>
           </div>

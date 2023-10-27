@@ -136,7 +136,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                     <Button
                       key={type}
                       variant={filters["For Sale"].beds.includes(type) ? "solid" : "ghost"}
-                      onClick={() => handleBedsChange([type], "For Sale")}
+                      onPress={() => handleBedsChange([type], "For Sale")}
                     >
                       {textValue}
                     </Button>
@@ -155,7 +155,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                     <Button
                       key={type}
                       variant={filters["For Sale"].bathrooms.includes(type) ? "solid" : "ghost"}
-                      onClick={() => handleBathsChange([type], "For Sale")}
+                      onPress={() => handleBathsChange([type], "For Sale")}
                     >
                       {textValue}
                     </Button>
@@ -174,7 +174,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                     <Button
                       key={type}
                       variant={filters["For Sale"].homeType === type ? "solid" : "ghost"}
-                      onClick={() => handleHomeTypeChange(type, "For Sale")}
+                      onPress={() => handleHomeTypeChange(type, "For Sale")}
                     >
                       {icon}
                       {textValue}
@@ -202,7 +202,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                     <Button
                       key={type}
                       variant={filters["For Rent"].beds.includes(type) ? "solid" : "ghost"}
-                      onClick={() => handleBedsChange([type], "For Rent")}
+                      onPress={() => handleBedsChange([type], "For Rent")}
                     >
                       {textValue}
                     </Button>
@@ -221,7 +221,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                     <Button
                       key={type}
                       variant={filters["For Rent"].bathrooms.includes(type) ? "solid" : "ghost"}
-                      onClick={() => handleBathsChange([type], "For Rent")}
+                      onPress={() => handleBathsChange([type], "For Rent")}
                     >
                       {textValue}
                     </Button>
@@ -237,7 +237,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                     <Button
                       key={type}
                       variant={filters["For Rent"].homeType === type ? "solid" : "ghost"}
-                      onClick={() => handleHomeTypeChange(type, "For Rent")}
+                      onPress={() => handleHomeTypeChange(type, "For Rent")}
                     >
                       {icon}
                       {textValue}

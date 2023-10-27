@@ -16,6 +16,7 @@ module.exports = {
       dark: {
         colors: {
           background: '#232323',
+          danger: '#DE350B',
         }
       }
     }
