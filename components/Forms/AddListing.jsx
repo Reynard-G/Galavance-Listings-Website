@@ -253,7 +253,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
             className="col-span-2"
             renderValue={(items) => {
               return items.map((item) => (
-                <div className="flex items-center gap-2">
+                <div key={item.data.id} className="flex items-center gap-2">
                   <Avatar alt={item.data.name} src={imageLoader({ src: item.data.icon, width: 24 })} className="w-6 h-6 text-tiny" />
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">{item.data.name}</span>
