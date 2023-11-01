@@ -1,7 +1,9 @@
 module.exports = {
   plugins: process.env.NODE_ENV === 'production' ? {
     "tailwindcss": {},
-    "autoprefixer": {},
+    "autoprefixer": {
+      flexbox: "no-2009"
+    },
     "postcss-flexbugs-fixes": {},
     "postcss-preset-env": {
       autoprefixer: { grid: false },
