@@ -28,7 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
     "mariadb": "^3.2.1",
-    "next": "^13.5.5",
+    "next": "^14.0.1",
     "next-themes": "^0.2.1",
     "npm": "^10.1.0",
     "postgres": "^3.4.0",
