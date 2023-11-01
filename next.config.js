@@ -7,8 +7,15 @@ const nextConfig = withBundleAnalyzer({
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['ik.imagekit.io'],
-  },
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+        port: '',
+        pathname: '/milklegend/**',
+      }
+    ],
+  }
 });
 
 module.exports = nextConfig;

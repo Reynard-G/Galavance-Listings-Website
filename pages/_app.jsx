@@ -6,7 +6,7 @@ import React from 'react';
 import { NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-const libreFranklin = Libre_Franklin({ subsets: ['latin'] });
+const libreFranklin = Libre_Franklin({ subsets: ['latin'], display: 'swap' });
 
 export default function App({ Component, pageProps }) {
   return (

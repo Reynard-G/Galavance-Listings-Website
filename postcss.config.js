@@ -17,5 +17,7 @@ module.exports = {
         "custom-properties": false,
       },
     }
-  } : {}
+  } : {
+    "tailwindcss": {},
+  }
 };
