@@ -61,7 +61,7 @@ const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
               <SortButton setSortValue={setSortValue} />
               <FiltersButton filters={filters} setFilters={setFilters} />
             </div>
-            <div className="listings-container grid auto-rows-auto gap-2 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="listings-container grid auto-rows-auto gap-2 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5">
               {processedListings.map((listing) => (
                 <Card key={listing.plot} shadow>
                   <CardBody className="pb-0">

@@ -23,7 +23,7 @@ const SortableImageList = ({ images, setImages }) => {
           {images.map((image) => (
             <Image
               key={image}
-              src={imageLoader({ src: image, width: 256 })}
+              src={imageLoader({ src: image, width: 296 })}
               alt={image}
               className="rounded-md shadow-md cursor-move"
               draggable={false}

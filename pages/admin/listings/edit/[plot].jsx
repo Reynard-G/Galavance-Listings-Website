@@ -120,7 +120,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
       <AdminNavbar />
 
       <div className="flex justify-center items-center">
-        <Card className="w-full sm:w-3/4 md:w-1/2 lg:w-2/6 2xl:w-1/4 shadow-lg mx-4 mt-2">
+        <Card className="w-full sm:w-3/4 md:w-1/2 lg:w-2/6 2xl:w-1/4 3xl:w-1/5 shadow-lg mx-4 mt-2">
           <CardHeader className="pt-2 px-4 flex-col items-start">
             <h3 className="text-lg font-medium text-left">Preview</h3>
             <p className="text-sm text-gray-400">Preview the listing below</p>
