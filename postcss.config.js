@@ -1,5 +1,5 @@
 module.exports = {
-  plugins: {
+  plugins: process.env.NODE_ENV === 'production' ? {
     "tailwindcss": {},
     "autoprefixer": {},
     "postcss-flexbugs-fixes": {},
@@ -14,6 +14,6 @@ module.exports = {
         },
         "custom-properties": false,
       },
-    },
-  },
+    }
+  } : {}
 };
