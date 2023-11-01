@@ -11,6 +11,8 @@ import { imageLoader } from '@lib/ListingsUtils';
 
 import AdminNavbar from '@components/AdminNavbar';
 import ListingCard from '@components/ListingCard';
+import SortableImageList from '@components/SortableImageList';
+import UploadButton from '@components/UploadButton';
 
 const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
   const [form, setForm] = useState({
@@ -27,6 +29,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
     images: listing.images
   });
   const [priceRange, setPriceRange] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState("");
   const [isSubmitDisabled, setSubmitDisabled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -60,13 +63,18 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
     }
   }, [form, priceRange]);
 
+  useEffect(() => {
+    if (uploadedImage) {
+      setForm({ ...form, images: [...form.images, uploadedImage] });
+      setUploadedImage("");
+    }
+  }, [uploadedImage]);
+
   const isValueInvalid = (value) => {
     return value == undefined || value == "";
   };
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
-
     setIsSubmitting(true);
 
     await fetch('/api/editListing', {
@@ -335,10 +343,10 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
               </SelectItem>
             )}
           </Select>
-          {/*
-            * Reordering Images are not implemented yet
-            * Adding/Removing Images through media library?
-          */}
+          <SortableImageList images={form.images} setImages={(images) => setForm({ ...form, images })} className="hidden lg:block col-span-full" />
+
+          <UploadButton plot={form.plot} setImages={setUploadedImage} className="lg:hidden col-span-full" />
+
           <Button size="md" color="primary" variant="shadow" isDisabled={isSubmitDisabled} isLoading={isSubmitting} className="col-span-2" onPress={handleFormSubmit}>Submit</Button>
         </div>
       </div>
