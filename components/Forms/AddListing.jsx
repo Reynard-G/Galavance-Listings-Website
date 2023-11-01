@@ -56,10 +56,10 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
   const isTownInvalid = isNaN(form.town);
 
   useEffect(() => {
-    if (isPriceRange) {
+    if (form.price[1] === undefined && isPriceRange) {
       setForm({ ...form, price: [form.price[0]] });
     }
-  }, [isPriceRange]);
+  }, [form, isPriceRange]);
 
   return (
     <>

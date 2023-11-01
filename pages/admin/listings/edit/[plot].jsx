@@ -68,7 +68,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
       setForm({ ...form, images: [...form.images, uploadedImage] });
       setUploadedImage("");
     }
-  }, [uploadedImage]);
+  }, [form, uploadedImage]);
 
   const isValueInvalid = (value) => {
     return value == undefined || value == "";
@@ -226,7 +226,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
                     placeholder="Max Price"
                     variant="faded"
                     isRequired
-                    isInvalid={isValueInvalid(form.price[1])}
+                    isInvalid={isValueInvalid(form.price[1]) || form.price[1] <= form.price[0]}
                     defaultValue={listing.price[1]}
                     onValueChange={(value) => {
                       setForm({ ...form, price: [form.price[0], value || undefined] });
