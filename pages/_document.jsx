@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <meta charSet="utf-8" />
 
-        <meta property="og:image" content="https://imgs.milklegend.xyz/hamilton-realty.png" />
+        <meta property="og:image" content="https://imgs.milklegend.xyz/hamilton-realty-200x200.png" />
         <meta property="og:url" content="https://hfr.milklegend.xyz" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Hamilton Family Realty" />

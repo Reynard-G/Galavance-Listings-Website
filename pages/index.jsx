@@ -13,7 +13,8 @@ export default function Home({ listings }) {
     <ListingsContext.Provider value={{ listings, listingsInBounds, filteredListings, setFilteredListings, setListingsInBounds }}>
       <Head>
         <title>HFR | Listings</title>
-        <meta name="description" content="Hamilton Family Realty is a premier real estate agency based in the Commonwealth of Redmont.
+        <meta property="og:title" content="HFR | Listings" />
+        <meta property="og:description" content="Hamilton Family Realty is a premier real estate agency based in the Commonwealth of Redmont.
             We aim to be the top real estate firm in the nation, helping clients buy, sell, or rent the property of their dreams." />
       </Head>
 

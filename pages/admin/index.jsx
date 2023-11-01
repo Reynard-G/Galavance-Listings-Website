@@ -6,7 +6,8 @@ const Admin = () => {
     <>
       <Head>
         <title>HFR Admin | Dashboard</title>
-        <meta name="description" content="Hamilton Family Realty's Admin Dashboard" />
+        <meta property="og:title" content="HFR Admin | Dashboard" />
+        <meta property="og:description" content="Hamilton Family Realty's Admin Dashboard" />
       </Head>
       
       <div>

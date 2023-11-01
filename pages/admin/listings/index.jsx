@@ -47,7 +47,8 @@ const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
     <>
       <Head>
         <title>HFR Admin | Listings</title>
-        <meta name="description" content="View and edit listings through the HFR Admin Dashboard" />
+        <meta property="og:title" content="HFR Admin | Listings" />
+        <meta property="og:description" content="View and edit listings through the HFR Admin Dashboard" />
       </Head>
 
       <div>
