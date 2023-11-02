@@ -15,7 +15,7 @@ const nextConfig = withBundleAnalyzer({
         pathname: '/milklegend/**',
       }
     ],
-  }
+  },
 });
 
 module.exports = nextConfig;

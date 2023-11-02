@@ -2,6 +2,9 @@
   "name": "hamilton-family-realty",
   "version": "0.1.0",
   "private": true,
+  "browser": {
+    "postgres": false
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -45,6 +48,8 @@
   },
   "devDependencies": {
     "@types/sortablejs": "^1.15.4",
+    "@types/react": "18.2.24",
+    "@types/react-dom": "18.2.14",
     "autoprefixer": "^10.4.16",
     "eslint": "latest",
     "eslint-config-next": "latest",
