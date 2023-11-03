@@ -15,7 +15,6 @@ const AdminNavbar = () => {
     { title: 'Listings', href: '/admin/listings' },
     { title: 'Towns', href: '/admin/towns' },
     { title: 'Property Types', href: '/admin/property-types' },
-    { title: 'Operation Types', href: '/admin/operation-types' }
   ];
 
   const handleLogout = async () => {
