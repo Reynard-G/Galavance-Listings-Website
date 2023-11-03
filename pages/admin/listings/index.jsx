@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
@@ -17,6 +17,7 @@ import { sortAndFilter } from "@lib/ListingsUtils";
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
+  const router = useRouter();
   const [isEditLoading, setIsEditLoading] = useState({});
   const [processedListings, setProcessedListings] = useState(listings);
   const [search, setSearch] = useState("");
@@ -78,7 +79,7 @@ const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
                       className="w-1/2"
                       onPress={async () => {
                         setIsEditLoading({ ...isEditLoading, [listing.plot]: true });
-                        await Router.push(`/admin/listings/edit/${listing.plot}`);
+                        await router.push(`/admin/listings/edit/${listing.plot}`);
                         setIsEditLoading({ ...isEditLoading, [listing.plot]: false });
                       }}
                     >
@@ -87,7 +88,7 @@ const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
                     <ListingDeleteButton
                       id={listing.id}
                       plot={listing.plot}
-                      onDelete={() => Router.replace(Router.asPath)}
+                      onDelete={() => router.reload()}
                     />
                   </CardFooter>
                 </Card>
@@ -114,10 +115,12 @@ export async function getServerSideProps() {
       EXTRACT(epoch FROM listings.created_at) as created_at,
       property_types.name as property_type,
       towns.name as town,
+      accounts.username as created_by_user,
       statuses.name as status
     FROM listings
     JOIN property_types ON listings.property_type = property_types.id
     JOIN towns ON listings.town = towns.id
+    JOIN accounts ON listings.created_by_user = accounts.id
     JOIN statuses ON listings.status = statuses.id
   `;
 

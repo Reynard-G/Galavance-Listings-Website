@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Select, SelectItem } from '@nextui-org/select';
 import { Input } from '@nextui-org/input';
@@ -23,6 +23,7 @@ const initialFormState = {
 };
 
 const AddListing = ({ statuses, propertyTypes, towns }) => {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPriceRange, setIsPriceRange] = useState(false);
   const [form, setForm] = useState(initialFormState);
@@ -39,7 +40,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
     if (res.ok) {
       setIsSubmitting(false);
       setForm(initialFormState);
-      Router.replace(Router.asPath);
+      router.reload();
     } else {
       setIsSubmitting(false);
       setIsErrorModalVisible(true);

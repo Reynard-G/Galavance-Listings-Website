@@ -1,4 +1,5 @@
 import sql from "@lib/db";
+import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -12,9 +13,16 @@ export default async function handler(req, res) {
   }
 
   const { plot, location, operationType, price, beds, bathrooms, sq_meters, propertyType, town, images } = listing;
+  const username = jwt.verify(req.cookies.token, process.env.JWT_SECRET).username;
 
-  let columns = [];
-  let values = {};
+  const user_id = await sql`
+    SELECT id
+    FROM accounts
+    WHERE username = ${username}
+  `;
+
+  let columns = ['created_by_user'];
+  let values = { created_by_user: user_id[0].id };
 
   if (plot) {
     columns.push('plot');

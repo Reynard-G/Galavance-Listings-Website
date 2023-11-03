@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import NextImage from 'next/image';
 import { Navbar, NavbarMenuToggle, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem } from '@nextui-org/navbar';
 import { Button } from '@nextui-org/button';
@@ -7,6 +7,7 @@ import { Image } from '@nextui-org/image';
 import { Link } from '@nextui-org/link';
 
 const AdminNavbar = () => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navbarItems = [
@@ -25,7 +26,7 @@ const AdminNavbar = () => {
       }
     }).then(res => {
       if (res.ok) {
-        Router.push('/login');
+        router.push('/login');
       }
     });
   };

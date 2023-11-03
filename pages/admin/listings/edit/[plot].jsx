@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { Input } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
 import { Button } from '@nextui-org/button';
@@ -15,6 +15,7 @@ import SortableImageList from '@components/SortableImageList';
 import UploadButton from '@components/UploadButton';
 
 const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
+  const router = useRouter();
   const [form, setForm] = useState({
     id: listing.id,
     plot: listing.plot,
@@ -83,7 +84,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
       body: JSON.stringify(form)
     }).then((res) => {
       if (res.status == 200) {
-        Router.push('/admin/listings');
+        router.push('/admin/listings');
       } else {
         setIsSubmitting(false);
       }
