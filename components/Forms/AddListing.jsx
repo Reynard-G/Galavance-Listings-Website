@@ -67,6 +67,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
         <title>HFR Admin | Add Listing</title>
         <meta property="og:title" content="HFR Admin | Add Listing" />
         <meta property="og:description" content="Add a listing through the HFR Admin Dashboard" />
+        <meta name="description" content="Add a listing through the HFR Admin Dashboard" />
       </Head>
 
       <ErrorModal

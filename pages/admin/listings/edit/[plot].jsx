@@ -115,6 +115,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
         <title>HFR Admin | Edit Listing</title>
         <meta property="og:title" content="HFR Admin | Edit Listing" />
         <meta property="og:description" content="Edit a listing through the HFR Admin Dashboard" />
+        <meta name="description" content="Edit a listing through the HFR Admin Dashboard" />
       </Head>
 
       <AdminNavbar />
