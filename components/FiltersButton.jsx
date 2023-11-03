@@ -4,6 +4,7 @@ import { Button, ButtonGroup } from "@nextui-org/button";
 import { Modal, ModalContent, ModalBody } from "@nextui-org/modal";
 import { Divider } from "@nextui-org/divider";
 import { Tabs, Tab } from "@nextui-org/tabs";
+import { Slider } from "@nextui-org/slider";
 
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
@@ -121,9 +122,18 @@ const FiltersButton = ({ filters, setFilters }) => {
               <Divider />
               <ModalBody>
                 <h3 className="text-2xl font-bold text-left">Price</h3>
-                {/* Slider Range */}
-                <p>Slider Here</p>
+                <Slider
+                  label="Price Range"
+                  minValue={0}
+                  maxValue={100000}
+                  step={10}
+                  defaultValue={filters["For Sale"].price}
+                  formatOptions={{ style: "currency", currency: "USD" }}
+                  onChange={(value) => handlePriceChange(value, "For Sale")}
+                />
+
                 <Divider />
+
                 <h3 className="text-2xl font-bold text-left">Beds</h3>
                 <ButtonGroup size={isMobile ? 'sm' : 'md'}>
                   {[
@@ -142,7 +152,9 @@ const FiltersButton = ({ filters, setFilters }) => {
                     </Button>
                   ))}
                 </ButtonGroup>
+
                 <Divider />
+                
                 <h3 className="text-2xl font-bold text-left">Baths</h3>
                 <ButtonGroup size={isMobile ? 'sm' : 'md'}>
                   {[
@@ -161,7 +173,9 @@ const FiltersButton = ({ filters, setFilters }) => {
                     </Button>
                   ))}
                 </ButtonGroup>
+                
                 <Divider />
+                
                 <h3 className="text-2xl font-bold text-left">Home Type</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {[
@@ -183,13 +197,23 @@ const FiltersButton = ({ filters, setFilters }) => {
                 </div>
               </ModalBody>
             </Tab>
+            
             <Tab key="For Rent" title="For Rent">
               <Divider />
               <ModalBody>
                 <h3 className="text-2xl font-bold text-left">Price</h3>
-                {/* Slider Range */}
-                <p>Slider Here</p>
+                <Slider
+                  label="Price Range"
+                  minValue={0}
+                  maxValue={10000}
+                  step={10}
+                  defaultValue={filters["For Rent"].price}
+                  formatOptions={{ style: "currency", currency: "USD" }}
+                  onChange={(value) => handlePriceChange(value, "For Rent")}
+                />
+
                 <Divider />
+
                 <h3 className="text-2xl font-bold text-left">Beds</h3>
                 <ButtonGroup size={isMobile ? 'sm' : 'md'}>
                   {[
@@ -208,7 +232,9 @@ const FiltersButton = ({ filters, setFilters }) => {
                     </Button>
                   ))}
                 </ButtonGroup>
+                
                 <Divider />
+                
                 <h3 className="text-2xl font-bold text-left">Baths</h3>
                 <ButtonGroup size={isMobile ? 'sm' : 'md'}>
                   {[
@@ -227,7 +253,9 @@ const FiltersButton = ({ filters, setFilters }) => {
                     </Button>
                   ))}
                 </ButtonGroup>
+                
                 <Divider />
+                
                 <h3 className="text-2xl font-bold text-left">Rent Type</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {[
