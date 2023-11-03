@@ -17,7 +17,7 @@
     "@aws-sdk/s3-request-presigner": "^3.438.0",
     "@mui/icons-material": "^5.14.12",
     "@next/bundle-analyzer": "^13.5.4",
-    "@nextui-org/react": "^2.1.13",
+    "@nextui-org/react": "^2.2.0",
     "@uppy/aws-s3": "^3.4.0",
     "@uppy/compressor": "^1.0.5",
     "@uppy/core": "^3.6.1",
