@@ -78,8 +78,8 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
   const handleFormSubmit = async (e) => {
     setIsSubmitting(true);
 
-    await fetch('/api/editListing', {
-      method: 'POST',
+    await fetch('/api/listing', {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
     }).then((res) => {

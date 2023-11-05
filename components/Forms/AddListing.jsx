@@ -6,6 +6,7 @@ import { Input } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
 import { Avatar } from '@nextui-org/avatar';
 import { Divider } from '@nextui-org/divider';
+
 import ErrorModal from '@components/ErrorModal';
 import { imageLoader } from '@lib/ListingsUtils';
 
@@ -32,8 +33,9 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
-    const res = await fetch('/api/addListing', {
+    const res = await fetch('/api/listing', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
     });
 
@@ -65,10 +67,10 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
   return (
     <>
       <Head>
-        <title>HFR Admin | Add Listing</title>
-        <meta property="og:title" content="HFR Admin | Add Listing" />
-        <meta property="og:description" content="Add a listing through the HFR Admin Dashboard" />
-        <meta name="description" content="Add a listing through the HFR Admin Dashboard" />
+        <title>HFR Admin | Add Listings</title>
+        <meta property="og:title" content="HFR Admin | Add Listings" />
+        <meta property="og:description" content="Add listings through the HFR Admin Dashboard" />
+        <meta name="description" content="Add listings through the HFR Admin Dashboard" />
       </Head>
 
       <ErrorModal
@@ -77,7 +79,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
         onConfirmed={() => setIsErrorModalVisible(false)}
       >
         An error occurred while trying to add the listing. Check to see if any
-        restriction are being violated such as identical plots, locations, etc.
+        restrictions are being violated such as identical plots, locations, etc.
         If the problem persists, contact administration.
       </ErrorModal>
 

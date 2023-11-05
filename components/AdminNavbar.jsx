@@ -20,9 +20,7 @@ const AdminNavbar = () => {
   const handleLogout = async () => {
     await fetch('/api/logout', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' },
     }).then(res => {
       if (res.ok) {
         router.push('/login');

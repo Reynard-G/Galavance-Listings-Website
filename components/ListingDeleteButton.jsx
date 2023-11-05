@@ -8,11 +8,9 @@ const ListingDeleteButton = ({ id, plot, onDelete }) => {
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
   const handleDelete = async () => {
-    await fetch(`/api/deleteListing`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    await fetch(`/api/listing`, {
+      method: "DELETE",
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
     }).then(() => {
       setIsConfirmationVisible(false);
