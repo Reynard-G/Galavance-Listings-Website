@@ -160,7 +160,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
 
           <div className="flex col-span-2 gap-4 items-center">
             <Input
-              type="text"
+              type="number"
               label={isPriceRange ? "Minimum Price" : "Price"}
               value={form.price[0]}
               placeholder={isPriceRange ? "Enter the minimum price" : "Enter the price"}
@@ -182,7 +182,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
             />
             {isPriceRange && (
               <Input
-                type="text"
+                type="number"
                 label="Maximum Price"
                 value={form.price[1]}
                 placeholder="Enter the maximum price"

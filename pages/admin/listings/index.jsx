@@ -65,22 +65,22 @@ const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
             </div>
             <div className="listings-container grid auto-rows-auto gap-2 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5">
               {processedListings.map((listing) => (
-                <Card key={listing.plot} shadow>
+                <Card key={listing.id} shadow>
                   <CardBody className="pb-0">
-                    <ListingCard key={listing.plot} listing={listing} />
+                    <ListingCard key={listing.id} listing={listing} />
                   </CardBody>
                   <CardFooter className="flex gap-2">
                     <Button
                       size="sm"
                       color="primary"
                       variant="ghost"
-                      isLoading={isEditLoading[listing.plot]}
-                      startContent={!isEditLoading[listing.plot] && <EditRoundedIcon fontSize="small" />}
+                      isLoading={isEditLoading[listing.id]}
+                      startContent={!isEditLoading[listing.id] && <EditRoundedIcon fontSize="small" />}
                       className="w-1/2"
                       onPress={async () => {
-                        setIsEditLoading({ ...isEditLoading, [listing.plot]: true });
-                        await router.push(`/admin/listings/edit/${listing.plot}`);
-                        setIsEditLoading({ ...isEditLoading, [listing.plot]: false });
+                        setIsEditLoading({ ...isEditLoading, [listing.id]: true });
+                        await router.push(`/admin/listings/edit/${listing.id}`);
+                        setIsEditLoading({ ...isEditLoading, [listing.id]: false });
                       }}
                     >
                       Edit

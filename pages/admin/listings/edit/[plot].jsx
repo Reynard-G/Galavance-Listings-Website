@@ -388,11 +388,11 @@ import sql from '@lib/db';
 
 export async function getStaticPaths() {
   const listings = await sql`
-    SELECT plot FROM listings
+    SELECT id FROM listings
   `;
 
   const paths = listings.map((listing) => ({
-    params: { plot: listing.plot }
+    params: { plot: listing.id.toString() }
   }));
 
   return { paths, fallback: 'blocking' };
@@ -403,7 +403,7 @@ export async function getStaticProps({ params }) {
     SELECT *,
       EXTRACT(epoch FROM updated_at) as updated_at,
       EXTRACT(epoch FROM created_at) as created_at
-    FROM listings WHERE plot = ${params.plot}
+    FROM listings WHERE id = ${params.plot}
   `)[0];
 
   if (!listing) {
