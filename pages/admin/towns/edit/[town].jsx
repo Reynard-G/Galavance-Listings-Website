@@ -9,7 +9,6 @@ import AdminNavbar from '@components/AdminNavbar';
 import ErrorModal from '@components/Modals/ErrorModal';
 
 const EditTown = ({ town }) => {
-  console.log(town)
   const router = useRouter();
   const [name, setName] = useState(town[0].name);
   const [isSubmitting, setIsSubmitting] = useState(false);

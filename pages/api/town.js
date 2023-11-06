@@ -16,14 +16,12 @@ export default async function handler(req, res) {
 async function createTown(req, res) {
   try {
     const town = typeof req.body === "string" ? JSON.parse(req.body) : req.body
-    console.log(town)
 
     if (!town) {
       return res.status(400).json({ message: "Missing town" });
     }
 
     const { townName } = town;
-    console.log(townName)
 
     const town_id = await sql`
       SELECT id
