@@ -11,8 +11,9 @@ import { imageLoader } from '@lib/ListingsUtils';
 
 import AdminNavbar from '@components/AdminNavbar';
 import ListingCard from '@components/ListingCard';
+import ErrorModal from '@components/Modals/ErrorModal';
 import SortableImageList from '@components/SortableImageList';
-import UploadButton from '@components/UploadButton';
+import UploadButton from '@components/Buttons/UploadButton';
 
 const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
   const router = useRouter();
@@ -33,6 +34,8 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
   const [uploadedImage, setUploadedImage] = useState("");
   const [isSubmitDisabled, setSubmitDisabled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isErrorModalVisible, setIsErrorModalVisible] = useState(false);
+  const [isConflictModalVisible, setIsConflictModalVisible] = useState(false);
 
   useEffect(() => {
     const requiredFields = ['plot', 'location', 'status', 'price', 'property_type', 'town'];
@@ -85,8 +88,12 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
     }).then((res) => {
       if (res.status == 200) {
         router.push('/admin/listings');
+      } else if (res.status == 409) {
+        setIsSubmitting(false);
+        setIsConflictModalVisible(true);
       } else {
         setIsSubmitting(false);
+        setIsErrorModalVisible(true);
       }
     }).catch((err) => {
       console.log(err);
@@ -118,6 +125,24 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
         <meta property="og:description" content="Edit a listing through the HFR Admin Dashboard" />
         <meta name="description" content="Edit a listing through the HFR Admin Dashboard" />
       </Head>
+
+      <ErrorModal
+        visible={isErrorModalVisible}
+        title="Error"
+        onConfirmed={() => setIsErrorModalVisible(false)}
+      >
+        An error occurred while trying to edit the listing. Check to see if any
+        restrictions are being violated and try again. If the problem persists,
+        contact administration.
+      </ErrorModal>
+
+      <ErrorModal
+        visible={isConflictModalVisible}
+        title="Conflict"
+        onConfirmed={() => setIsConflictModalVisible(false)}
+      >
+        A listing with that plot already exists. Please choose a different plot.
+      </ErrorModal>
 
       <AdminNavbar />
 

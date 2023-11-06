@@ -4,7 +4,7 @@ import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import { Image } from "@nextui-org/image";
 import { imageLoader } from "@lib/ListingsUtils";
 
-import ConfirmationModal from "./ConfirmationModal";
+import ConfirmationModal from "@components/Modals/ConfirmationModal";
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 

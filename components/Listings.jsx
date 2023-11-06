@@ -1,6 +1,6 @@
 import { useState, useMemo, useContext } from 'react';
-import SortButton from '@components/SortButton';
-import FiltersButton from '@components/FiltersButton';
+import SortButton from '@components/Buttons/SortButton';
+import FiltersButton from '@components/Buttons/FiltersButton';
 import ListingCard from '@components/ListingCard';
 import { sortAndFilter } from 'lib/ListingsUtils';
 

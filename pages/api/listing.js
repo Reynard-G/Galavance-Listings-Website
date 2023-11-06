@@ -25,6 +25,16 @@ async function createListing(req, res) {
     const { plot, location, operationType, price, beds, bathrooms, sq_meters, propertyType, town, images } = listing;
     const username = jwt.verify(req.cookies.token, process.env.JWT_SECRET).username;
 
+    const listing_id = await sql`
+      SELECT id
+      FROM listings
+      WHERE plot = ${plot}
+    `;
+
+    if (listing_id.length > 0) {
+      return res.status(409).json({ message: "Listing with this plot already exists" });
+    }
+
     const user_id = await sql`
       SELECT id
       FROM accounts

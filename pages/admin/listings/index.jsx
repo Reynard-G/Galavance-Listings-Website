@@ -6,11 +6,11 @@ import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
 
 import AdminNavbar from "@components/AdminNavbar";
-import SortButton from "@components/SortButton";
-import FiltersButton from "@components/FiltersButton";
+import SortButton from "@components/Buttons/SortButton";
+import FiltersButton from "@components/Buttons/FiltersButton";
 import SearchBar from "@components/SearchBar";
 import ListingCard from "@components/ListingCard";
-import ListingDeleteButton from "@components/ListingDeleteButton";
+import ListingDeleteButton from "@components/Buttons/ListingDeleteButton";
 import AddListing from '@components/Forms/AddListing';
 import { sortAndFilter } from "@lib/ListingsUtils";
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
-import ConfirmationModal from "./ConfirmationModal";
+import ConfirmationModal from "@components/Modals/ConfirmationModal";
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 

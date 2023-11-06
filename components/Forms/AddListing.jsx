@@ -7,7 +7,7 @@ import { Button } from '@nextui-org/button';
 import { Avatar } from '@nextui-org/avatar';
 import { Divider } from '@nextui-org/divider';
 
-import ErrorModal from '@components/ErrorModal';
+import ErrorModal from '@components/Modals/ErrorModal';
 import { imageLoader } from '@lib/ListingsUtils';
 
 const initialFormState = {
@@ -29,6 +29,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
   const [isPriceRange, setIsPriceRange] = useState(false);
   const [form, setForm] = useState(initialFormState);
   const [isErrorModalVisible, setIsErrorModalVisible] = useState(false);
+  const [isConflictModalVisible, setIsConflictModalVisible] = useState(false);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -43,6 +44,9 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
       setIsSubmitting(false);
       setForm(initialFormState);
       router.reload();
+    } else if (res.status === 409) {
+      setIsSubmitting(false);
+      setIsConflictModalVisible(true);
     } else {
       setIsSubmitting(false);
       setIsErrorModalVisible(true);
@@ -81,6 +85,15 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
         An error occurred while trying to add the listing. Check to see if any
         restrictions are being violated such as identical plots, locations, etc.
         If the problem persists, contact administration.
+      </ErrorModal>
+
+      <ErrorModal
+        visible={isConflictModalVisible}
+        title="Conflict"
+        onConfirmed={() => setIsConflictModalVisible(false)}
+      >
+        A listing with the same plot ID already exists. If you are trying to
+        update the listing, go to the Edit Listing page instead.
       </ErrorModal>
 
       <div className="space-y-4 w-full sm:w-3/4 md:w-1/2 p-4 mx-auto">
