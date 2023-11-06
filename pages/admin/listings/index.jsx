@@ -25,7 +25,7 @@ const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
   const [filters, setFilters] = useState({
     propertyStatus: "For Sale",
     "For Sale": {
-      price: [0, 1000000],
+      price: [0, 100000],
       beds: [],
       bathrooms: [],
       homeType: ""
