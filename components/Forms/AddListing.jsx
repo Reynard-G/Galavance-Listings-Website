@@ -8,6 +8,8 @@ import { Avatar } from '@nextui-org/avatar';
 import { Divider } from '@nextui-org/divider';
 
 import ErrorModal from '@components/Modals/ErrorModal';
+import SortableImageList from '@components/SortableImageList';
+import UploadButton from '@components/Buttons/UploadButton';
 import { imageLoader } from '@lib/ListingsUtils';
 
 const initialFormState = {
@@ -28,6 +30,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPriceRange, setIsPriceRange] = useState(false);
   const [form, setForm] = useState(initialFormState);
+  const [uploadedImage, setUploadedImage] = useState("");
   const [isErrorModalVisible, setIsErrorModalVisible] = useState(false);
   const [isConflictModalVisible, setIsConflictModalVisible] = useState(false);
 
@@ -67,6 +70,13 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
       setForm({ ...form, price: [form.price[0]] });
     }
   }, [form, isPriceRange]);
+
+  useEffect(() => {
+    if (uploadedImage) {
+      setForm({ ...form, images: [...form.images, uploadedImage] });
+      setUploadedImage("");
+    }
+  }, [form, uploadedImage]);
 
   return (
     <>
@@ -291,6 +301,10 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
               </SelectItem>
             )}
           </Select>
+
+          <SortableImageList images={form.images} setImages={(images) => setForm({ ...form, images })} className="col-span-2" />
+          
+          <UploadButton plot={form.plot} setImages={setUploadedImage} className="col-span-2" />
 
           <Button
             color="primary"

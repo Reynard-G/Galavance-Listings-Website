@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Dashboard } from '@uppy/react';
 import { createUppy } from '@lib/UppyUtils';
 
-const UploadButton = ({ plot, setImages }) => {
+const UploadButton = ({ plot, setImages, ...props }) => {
   const [uppy] = useState(() => createUppy(plot));
 
   uppy.on('upload-success', (file, response) => {
@@ -27,7 +27,7 @@ const UploadButton = ({ plot, setImages }) => {
         theme="dark"
         height={350}
         width='100%'
-        className='col-span-full'
+        {...props}
       />
     </>
   );

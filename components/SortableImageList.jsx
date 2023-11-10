@@ -8,7 +8,7 @@ import ConfirmationModal from "@components/Modals/ConfirmationModal";
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const SortableImageList = ({ images, setImages }) => {
+const SortableImageList = ({ images, setImages, ...props }) => {
   const [deleteImage, setDeleteImage] = useState('');
   const [confirmVisible, setConfirmVisible] = useState(false);
 
@@ -32,7 +32,7 @@ const SortableImageList = ({ images, setImages }) => {
         Are you sure you want to delete the image <span className="font-bold">{deleteImage}</span>?
       </ConfirmationModal>
 
-      <Card className="col-span-full">
+      <Card {...props}>
         <CardHeader>
           <div className="flex flex-col">
             <p className="text-md">Images</p>

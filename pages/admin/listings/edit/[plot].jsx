@@ -371,9 +371,10 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
               </SelectItem>
             )}
           </Select>
-          <SortableImageList images={form.images} setImages={(images) => setForm({ ...form, images })} className="hidden lg:block col-span-full" />
 
-          <UploadButton plot={form.plot} setImages={setUploadedImage} className="lg:hidden col-span-full" />
+          <SortableImageList images={form.images} setImages={(images) => setForm({ ...form, images })} className="col-span-full" />
+
+          <UploadButton plot={form.plot} setImages={setUploadedImage} className="col-span-full" />
 
           <Button size="md" color="primary" variant="shadow" isDisabled={isSubmitDisabled} isLoading={isSubmitting} className="col-span-2" onPress={handleFormSubmit}>Submit</Button>
         </div>
