@@ -54,51 +54,52 @@ const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
       </Head>
 
       <div>
-        <AdminNavbar />
+        <AdminNavbar>
 
-        <Tabs fullWidth variant="bordered" className="flex w-full md:w-1/2 justify-center mx-auto p-4 mt-5">
-          <Tab title="Listings">
-            <div className="flex items-center justify-between p-2 w-full md:w-1/2 mx-auto gap-2">
-              <SearchBar setSearch={setSearch} />
-              <SortButton setSortValue={setSortValue} />
-              <FiltersButton filters={filters} setFilters={setFilters} />
-            </div>
-            <div className="listings-container grid auto-rows-auto gap-2 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5">
-              {processedListings.map((listing) => (
-                <Card key={listing.id} shadow>
-                  <CardBody className="pb-0">
-                    <ListingCard key={listing.id} listing={listing} />
-                  </CardBody>
-                  <CardFooter className="flex gap-2">
-                    <Button
-                      size="sm"
-                      color="primary"
-                      variant="ghost"
-                      isLoading={isEditLoading[listing.id]}
-                      startContent={!isEditLoading[listing.id] && <EditRoundedIcon fontSize="small" />}
-                      className="w-1/2"
-                      onPress={async () => {
-                        setIsEditLoading({ ...isEditLoading, [listing.id]: true });
-                        await router.push(`/admin/listings/edit/${listing.id}`);
-                        setIsEditLoading({ ...isEditLoading, [listing.id]: false });
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <ListingDeleteButton
-                      id={listing.id}
-                      plot={listing.plot}
-                      onDelete={() => router.reload()}
-                    />
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </Tab>
-          <Tab title="Add Listing">
-            <AddListing statuses={statuses} propertyTypes={propertyTypes} towns={towns} />
-          </Tab>
-        </Tabs>
+          <Tabs fullWidth variant="bordered" className="flex w-full md:w-1/2 justify-center mx-auto p-4 mt-5">
+            <Tab title="Listings">
+              <div className="flex items-center justify-between p-2 w-full md:w-1/2 mx-auto gap-2">
+                <SearchBar setSearch={setSearch} />
+                <SortButton setSortValue={setSortValue} />
+                <FiltersButton filters={filters} setFilters={setFilters} />
+              </div>
+              <div className="listings-container grid auto-rows-auto gap-2 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5">
+                {processedListings.map((listing) => (
+                  <Card key={listing.id} shadow>
+                    <CardBody className="pb-0">
+                      <ListingCard key={listing.id} listing={listing} />
+                    </CardBody>
+                    <CardFooter className="flex gap-2">
+                      <Button
+                        size="sm"
+                        color="primary"
+                        variant="ghost"
+                        isLoading={isEditLoading[listing.id]}
+                        startContent={!isEditLoading[listing.id] && <EditRoundedIcon fontSize="small" />}
+                        className="w-1/2"
+                        onPress={async () => {
+                          setIsEditLoading({ ...isEditLoading, [listing.id]: true });
+                          await router.push(`/admin/listings/edit/${listing.id}`);
+                          setIsEditLoading({ ...isEditLoading, [listing.id]: false });
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <ListingDeleteButton
+                        id={listing.id}
+                        plot={listing.plot}
+                        onDelete={() => router.reload()}
+                      />
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </Tab>
+            <Tab title="Add Listing">
+              <AddListing statuses={statuses} propertyTypes={propertyTypes} towns={towns} />
+            </Tab>
+          </Tabs>
+        </AdminNavbar>
       </div>
     </>
   );

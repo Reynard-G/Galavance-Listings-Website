@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import { ColorSchemeScript } from '@mantine/core';
 
 export default function Document() {
   return (
@@ -13,6 +14,8 @@ export default function Document() {
         <meta property="og:locale" content="en_US" />
         <meta property="twitter:card" content="summary" />
         <meta property="twitter:title" content="Hamilton Family Realty" />
+
+        <ColorSchemeScript defaultColorScheme="dark" />
       </Head>
 
       <body>

@@ -10,11 +10,10 @@ const Admin = () => {
         <meta property="og:description" content="Hamilton Family Realty's Admin Dashboard" />
         <meta name="description" content="Hamilton Family Realty's Admin Dashboard" />
       </Head>
-      
-      <div>
-        <AdminNavbar />
+
+      <AdminNavbar>
         <p>Admin Dashboard</p>
-      </div>
+      </AdminNavbar>
     </>
   );
 };

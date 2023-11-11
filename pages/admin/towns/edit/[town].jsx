@@ -33,7 +33,7 @@ const EditTown = ({ town }) => {
     }
 
     setIsSubmitting(false);
-  }
+  };
 
   return (
     <>
@@ -62,41 +62,42 @@ const EditTown = ({ town }) => {
         A town with that name already exists. Please choose a different name.
       </ErrorModal>
 
-      <AdminNavbar />
+      <AdminNavbar>
 
-      <div className="space-y-4 w-full sm:w-3/4 md:w-1/2 p-4 mx-auto">
-        <div>
-          <h1 className="text-2xl font-bold">Edit Town</h1>
-          <p className="text-gray-500">Fill out the form below to edit a town.</p>
+        <div className="space-y-4 w-full sm:w-3/4 md:w-1/2 p-4 mx-auto">
+          <div>
+            <h1 className="text-2xl font-bold">Edit Town</h1>
+            <p className="text-gray-500">Fill out the form below to edit a town.</p>
+          </div>
+
+          <Divider />
+
+          <div className="space-y-4">
+            <Input
+              label="Town Name"
+              type="text"
+              variant="faded"
+              placeholder="Enter the name of the town"
+              isRequired
+              isInvalid={name.length < 1}
+              defaultValue={town[0].name}
+              onValueChange={setName}
+            />
+
+            <Button
+              className="w-full"
+              size="md"
+              color="primary"
+              variant="shadow"
+              isDisabled={name.length < 1}
+              isLoading={isSubmitting}
+              onPress={handleSubmit}
+            >
+              Edit Town
+            </Button>
+          </div>
         </div>
-
-        <Divider />
-
-        <div className="space-y-4">
-          <Input
-            label="Town Name"
-            type="text"
-            variant="faded"
-            placeholder="Enter the name of the town"
-            isRequired
-            isInvalid={name.length < 1}
-            defaultValue={town[0].name}
-            onValueChange={setName}
-          />
-
-          <Button
-            className="w-full"
-            size="md"
-            color="primary"
-            variant="shadow"
-            isDisabled={name.length < 1}
-            isLoading={isSubmitting}
-            onPress={handleSubmit}
-          >
-            Edit Town
-          </Button>
-        </div>
-      </div>
+      </AdminNavbar>
     </>
   );
 };
