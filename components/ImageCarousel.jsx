@@ -15,7 +15,6 @@ const ImageCarousel = ({ listing }) => {
     <Swiper
       spaceBetween={50}
       slidesPerView={1}
-      lazyPreloadPrevNext={1}
       loop={true}
       pagination={{ dynamicBullets: true }}
       navigation={true}

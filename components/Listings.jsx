@@ -1,4 +1,5 @@
 import { useState, useMemo, useContext } from 'react';
+
 import SortButton from '@components/Buttons/SortButton';
 import FiltersButton from '@components/Buttons/FiltersButton';
 import ListingCard from '@components/ListingCard';
@@ -44,7 +45,7 @@ const Listings = () => {
           <FiltersButton filters={filters} setFilters={setFilters} />
         </div>
       </div>
-      <div className="grid-container flex-grow overflow-auto no-scrollbar h-full">
+      <div className="grid-container flex-grow overflow-auto shadow-[inset_0_2px_4px_0_rgba(0,0,0,0.3)] no-scrollbar h-full">
         {filteredListings.length === 0 && (
           <div className="flex flex-col items-center justify-center h-1/2">
             <h3 className="text-2xl font-bold animate-fade-left animate-ease-in-out">No listings found</h3>

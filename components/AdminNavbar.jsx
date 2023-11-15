@@ -76,8 +76,8 @@ const AdminNavbar = ({ children }) => {
 
         <Divider className="my-2" />
 
-        <Link color="foreground" className="py-2 pl-2 hover:bg-zinc-800 cursor-pointer" onPress={handleLogout}>
-          <LogoutRoundedIcon fontSize="small" className="p-1.5 ml-2 box-content rounded" />
+        <Link color="foreground" className="py-2 pl-2 mb-2 hover:bg-zinc-800 rounded-md cursor-pointer" onPress={handleLogout}>
+          <LogoutRoundedIcon fontSize="small" className="p-1.5 ml-2 box-content" />
           <span className="ml-4 font-medium text-sm">Logout</span>
         </Link>
       </AppShell.Navbar>

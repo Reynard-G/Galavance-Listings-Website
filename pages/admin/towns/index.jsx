@@ -20,7 +20,7 @@ const AdminTowns = ({ towns }) => {
     <>
       <AdminNavbar>
 
-        <Tabs fullWidth variant="bordered" className="flex w-full md:w-1/2 justify-center mx-auto p-4 mt-5">
+        <Tabs fullWidth variant="bordered" className="flex w-full md:w-3/4 xl:w-1/2 justify-center mx-auto p-4 mt-5">
           <Tab title="Towns">
             <div className="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
               {towns.map((town) => (

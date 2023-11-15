@@ -33,7 +33,6 @@ export default function App({ Component, pageProps }) {
 
   return (
     <React.StrictMode>
-
       <NextUIProvider navigate={router.push}>
         <MantineProvider theme={theme} defaultColorScheme="dark" withCssVariables>
           <NextThemesProvider attribute="class" defaultTheme='dark' enableSystem={false} enableColorScheme={false}>
