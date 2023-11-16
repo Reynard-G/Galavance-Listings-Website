@@ -1,7 +1,6 @@
 import { Html, Head, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import { ColorSchemeScript } from '@mantine/core';
-import { GA_TRACKING_ID } from '@lib/gtag';
 
 export default function Document() {
   return (
@@ -22,7 +21,7 @@ export default function Document() {
         {/* Global Site Tag (gtag.js) Google Analytics */}
         <Script
           strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_MEASUREMENT_ID}`}
         />
         <Script
           strategy="afterInteractive"
@@ -32,7 +31,7 @@ export default function Document() {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${GA_TRACKING_ID}', {
+              gtag('config', '${process.env.GA_MEASUREMENT_ID}', {
                 page_path: window.location.pathname,
               });
             `}}
