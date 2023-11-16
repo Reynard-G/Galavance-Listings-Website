@@ -25,7 +25,7 @@ export default function Document() {
         />
         <Script
           strategy="afterInteractive"
-          id="ga-tracking"
+          id="google-analytics"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];

@@ -9,7 +9,7 @@ import { NextUIProvider } from '@nextui-org/react';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-import { pageview } from '@lib/gtag';
+import * as gtag from '@lib/gtag';
 
 const theme = createTheme({
   colors: {
@@ -35,7 +35,7 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     const handleRouteChange = (url) => {
-      pageview(url, document.title);
+      gtag.pageview(url, document.title);
     };
 
     router.events.on('routeChangeComplete', handleRouteChange);
@@ -43,7 +43,7 @@ export default function App({ Component, pageProps }) {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <React.StrictMode>
