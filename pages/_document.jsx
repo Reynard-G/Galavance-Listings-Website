@@ -1,5 +1,7 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 import { ColorSchemeScript } from '@mantine/core';
+import { GA_TRACKING_ID } from '@lib/gtag';
 
 export default function Document() {
   return (
@@ -16,6 +18,25 @@ export default function Document() {
         <meta property="twitter:title" content="Hamilton Family Realty" />
 
         <ColorSchemeScript defaultColorScheme="dark" />
+
+        {/* Global Site Tag (gtag.js) Google Analytics */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+        />
+        <Script
+          strategy="afterInteractive"
+          id="ga-tracking"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_TRACKING_ID}', {
+                page_path: window.location.pathname,
+              });
+            `}}
+        />
       </Head>
 
       <body>
