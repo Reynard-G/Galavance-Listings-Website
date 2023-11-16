@@ -110,7 +110,7 @@ const FiltersButton = ({ filters, setFilters }) => {
       >
         Filters
       </Button>
-      <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal backdrop="blur" scrollBehavior="inside" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <Tabs
             aria-label="Sale or Rent Tabs"
