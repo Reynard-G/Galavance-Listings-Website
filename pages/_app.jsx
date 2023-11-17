@@ -5,6 +5,7 @@ import { Libre_Franklin } from 'next/font/google';
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Analytics } from '@vercel/analytics/react';
 import { NextUIProvider } from '@nextui-org/react';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -52,6 +53,7 @@ export default function App({ Component, pageProps }) {
           <NextThemesProvider attribute="class" defaultTheme='dark' enableSystem={false} enableColorScheme={false}>
             <main className={libreFranklin.className}>
               <Component {...pageProps} />
+              <Analytics />
             </main>
           </NextThemesProvider>
         </MantineProvider>
