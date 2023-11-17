@@ -39,7 +39,6 @@
     "cookie": "^0.5.0",
     "cross-env": "^7.0.3",
     "framer-motion": "^10.16.4",
-    "googleapis": "^128.0.0",
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
     "next": "^14.0.1",

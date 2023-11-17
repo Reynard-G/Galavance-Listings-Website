@@ -3,14 +3,12 @@ import 'leaflet/dist/leaflet.css';
 import '@mantine/core/styles.css';
 import { Libre_Franklin } from 'next/font/google';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { Analytics } from '@vercel/analytics/react';
 import { NextUIProvider } from '@nextui-org/react';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-
-import * as gtag from '@lib/gtag';
 
 const theme = createTheme({
   colors: {
@@ -33,18 +31,6 @@ const libreFranklin = Libre_Franklin({ subsets: ['latin'], display: 'swap' });
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-
-  useEffect(() => {
-    const handleRouteChange = (url) => {
-      gtag.pageview(url, document.title);
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
 
   return (
     <React.StrictMode>
