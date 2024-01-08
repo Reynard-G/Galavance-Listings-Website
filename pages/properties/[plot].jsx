@@ -73,7 +73,7 @@ const Property = ({ listing }) => {
           </div>
 
           {/* Mobile only */}
-          <div className="flex md:hidden justify-between pt-2">
+          <div className="flex md:hidden justify-evenly pt-2">
             <div className="flex items-center">
               <SquareFootRoundedIcon className="shrink-0" fontSize="small" />
               <div className="ml-2">
