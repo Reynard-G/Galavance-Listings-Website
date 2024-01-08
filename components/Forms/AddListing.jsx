@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Select, SelectItem } from '@nextui-org/select';
-import { Input } from '@nextui-org/input';
+import { Input, Textarea } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
 import { Avatar } from '@nextui-org/avatar';
 import { Divider } from '@nextui-org/divider';
@@ -18,6 +18,7 @@ const initialFormState = {
   beds: '',
   bathrooms: '',
   price: [],
+  description: '',
   location: [],
   operationType: undefined,
   propertyType: undefined,
@@ -109,7 +110,7 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
       <div className="space-y-4 w-full sm:w-3/4 md:w-1/2 p-4 mx-auto">
         <div>
           <h3 className="text-lg font-medium">Add a Listing</h3>
-          <p className="text-sm text-gray-400">Fill out the form below to add a new listing.</p>
+          <p className="text-sm text-neutral-400">Fill out the form below to add a new listing.</p>
         </div>
 
         <Divider />
@@ -301,6 +302,16 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
               </SelectItem>
             )}
           </Select>
+
+          <Textarea
+            minRows={2}
+            label="Description"
+            placeholder="Create a meaningful description for the listing"
+            variant="faded"
+            defaultValue={form.description || ""}
+            onValueChange={(value) => setForm({ ...form, description: value })}
+            className="col-span-2"
+          />
 
           <SortableImageList images={form.images} setImages={(images) => setForm({ ...form, images })} className="col-span-2" />
           

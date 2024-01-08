@@ -67,7 +67,7 @@ const EditTown = ({ town }) => {
         <div className="space-y-4 w-full sm:w-3/4 md:w-1/2 p-4 mx-auto">
           <div>
             <h1 className="text-2xl font-bold">Edit Town</h1>
-            <p className="text-gray-500">Fill out the form below to edit a town.</p>
+            <p className="text-neutral-500">Fill out the form below to edit a town.</p>
           </div>
 
           <Divider />

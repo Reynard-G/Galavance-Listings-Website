@@ -14,6 +14,14 @@
   }
 }
 
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #1f1f1f !important;
+}
+
+.leaflet-container {
+  background-color: #333333 !important;
+}
+
 .leaflet-bar a,
 .leaflet-control a {
   transition: color .2s ease-in, background-color .2s ease-in !important;

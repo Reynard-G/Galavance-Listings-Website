@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Input } from '@nextui-org/input';
+import { Input, Textarea } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
 import { Button } from '@nextui-org/button';
 import { Avatar } from '@nextui-org/avatar';
@@ -23,6 +23,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
     location: listing.location,
     status: listing.status,
     price: listing.price,
+    description: listing.description,
     beds: listing.beds,
     bathrooms: listing.bathrooms,
     sq_meters: listing.sq_meters,
@@ -150,7 +151,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
           <Card className="w-full sm:w-3/4 md:w-1/2 lg:w-2/6 2xl:w-1/4 3xl:w-1/5 shadow-lg mx-4 mt-2">
             <CardHeader className="pt-2 px-4 flex-col items-start">
               <h3 className="text-lg font-medium text-left">Preview</h3>
-              <p className="text-sm text-gray-400">Preview the listing below</p>
+              <p className="text-sm text-neutral-400">Preview the listing below</p>
             </CardHeader>
             <CardBody>
               <ListingCard listing={replaceIdsWithNames(form)} />
@@ -161,7 +162,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
         <div className="flex-1 flex flex-col justify-center px-4 pb-4 md:px-0 w-full sm:w-3/4 md:w-1/2 space-y-6 mx-auto mt-5">
           <div>
             <h3 className="text-lg font-medium text-left">Edit a Listing</h3>
-            <p className="text-sm text-gray-400">Edit the listing below</p>
+            <p className="text-sm text-neutral-400">Edit the listing below</p>
           </div>
 
           <Divider />
@@ -246,7 +247,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
                 />
                 {priceRange ? (
                   <>
-                    <span className="text-gray-400">-</span>
+                    <span className="text-neutral-400">-</span>
                     <Input
                       type="number"
                       label="Max Price"
@@ -371,6 +372,16 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
                 </SelectItem>
               )}
             </Select>
+
+            <Textarea
+              minRows={2}
+              label="Description"
+              placeholder="Create a meaningful description for the listing"
+              variant="faded"
+              defaultValue={listing.description || ""}
+              onValueChange={(value) => setForm({ ...form, description: value })}
+              className="col-span-full"
+            />
 
             <SortableImageList images={form.images} setImages={(images) => setForm({ ...form, images })} className="col-span-full" />
 

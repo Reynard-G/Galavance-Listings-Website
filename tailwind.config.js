@@ -20,7 +20,7 @@ module.exports = {
     themes: {
       dark: {
         colors: {
-          background: '#303030',
+          background: '#1f1f1f',
           danger: '#DE350B',
         }
       }

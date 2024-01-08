@@ -22,7 +22,7 @@ async function createListing(req, res) {
       return res.status(400).json({ message: "Missing listing" });
     }
 
-    const { plot, location, operationType, price, beds, bathrooms, sq_meters, propertyType, town, images } = listing;
+    const { plot, location, operationType, price, description, beds, bathrooms, sq_meters, propertyType, town, images } = listing;
     const username = jwt.verify(req.cookies.token, process.env.JWT_SECRET).username;
 
     const listing_id = await sql`
@@ -62,6 +62,11 @@ async function createListing(req, res) {
     if (price) {
       columns.push('price');
       values.price = price;
+    }
+
+    if (description) {
+      columns.push('description');
+      values.description = description === "" ? null : description;
     }
 
     if (beds) {
@@ -138,7 +143,7 @@ async function updateListing(req, res) {
       return res.status(400).json({ message: "Too many listings" });
     }
 
-    const { id, plot, location, status, price, beds, bathrooms, sq_meters, property_type, town, images } = listing;
+    const { id, plot, location, status, price, description, beds, bathrooms, sq_meters, property_type, town, images } = listing;
 
     await sql`
         UPDATE listings
@@ -146,6 +151,7 @@ async function updateListing(req, res) {
           location = ${location},
           status = ${status},
           price = ${price},
+          description = ${description === "" ? null : description},
           beds = ${beds},
           bathrooms = ${bathrooms},
           sq_meters = ${sq_meters},

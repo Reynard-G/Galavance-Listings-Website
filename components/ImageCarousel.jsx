@@ -7,15 +7,12 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-const ImageCarousel = ({ listing }) => {
-  const width = 480;
-  const height = 240;
-
+const ImageCarousel = ({ listing, width = 480, height = 240 }) => {
   return (
     <Swiper
+      loop={true}
       spaceBetween={50}
       slidesPerView={1}
-      loop={true}
       pagination={{ dynamicBullets: true }}
       navigation={true}
       modules={[Pagination, Navigation]}
@@ -32,7 +29,6 @@ const ImageCarousel = ({ listing }) => {
             as={NextImage}
             src={imageLoader({ src: image, width: width })}
             alt={listing.plot}
-            priority={index === 0 ? true : false}
             width={width}
             height={height}
           />
