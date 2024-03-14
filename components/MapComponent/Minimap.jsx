@@ -47,7 +47,7 @@ const Minimap = ({ crs, zoom }) => {
         attributionControl={false}
         zoomControl={false}
       >
-        <TileLayer url="https://tiles.milklegend.xyz/{z}/{x}/{y}.webp" />
+        <TileLayer url="https://tiles.milklegend.xyz/cityrp/{z}/{x}/{y}.webp" />
         <MinimapBounds parentMap={parentMap} zoom={mapZoom} />
       </MapContainer>
     ),
