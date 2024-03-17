@@ -50,7 +50,7 @@ const MapComponent = () => {
 
   return (
     <MapContainer
-      center={[3000, 3000]}
+      center={[0, 0]}
       zoom={2}
       scrollWheelZoom={true}
       attributionControl={false}
@@ -61,7 +61,7 @@ const MapComponent = () => {
         url="https://tiles.milklegend.xyz/cityrp/{z}/{x}/{y}.webp"
         minZoom={2}
         maxZoom={7}
-        bounds={[[0, 0], [6000, 6000]]}
+        bounds={[[0, 0], [8000, 8000]]}
         noWrap={true}
       />
       {filteredListings.map((listing) => (
