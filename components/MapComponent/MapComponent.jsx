@@ -17,7 +17,7 @@ L.Projection.Minecraft = {
 
 L.CRS.Minecraft = L.extend({}, L.CRS.Simple, {
   projection: L.Projection.Minecraft,
-  transformation: new L.Transformation(1 / 32, 0, 1 / 32, 0),
+  transformation: new L.Transformation(1 / 32, 123, 1 / 32, 122),
 });
 
 const MapComponent = () => {
@@ -61,7 +61,7 @@ const MapComponent = () => {
         url="https://tiles.milklegend.xyz/cityrp/{z}/{x}/{y}.webp"
         minZoom={2}
         maxZoom={7}
-        bounds={[[0, 0], [8000, 8000]]}
+        bounds={[[-3904, -3904], [3904, 3904]]}
         noWrap={true}
       />
       {filteredListings.map((listing) => (
