@@ -122,11 +122,6 @@ const Property = ({ listing }) => {
             </div>
 
             <div className="flex items-center min-w-max p-3 rounded bg-neutral-900">
-              <LocationCityRoundedIcon className="shrink-0 mr-2" fontSize="large" />
-              <p className="text-lg text-neutral-400">Located in <span className="underline underline-offset-4 decoration-dotted">{listing.town}</span></p>
-            </div>
-
-            <div className="flex items-center min-w-max p-3 rounded bg-neutral-900">
               <AttachMoneyRoundedIcon className="shrink-0 mr-2" fontSize="large" />
               <p className="text-lg text-neutral-400">{listing.status}</p>
             </div>
@@ -161,19 +156,17 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const rows = await sql`
-      SELECT listings.*,
+    SELECT listings.*,
       EXTRACT(epoch FROM listings.updated_at) as updated_at,
       EXTRACT(epoch FROM listings.created_at) as created_at,
       property_types.name as property_type,
-      towns.name as town,
       accounts.username as created_by_user,
       statuses.name as status
-      FROM listings
-      JOIN property_types ON listings.property_type = property_types.id
-      JOIN towns ON listings.town = towns.id
-      JOIN accounts ON listings.created_by_user = accounts.id
-      JOIN statuses ON listings.status = statuses.id
-      WHERE listings.id = ${params.plot}
+    FROM listings
+    JOIN property_types ON listings.property_type = property_types.id
+    JOIN accounts ON listings.created_by_user = accounts.id
+    JOIN statuses ON listings.status = statuses.id
+    WHERE listings.id = ${params.plot}
       `;
 
   return {

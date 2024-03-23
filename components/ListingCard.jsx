@@ -60,7 +60,7 @@ const ListingCard = ({ listing, link }) => {
         <p className="text-lg font-bold">{formattedPrice}</p>
       </CardHeader>
       <CardFooter className="flex items-center justify-between pt-0">
-        <p className="text-sm text-neutral-400">{listing.plot} | {listing.town}</p>
+        <p className="text-sm text-neutral-400">{listing.plot}</p>
         <p className="text-sm text-neutral-400">Listed By {listing.created_by_user}</p>
       </CardFooter>
     </Card>

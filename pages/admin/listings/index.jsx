@@ -16,7 +16,7 @@ import { sortAndFilter } from "@lib/ListingsUtils";
 
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
-const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
+const AdminListings = ({ listings, statuses, propertyTypes }) => {
   const router = useRouter();
   const [isEditLoading, setIsEditLoading] = useState({});
   const [processedListings, setProcessedListings] = useState(listings);
@@ -96,7 +96,7 @@ const AdminListings = ({ listings, statuses, propertyTypes, towns }) => {
               </div>
             </Tab>
             <Tab title="Add Listing">
-              <AddListing statuses={statuses} propertyTypes={propertyTypes} towns={towns} />
+              <AddListing statuses={statuses} propertyTypes={propertyTypes} />
             </Tab>
           </Tabs>
         </AdminNavbar>
@@ -115,12 +115,10 @@ export async function getServerSideProps() {
       EXTRACT(epoch FROM listings.updated_at) as updated_at,
       EXTRACT(epoch FROM listings.created_at) as created_at,
       property_types.name as property_type,
-      towns.name as town,
       accounts.username as created_by_user,
       statuses.name as status
     FROM listings
     JOIN property_types ON listings.property_type = property_types.id
-    JOIN towns ON listings.town = towns.id
     JOIN accounts ON listings.created_by_user = accounts.id
     JOIN statuses ON listings.status = statuses.id
   `;
@@ -135,18 +133,12 @@ export async function getServerSideProps() {
       EXTRACT(epoch FROM created_at) as created_at
     FROM property_types
   `);
-  const towns = (await sql`
-    SELECT *,
-      EXTRACT(epoch FROM created_at) as created_at
-    FROM towns
-  `);
 
   return {
     props: {
       listings: rows,
       statuses,
       propertyTypes,
-      towns,
     },
   };
 }

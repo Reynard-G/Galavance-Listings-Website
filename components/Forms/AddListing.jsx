@@ -22,11 +22,10 @@ const initialFormState = {
   location: [],
   operationType: undefined,
   propertyType: undefined,
-  town: undefined,
   images: []
 };
 
-const AddListing = ({ statuses, propertyTypes, towns }) => {
+const AddListing = ({ statuses, propertyTypes }) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPriceRange, setIsPriceRange] = useState(false);
@@ -64,7 +63,6 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
   const isZLocationInvalid = isNaN(form.location[1]) || form.location[1] > 6000;
   const isOperationTypeInvalid = isNaN(form.operationType);
   const isPropertyTypeInvalid = isNaN(form.propertyType);
-  const isTownInvalid = isNaN(form.town);
 
   useEffect(() => {
     if (form.price[1] === undefined && isPriceRange) {
@@ -270,39 +268,6 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
             ))}
           </Select>
 
-          <Select
-            items={towns}
-            label="Town"
-            value={form.town}
-            placeholder="Select a town"
-            variant="faded"
-            onSelectionChange={(value) => setForm({ ...form, town: Array.from(value).join(',') || undefined })}
-            isRequired
-            isInvalid={isTownInvalid}
-            className="col-span-2"
-            renderValue={(items) => {
-              return items.map((item) => (
-                <div key={item.data.id} className="flex items-center gap-2">
-                  <Avatar alt={item.data.name} src={imageLoader({ src: item.data.icon, width: 24 })} className="w-6 h-6 text-tiny" />
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">{item.data.name}</span>
-                  </div>
-                </div>
-              ));
-            }}
-          >
-            {(town) => (
-              <SelectItem key={town.id} value={town.id}>
-                <div className="flex items-center gap-2">
-                  <Avatar alt={town.name} src={imageLoader({ src: town.icon, width: 24 })} className="w-6 h-6 text-tiny" />
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">{town.name}</span>
-                  </div>
-                </div>
-              </SelectItem>
-            )}
-          </Select>
-
           <Textarea
             minRows={2}
             label="Description"
@@ -328,7 +293,6 @@ const AddListing = ({ statuses, propertyTypes, towns }) => {
               isZLocationInvalid ||
               isOperationTypeInvalid ||
               isPropertyTypeInvalid ||
-              isTownInvalid ||
               (isPriceRange && isSecondPriceInvalid)
             }
             isLoading={isSubmitting}

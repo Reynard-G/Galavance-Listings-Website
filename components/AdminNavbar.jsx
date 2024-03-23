@@ -19,7 +19,6 @@ const AdminNavbar = ({ children }) => {
   const navbarItemsData = [
     { title: 'Dashboard', href: '/admin', icon: <QueryStatsRoundedIcon fontSize="small" /> },
     { title: 'Listings', href: '/admin/listings', icon: <FormatListBulletedRoundedIcon fontSize="small" /> },
-    { title: 'Towns', href: '/admin/towns', icon: <LocationCityRoundedIcon fontSize="small" /> },
   ];
 
   const navbarItems = navbarItemsData.map((item) => ({

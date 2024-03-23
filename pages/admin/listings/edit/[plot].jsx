@@ -15,7 +15,7 @@ import ErrorModal from '@components/Modals/ErrorModal';
 import SortableImageList from '@components/SortableImageList';
 import UploadButton from '@components/Buttons/UploadButton';
 
-const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
+const EditListing = ({ listing, statuses, propertyTypes }) => {
   const router = useRouter();
   const [form, setForm] = useState({
     id: listing.id,
@@ -28,7 +28,6 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
     bathrooms: listing.bathrooms,
     sq_meters: listing.sq_meters,
     property_type: listing.property_type,
-    town: listing.town,
     images: listing.images
   });
   const [priceRange, setPriceRange] = useState(false);
@@ -39,7 +38,7 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
   const [isConflictModalVisible, setIsConflictModalVisible] = useState(false);
 
   useEffect(() => {
-    const requiredFields = ['plot', 'location', 'status', 'price', 'property_type', 'town'];
+    const requiredFields = ['plot', 'location', 'status', 'price', 'property_type'];
     const isFieldInvalid = (field) => !form[field];
 
     setSubmitDisabled(false);
@@ -112,7 +111,6 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
 
   const replaceIdsWithNames = (listing) => {
     const newListing = { ...listing };
-    newListing.town = towns.find((town) => town.id == listing.town)?.name || "Unknown";
     newListing.property_type = propertyTypes.find((propertyType) => propertyType.id == listing.property_type)?.name || "Unknown";
 
     return newListing;
@@ -341,38 +339,6 @@ const EditListing = ({ listing, statuses, propertyTypes, towns }) => {
               ))}
             </Select>
 
-            <Select
-              items={towns}
-              label="Town"
-              variant="faded"
-              isRequired
-              isInvalid={isValueInvalid(form.town)}
-              defaultSelectedKeys={[listing.town.toString()]}
-              onSelectionChange={(value) => setForm({ ...form, town: Array.from(value).join(',') || undefined })}
-              className="col-span-2"
-              renderValue={(items) => {
-                return items.map((item) => (
-                  <div key={item.data.id} className="flex items-center gap-2">
-                    <Avatar alt={item.data.name} src={imageLoader({ src: item.data.icon, width: 24 })} className="w-6 h-6 text-tiny" />
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium">{item.data.name}</span>
-                    </div>
-                  </div>
-                ));
-              }}
-            >
-              {(town) => (
-                <SelectItem key={town.id} value={town.id} textValue={town.name}>
-                  <div className="flex items-center gap-2">
-                    <Avatar alt={town.name} src={imageLoader({ src: town.icon, width: 24 })} className="w-6 h-6 text-tiny" />
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium">{town.name}</span>
-                    </div>
-                  </div>
-                </SelectItem>
-              )}
-            </Select>
-
             <Textarea
               minRows={2}
               label="Description"
@@ -435,18 +401,12 @@ export async function getStaticProps({ params }) {
       EXTRACT(epoch FROM created_at) as created_at
     FROM property_types
   `);
-  const towns = (await sql`
-    SELECT *,
-      EXTRACT(epoch FROM created_at) as created_at
-    FROM towns
-  `);
 
   return {
     props: {
       listing,
       statuses,
       propertyTypes,
-      towns
     }
   };
 }

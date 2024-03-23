@@ -33,9 +33,9 @@ const Listings = () => {
   }, [listingsInBounds, filters, sortValue, setFilteredListings]);
 
   return (
-    <div className="listings max-h-screen max-w-screen md:w-1/3 flex flex-col">
+    <div className="listings max-h-screen w-full md:w-1/3 flex flex-col">
       <DiscordButton className="absolute top-2 right-2" height="1.5rem" fill="#a3a3a3" />
-      <div className="flex items-center justify-between py-5 flex-col flex">
+      <div className="flex items-center justify-between py-5 flex-col">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-neutral-200 sm:truncate lg:text-3xl animate-fade animate-ease-in-out animate-duration-1000">Properties</h2>
           <p className="lg:text-md mt-3 text-sm text-neutral-400 md:text-center animate-fade-up"><strong>{filteredListings.length}</strong> listings found</p>
