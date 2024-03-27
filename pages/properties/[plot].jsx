@@ -24,9 +24,9 @@ const Property = ({ listing }) => {
       <Head>
         <title>HFR | {listing.plot}</title>
         <meta property="og:title" content={`HFR | ${listing.plot}`} />
-        <meta property="og:description" content="Hamilton Family Realty is a premier real estate agency based in the Commonwealth of Redmont.
+        <meta property="og:description" content="Hamilton Family Realty is a premier real estate agency based in the Azalea Isles.
             We aim to be the top real estate firm in the nation, helping clients buy, sell, or rent the property of their dreams." />
-        <meta name="description" content="Hamilton Family Realty is a premier real estate agency based in the Commonwealth of Redmont.
+        <meta name="description" content="Hamilton Family Realty is a premier real estate agency based in the Azalea Isles.
             We aim to be the top real estate firm in the nation, helping clients buy, sell, or rent the property of their dreams." />
       </Head>
 
