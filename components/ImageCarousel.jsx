@@ -22,6 +22,7 @@ const ImageCarousel = ({ listing, width = 480, height = 240 }) => {
         '--swiper-navigation-color': '#D4D4D8',
         '--swiper-navigation-size': '1.5rem'
       }}
+      onClick={() => window.open(`/properties/${listing.id}`, '_blank')}
     >
       {listing.images.map((image, index) => (
         <SwiperSlide key={image}>
