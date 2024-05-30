@@ -7,19 +7,26 @@ import { sortAndFilter } from 'lib/ListingsUtils';
 
 import ListingsContext from '@context/ListingsContext';
 import DiscordButton from '@components/Buttons/DiscordButton';
+import FilterButtonTabKeys from "constants/FilterButtonTabKeys";
 
 const Listings = () => {
   const { listingsInBounds, filteredListings, setFilteredListings } = useContext(ListingsContext);
   const [sortValue, setSortValue] = useState('');
   const [filters, setFilters] = useState({
-    propertyStatus: "For Sale",
-    "For Sale": {
+    propertyStatus: FilterButtonTabKeys.All,
+    [FilterButtonTabKeys.All]: {
       price: [0, 100000],
       beds: [],
       bathrooms: [],
       homeType: ""
     },
-    "For Rent": {
+    [FilterButtonTabKeys.For_Sale]: {
+      price: [0, 100000],
+      beds: [],
+      bathrooms: [],
+      homeType: ""
+    },
+    [FilterButtonTabKeys.For_Rent]: {
       price: [0, 10000],
       beds: [],
       bathrooms: []

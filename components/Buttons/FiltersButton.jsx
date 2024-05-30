@@ -6,6 +6,7 @@ import { Divider } from "@nextui-org/divider";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { Slider } from "@nextui-org/slider";
 
+import FilterButtonTabKeys from "constants/FilterButtonTabKeys";
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ApartmentRoundedIcon from '@mui/icons-material/ApartmentRounded';
@@ -118,8 +119,8 @@ const FiltersButton = ({ filters, setFilters }) => {
             onSelectionChange={(propertyStatus) => handlePropertyStatusChange(propertyStatus)}
             selectedKey={filters.propertyStatus}
           >
-            <Tab key="For Sale" title="For Sale">
-              <Divider />
+            <Tab key={FilterButtonTabKeys.All} title="All">
+            <Divider />
               <ModalBody>
                 <h3 className="text-2xl font-bold text-left">Price</h3>
                 <Slider
@@ -127,9 +128,9 @@ const FiltersButton = ({ filters, setFilters }) => {
                   minValue={0}
                   maxValue={100000}
                   step={10}
-                  defaultValue={filters["For Sale"].price}
+                  defaultValue={filters[FilterButtonTabKeys.All].price}
                   formatOptions={{ style: "currency", currency: "USD" }}
-                  onChange={(value) => handlePriceChange(value, "For Sale")}
+                  onChange={(value) => handlePriceChange(value, FilterButtonTabKeys.All)}
                 />
 
                 <Divider />
@@ -145,8 +146,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue }) => (
                     <Button
                       key={type}
-                      variant={filters["For Sale"].beds.includes(type) ? "solid" : "ghost"}
-                      onPress={() => handleBedsChange([type], "For Sale")}
+                      variant={filters[FilterButtonTabKeys.All].beds.includes(type) ? "solid" : "ghost"}
+                      onPress={() => handleBedsChange([type], FilterButtonTabKeys.All)}
                     >
                       {textValue}
                     </Button>
@@ -154,7 +155,7 @@ const FiltersButton = ({ filters, setFilters }) => {
                 </ButtonGroup>
 
                 <Divider />
-                
+
                 <h3 className="text-2xl font-bold text-left">Baths</h3>
                 <ButtonGroup size={isMobile ? 'sm' : 'md'}>
                   {[
@@ -166,16 +167,74 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue }) => (
                     <Button
                       key={type}
-                      variant={filters["For Sale"].bathrooms.includes(type) ? "solid" : "ghost"}
-                      onPress={() => handleBathsChange([type], "For Sale")}
+                      variant={filters[FilterButtonTabKeys.All].bathrooms.includes(type) ? "solid" : "ghost"}
+                      onPress={() => handleBathsChange([type], FilterButtonTabKeys.All)}
                     >
                       {textValue}
                     </Button>
                   ))}
                 </ButtonGroup>
-                
+              </ModalBody>
+            </Tab>
+
+            <Tab key={FilterButtonTabKeys.For_Sale} title="For Sale">
+              <Divider />
+              <ModalBody>
+                <h3 className="text-2xl font-bold text-left">Price</h3>
+                <Slider
+                  label="Price Range"
+                  minValue={0}
+                  maxValue={100000}
+                  step={10}
+                  defaultValue={filters[FilterButtonTabKeys.For_Sale].price}
+                  formatOptions={{ style: "currency", currency: "USD" }}
+                  onChange={(value) => handlePriceChange(value, FilterButtonTabKeys.For_Sale)}
+                />
+
                 <Divider />
-                
+
+                <h3 className="text-2xl font-bold text-left">Beds</h3>
+                <ButtonGroup size={isMobile ? 'sm' : 'md'}>
+                  {[
+                    { type: 1, textValue: "1" },
+                    { type: 2, textValue: "2" },
+                    { type: 3, textValue: "3" },
+                    { type: 4, textValue: "4" },
+                    { type: 5, textValue: "5+" }
+                  ].map(({ type, textValue }) => (
+                    <Button
+                      key={type}
+                      variant={filters[FilterButtonTabKeys.For_Sale].beds.includes(type) ? "solid" : "ghost"}
+                      onPress={() => handleBedsChange([type], FilterButtonTabKeys.For_Sale)}
+                    >
+                      {textValue}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+
+                <Divider />
+
+                <h3 className="text-2xl font-bold text-left">Baths</h3>
+                <ButtonGroup size={isMobile ? 'sm' : 'md'}>
+                  {[
+                    { type: 1, textValue: "1" },
+                    { type: 2, textValue: "2" },
+                    { type: 3, textValue: "3" },
+                    { type: 4, textValue: "4" },
+                    { type: 5, textValue: "5+" }
+                  ].map(({ type, textValue }) => (
+                    <Button
+                      key={type}
+                      variant={filters[FilterButtonTabKeys.For_Sale].bathrooms.includes(type) ? "solid" : "ghost"}
+                      onPress={() => handleBathsChange([type], FilterButtonTabKeys.For_Sale)}
+                    >
+                      {textValue}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+
+                <Divider />
+
                 <h3 className="text-2xl font-bold text-left">Home Type</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {[
@@ -187,8 +246,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue, icon }) => (
                     <Button
                       key={type}
-                      variant={filters["For Sale"].homeType === type ? "solid" : "ghost"}
-                      onPress={() => handleHomeTypeChange(type, "For Sale")}
+                      variant={filters[FilterButtonTabKeys.For_Sale].homeType === type ? "solid" : "ghost"}
+                      onPress={() => handleHomeTypeChange(type, FilterButtonTabKeys.For_Sale)}
                     >
                       {icon}
                       {textValue}
@@ -197,8 +256,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                 </div>
               </ModalBody>
             </Tab>
-            
-            <Tab key="For Rent" title="For Rent">
+
+            <Tab key={FilterButtonTabKeys.For_Rent} title="For Rent">
               <Divider />
               <ModalBody>
                 <h3 className="text-2xl font-bold text-left">Price</h3>
@@ -207,9 +266,9 @@ const FiltersButton = ({ filters, setFilters }) => {
                   minValue={0}
                   maxValue={10000}
                   step={10}
-                  defaultValue={filters["For Rent"].price}
+                  defaultValue={filters[FilterButtonTabKeys.For_Rent].price}
                   formatOptions={{ style: "currency", currency: "USD" }}
-                  onChange={(value) => handlePriceChange(value, "For Rent")}
+                  onChange={(value) => handlePriceChange(value, FilterButtonTabKeys.For_Rent)}
                 />
 
                 <Divider />
@@ -225,16 +284,16 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue }) => (
                     <Button
                       key={type}
-                      variant={filters["For Rent"].beds.includes(type) ? "solid" : "ghost"}
-                      onPress={() => handleBedsChange([type], "For Rent")}
+                      variant={filters[FilterButtonTabKeys.For_Rent].beds.includes(type) ? "solid" : "ghost"}
+                      onPress={() => handleBedsChange([type], FilterButtonTabKeys.For_Rent)}
                     >
                       {textValue}
                     </Button>
                   ))}
                 </ButtonGroup>
-                
+
                 <Divider />
-                
+
                 <h3 className="text-2xl font-bold text-left">Baths</h3>
                 <ButtonGroup size={isMobile ? 'sm' : 'md'}>
                   {[
@@ -246,16 +305,16 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue }) => (
                     <Button
                       key={type}
-                      variant={filters["For Rent"].bathrooms.includes(type) ? "solid" : "ghost"}
-                      onPress={() => handleBathsChange([type], "For Rent")}
+                      variant={filters[FilterButtonTabKeys.For_Rent].bathrooms.includes(type) ? "solid" : "ghost"}
+                      onPress={() => handleBathsChange([type], FilterButtonTabKeys.For_Rent)}
                     >
                       {textValue}
                     </Button>
                   ))}
                 </ButtonGroup>
-                
+
                 <Divider />
-                
+
                 <h3 className="text-2xl font-bold text-left">Rent Type</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {[
@@ -264,8 +323,8 @@ const FiltersButton = ({ filters, setFilters }) => {
                   ].map(({ type, textValue, icon }) => (
                     <Button
                       key={type}
-                      variant={filters["For Rent"].homeType === type ? "solid" : "ghost"}
-                      onPress={() => handleHomeTypeChange(type, "For Rent")}
+                      variant={filters[FilterButtonTabKeys.For_Rent].homeType === type ? "solid" : "ghost"}
+                      onPress={() => handleHomeTypeChange(type, FilterButtonTabKeys.For_Rent)}
                     >
                       {icon}
                       {textValue}

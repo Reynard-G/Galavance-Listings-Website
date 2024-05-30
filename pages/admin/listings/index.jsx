@@ -13,6 +13,7 @@ import ListingCard from "@components/ListingCard";
 import ListingDeleteButton from "@components/Buttons/ListingDeleteButton";
 import AddListing from '@components/Forms/AddListing';
 import { sortAndFilter } from "@lib/ListingsUtils";
+import FilterButtonTabKeys from "constants/FilterButtonTabKeys";
 
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
@@ -23,14 +24,20 @@ const AdminListings = ({ listings, statuses, propertyTypes }) => {
   const [search, setSearch] = useState("");
   const [sortValue, setSortValue] = useState("");
   const [filters, setFilters] = useState({
-    propertyStatus: "For Sale",
-    "For Sale": {
+    propertyStatus: FilterButtonTabKeys.All,
+    [FilterButtonTabKeys.All]: {
       price: [0, 100000],
       beds: [],
       bathrooms: [],
       homeType: ""
     },
-    "For Rent": {
+    [FilterButtonTabKeys.For_Sale]: {
+      price: [0, 100000],
+      beds: [],
+      bathrooms: [],
+      homeType: ""
+    },
+    [FilterButtonTabKeys.For_Rent]: {
       price: [0, 10000],
       beds: [],
       bathrooms: []
